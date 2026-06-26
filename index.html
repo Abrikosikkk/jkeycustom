@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Tracker · Analytics</title>
+    <script src="https://unpkg.com/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ========== CSS VARIABLES / THEMES ========== */
+        :root {
+            --bg-body:        #0d1b2a;
+            --bg-container:   #132033;
+            --bg-card:        #1a2c42;
+            --bg-card-alt:    #162438;
+            --bg-hover:       #1e3450;
+            --bg-selected:    rgba(99,179,237,0.10);
+            --border:         #1e3a58;
+            --border-strong:  #2d5070;
+            --text-primary:   #e8f0fe;
+            --text-secondary: #7bafd4;
+            --text-muted:     #4a7299;
+            --accent:         #4dabf7;
+            --accent-glow:    rgba(77,171,247,0.15);
+            --bar-track:      #1a3352;
+            --bar-fill:       #4dabf7;
+            --modal-bg:       rgba(5,15,30,0.97);
+            --scrollbar-thumb:#2a4a6a;
+            --selected-border:#4dabf7;
+        }
+        [data-theme="black"] {
+            --bg-body:        #000000;
+            --bg-container:   #0a0a0a;
+            --bg-card:        #111111;
+            --bg-card-alt:    #0e0e0e;
+            --bg-hover:       #1a1a1a;
+            --bg-selected:    rgba(255,255,255,0.05);
+            --border:         #1f1f1f;
+            --border-strong:  #2a2a2a;
+            --text-primary:   #e0e0e0;
+            --text-secondary: #888888;
+            --text-muted:     #555555;
+            --accent:         #cccccc;
+            --accent-glow:    rgba(255,255,255,0.08);
+            --bar-track:      #1a1a1a;
+            --bar-fill:       #aaaaaa;
+            --modal-bg:       rgba(0,0,0,0.98);
+            --scrollbar-thumb:#2a2a2a;
+            --selected-border:#888888;
+        }
+        [data-theme="white"] {
+            --bg-body:        #f0f4f8;
+            --bg-container:   #ffffff;
+            --bg-card:        #f7f9fc;
+            --bg-card-alt:    #eef2f7;
+            --bg-hover:       #e8f0fb;
+            --bg-selected:    rgba(66,133,244,0.08);
+            --border:         #d4dde8;
+            --border-strong:  #b8c8da;
+            --text-primary:   #1a2940;
+            --text-secondary: #4a6080;
+            --text-muted:     #8fa3b8;
+            --accent:         #3a7bd5;
+            --accent-glow:    rgba(58,123,213,0.10);
+            --bar-track:      #dde7f0;
+            --bar-fill:       #3a7bd5;
+            --modal-bg:       rgba(240,244,248,0.98);
+            --scrollbar-thumb:#b0c4d8;
+            --selected-border:#3a7bd5;
+        }
+
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+            background:var(--bg-body);
+            min-height:100vh;
+            padding:1.5rem;
+            transition:background 0.3s;
+        }
+        ::-webkit-scrollbar{width:6px}
+        ::-webkit-scrollbar-track{background:transparent}
+        ::-webkit-scrollbar-thumb{background:var(--scrollbar-thumb);border-radius:3px}
+
+        .container {
+            max-width:1400px;
+            margin:0 auto;
+            background:var(--bg-container);
+            border:1px solid var(--border);
+            border-radius:16px;
+            padding:2rem;
+            box-shadow:0 8px 40px rgba(0,0,0,0.3);
+        }
+
+        /* HEADER */
+        .header {
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:1.8rem;
+            flex-wrap:wrap;
+            gap:1rem;
+            padding-bottom:1.2rem;
+            border-bottom:1px solid var(--border);
+        }
+        .header-left h1{font-size:1.8rem;font-weight:700;color:var(--text-primary);letter-spacing:-0.5px}
+        .header-left p{color:var(--text-muted);font-size:0.8rem;margin-top:0.25rem}
+        .header-buttons{display:flex;gap:0.75rem;align-items:center}
+
+        .btn {
+            padding:0.55rem 1.1rem;
+            font-size:0.82rem;
+            font-weight:600;
+            border-radius:8px;
+            border:1px solid var(--border-strong);
+            background:var(--bg-card);
+            color:var(--text-primary);
+            cursor:pointer;
+            transition:background 0.2s,border-color 0.2s;
+        }
+        .btn:hover{background:var(--bg-hover);border-color:var(--accent)}
+        .btn-accent{background:var(--accent);border-color:var(--accent);color:#fff}
+        [data-theme="white"] .btn-accent{color:#fff}
+        .settings-btn {
+            padding:0.55rem 0.85rem;
+            font-size:1rem;
+            border-radius:8px;
+            border:1px solid var(--border-strong);
+            background:var(--bg-card);
+            color:var(--text-secondary);
+            cursor:pointer;
+            transition:all 0.2s;
+            line-height:1;
+        }
+        .settings-btn:hover{background:var(--bg-hover);color:var(--accent);border-color:var(--accent)}
+
+        /* STATS GRID */
+        .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0.9rem;margin-bottom:1.8rem}
+        .stat-card{
+            background:var(--bg-card);
+            border:1px solid var(--border);
+            border-radius:12px;
+            padding:1.1rem;
+            transition:border-color 0.2s;
+        }
+        .stat-card:hover{border-color:var(--accent)}
+        .stat-label{color:var(--text-muted);font-size:0.68rem;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:0.45rem}
+        .stat-value{color:var(--text-primary);font-size:1.6rem;font-weight:700;line-height:1.1}
+        .stat-sub{color:var(--text-muted);font-size:0.68rem;margin-top:0.25rem}
+
+        /* MAIN LAYOUT */
+        .main-layout{display:grid;grid-template-columns:1fr 0.55fr;gap:1.2rem}
+
+        /* PANELS */
+        .panel{background:var(--bg-card-alt);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+        .panel-header{
+            padding:1rem 1.1rem;
+            border-bottom:1px solid var(--border);
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            background:var(--bg-card);
+        }
+        .panel-header h2{color:var(--text-primary);font-size:0.95rem;font-weight:600}
+        .panel-header span{color:var(--text-muted);font-size:0.7rem}
+
+        /* SEARCH */
+        .search-wrap{padding:0.85rem 1rem;border-bottom:1px solid var(--border)}
+        .search-input{
+            width:100%;
+            background:var(--bg-body);
+            border:1px solid var(--border-strong);
+            border-radius:8px;
+            padding:0.55rem 0.9rem;
+            color:var(--text-primary);
+            font-size:0.84rem;
+            outline:none;
+            transition:border-color 0.2s;
+        }
+        .search-input::placeholder{color:var(--text-muted)}
+        .search-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
+
+        /* ANIMAL LIST */
+        .animals-list{max-height:540px;overflow-y:auto}
+        .animal-row{
+            display:flex;
+            align-items:center;
+            padding:0.75rem 1rem;
+            border-bottom:1px solid var(--border);
+            cursor:pointer;
+            gap:0.75rem;
+            transition:background 0.15s;
+        }
+        .animal-row:hover{background:var(--bg-hover)}
+        .animal-row.selected{background:var(--bg-selected);border-left:3px solid var(--selected-border)}
+        .animal-rank{width:34px;color:var(--text-muted);font-size:0.75rem;font-weight:500;flex-shrink:0}
+        .animal-name{flex:1;color:var(--text-primary);font-weight:500;font-size:0.88rem}
+        .animal-stats{display:flex;align-items:center;gap:0.75rem}
+        .animal-exist{color:var(--text-primary);font-weight:600;font-size:0.88rem;min-width:50px;text-align:right}
+        .animal-percent{color:var(--text-muted);font-size:0.72rem;min-width:44px;text-align:right}
+        .animal-bar{width:70px;height:4px;background:var(--bar-track);border-radius:2px;overflow:hidden}
+        .bar-fill{height:100%;border-radius:2px;background:var(--bar-fill)}
+        .search-info{color:var(--text-muted);font-size:0.7rem;padding:0.6rem 1rem;border-top:1px solid var(--border);text-align:center}
+        .empty-state{padding:2.5rem;text-align:center;color:var(--text-muted);font-size:0.84rem}
+
+        /* DETAIL PANEL */
+        .detail-panel{position:sticky;top:1.5rem;max-height:80vh;overflow-y:auto}
+        .detail-title-block{
+            padding:1.4rem 1.1rem 1rem;
+            border-bottom:1px solid var(--border);
+            background:var(--bg-card);
+            display:flex;
+            justify-content:space-between;
+            align-items:flex-start;
+        }
+        .detail-title-block h3{color:var(--text-primary);font-size:1.3rem;font-weight:700}
+        .detail-title-block p{color:var(--text-muted);font-size:0.75rem;margin-top:0.2rem}
+
+        .detail-mini-stats{
+            display:grid;
+            grid-template-columns:1fr 1fr 1fr;
+            gap:0.5rem;
+            padding:0.85rem 1rem;
+            border-bottom:1px solid var(--border);
+            background:var(--bg-card-alt);
+        }
+        .mini-stat{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:0.85rem 0.7rem;text-align:center}
+        .mini-stat-label{color:var(--text-muted);font-size:0.63rem;text-transform:none;letter-spacing:0px;margin-bottom:0.3rem}
+        .mini-stat-value{color:var(--text-primary);font-size:1.25rem;font-weight:700;margin-top:0.15rem}
+
+        .detail-section{padding:0.9rem 1rem;border-bottom:1px solid var(--border)}
+        .section-label{color:var(--text-secondary);font-size:0.7rem;font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:0.7rem}
+
+        /* MUTATION BARS */
+        .mutation-row{display:flex;align-items:center;padding:0.55rem 0;gap:0.65rem;border-bottom:1px solid var(--border)}
+        .mutation-row:last-child{border-bottom:none}
+        .mut-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;background:#555}
+        .mut-dot.gold{background:#f6a500;box-shadow:0 0 7px #f6a50088}
+        .mut-dot.diamond{background:#00d2ff;box-shadow:0 0 7px #00d2ff88}
+        .mut-dot.rainbow{background:#ff6bba;box-shadow:0 0 7px #ff6bba88}
+        .mut-dot.galaxy{background:#9b6bff;box-shadow:0 0 7px #9b6bff88}
+        .mut-dot.cyber{background:#888}
+        .mut-dot.divine{background:#aaa}
+        .mut-dot.lava{background:#ff4500;box-shadow:0 0 7px #ff450088}
+        .mut-dot.candy{background:#ff99cc;box-shadow:0 0 7px #ff99cc66}
+        .mut-dot.yinyang{background:#444}
+        .mut-dot.bloodrot{background:#cc2222;box-shadow:0 0 7px #cc222266}
+        .mut-dot.radioactive{background:#aaff00;box-shadow:0 0 7px #aaff0066}
+        .mut-dot.cursed{background:#6600aa;box-shadow:0 0 7px #6600aa66}
+        .mut-name{flex:0 0 auto;min-width:80px;color:var(--text-primary);font-size:0.83rem;font-weight:500}
+        .mut-name.gold{color:#f6a500}
+        .mut-name.diamond{color:#00d2ff}
+        .mut-name.rainbow{color:#ff6bba}
+        .mut-name.galaxy{color:#9b6bff}
+        .mut-name.lava{color:#ff6633}
+        .mut-name.candy{color:#ff99cc}
+        .mut-name.bloodrot{color:#ff4444}
+        .mut-name.radioactive{color:#aaff00}
+        .mut-name.cursed{color:#aa55ff}
+        .mut-bar-wrap{flex:1;height:8px;background:var(--bar-track);border-radius:4px;overflow:hidden;min-width:0}
+        .mut-bar{height:100%;border-radius:4px;background:#4dabf7;transition:width 0.4s ease}
+        .mut-bar.gold{background:#f6a500}
+        .mut-bar.diamond{background:#00d2ff}
+        .mut-bar.rainbow{background:linear-gradient(90deg,#ff6bba,#f6c90e,#00d2ff,#9b6bff)}
+        .mut-bar.galaxy{background:linear-gradient(90deg,#9b6bff,#6633cc)}
+        .mut-bar.cyber{background:#888}
+        .mut-bar.divine{background:#cccccc}
+        .mut-bar.lava{background:linear-gradient(90deg,#ff4500,#ff8800)}
+        .mut-bar.candy{background:linear-gradient(90deg,#ff99cc,#ffccee)}
+        .mut-bar.yinyang{background:#555}
+        .mut-bar.bloodrot{background:#cc2222}
+        .mut-bar.radioactive{background:#aaff00}
+        .mut-bar.cursed{background:#6600aa}
+        .mut-count{color:var(--text-primary);font-size:0.82rem;font-weight:700;min-width:32px;text-align:right;flex-shrink:0}
+        .mut-pct{color:var(--text-muted);font-size:0.73rem;min-width:46px;text-align:right;flex-shrink:0}
+
+        .simple-item{display:flex;justify-content:space-between;align-items:center;padding:0.38rem 0;border-bottom:1px solid var(--border);font-size:0.8rem}
+        .simple-item:last-child{border-bottom:none}
+        .item-name{color:var(--text-secondary)}
+        .item-val{color:var(--text-primary);font-weight:600}
+
+        .empty-detail{padding:2rem;text-align:center;color:var(--text-muted);font-size:0.82rem;line-height:1.7}
+        .empty-detail p{font-size:1.3rem;margin-bottom:0.5rem}
+
+        /* FOOTER */
+        .footer{margin-top:1.5rem;text-align:center;color:var(--text-muted);font-size:0.7rem;border-top:1px solid var(--border);padding-top:1rem}
+
+        /* MODAL */
+        .modal-overlay{position:fixed;inset:0;background:var(--modal-bg);display:flex;justify-content:center;align-items:center;z-index:1000}
+        .modal-box{background:var(--bg-container);border:1px solid var(--border-strong);border-radius:16px;padding:2rem;width:90%;max-width:480px;box-shadow:0 20px 60px rgba(0,0,0,0.4)}
+        .modal-box h3{color:var(--text-primary);font-size:1.15rem;font-weight:700;margin-bottom:1.4rem}
+
+        /* THEME PICKER */
+        .theme-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.9rem;margin-bottom:1.5rem}
+        .theme-card{border:2px solid var(--border);border-radius:10px;padding:1rem 0.8rem;cursor:pointer;text-align:center;transition:border-color 0.2s,transform 0.15s;position:relative}
+        .theme-card:hover{transform:translateY(-2px);border-color:var(--accent)}
+        .theme-card.active{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
+        .theme-preview{width:100%;height:48px;border-radius:6px;margin-bottom:0.5rem;display:flex;gap:4px;padding:6px}
+        .theme-preview-block{flex:1;border-radius:4px}
+        .theme-name{font-size:0.78rem;font-weight:600;color:var(--text-primary)}
+        .theme-sub{font-size:0.65rem;color:var(--text-muted);margin-top:2px}
+        .theme-check{position:absolute;top:6px;right:8px;color:var(--accent);font-size:0.85rem;font-weight:700}
+
+        /* ADMIN */
+        .admin-modal-box input{width:100%;padding:0.6rem 0.9rem;margin-bottom:0.75rem;background:var(--bg-body);border:1px solid var(--border-strong);border-radius:8px;color:var(--text-primary);font-size:0.84rem;outline:none}
+        .admin-modal-box input:focus{border-color:var(--accent)}
+        .admin-tabs{display:flex;gap:0.6rem;margin-bottom:1.2rem}
+        .admin-tab{padding:0.45rem 1rem;font-size:0.8rem;font-weight:600;border-radius:6px;border:1px solid var(--border);background:var(--bg-card);color:var(--text-secondary);cursor:pointer}
+        .admin-tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+        .btn-delete{background:#7f1d1d;color:#fca5a5;border:none;padding:0.55rem 1.1rem;border-radius:8px;font-weight:600;cursor:pointer}
+        .btn-delete:hover{background:#991b1b}
+        .success-msg{color:#6ee7b7;font-size:0.8rem;margin-top:0.75rem;text-align:center}
+        .error-msg{color:#fca5a5;font-size:0.8rem;margin-top:0.75rem;text-align:center}
+
+        /* EXPORT CARD */
+        .export-card{background:var(--bg-container);border:1px solid var(--border-strong);border-radius:12px;padding:1.8rem;max-width:520px;margin:0 auto}
+        .export-title{text-align:center;margin-bottom:1.4rem}
+        .export-title h2{color:var(--text-primary);font-size:1.4rem;font-weight:700}
+        .export-title p{color:var(--text-muted);font-size:0.72rem;margin-top:0.3rem}
+        .export-mini-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:0.7rem;margin-bottom:1.2rem}
+        .export-mini-stat{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:0.75rem;text-align:center}
+        .export-mini-label{color:var(--text-muted);font-size:0.66rem;text-transform:uppercase;letter-spacing:0.8px}
+        .export-mini-value{color:var(--text-primary);font-size:1.1rem;font-weight:700;margin-top:0.2rem}
+        .export-section{background:var(--bg-card-alt);border:1px solid var(--border);border-radius:10px;padding:0.85rem;margin-bottom:0.8rem}
+        .export-section-title{color:var(--text-secondary);font-size:0.7rem;font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:0.6rem}
+        .export-item{display:flex;justify-content:space-between;padding:0.3rem 0;border-bottom:1px solid var(--border);font-size:0.79rem}
+        .export-item:last-child{border-bottom:none}
+        .export-item-name{color:var(--text-secondary)}
+        .export-item-value{color:var(--text-primary);font-weight:600}
+        .export-footer{text-align:center;margin-top:1rem;padding-top:0.75rem;border-top:1px solid var(--border);color:var(--text-muted);font-size:0.68rem;line-height:1.5}
+        .export-mut-row{display:flex;align-items:center;padding:0.35rem 0;gap:0.5rem;border-bottom:1px solid var(--border)}
+        .export-mut-row:last-child{border-bottom:none}
+        .export-mut-bar-wrap{flex:1;height:6px;background:var(--bar-track);border-radius:3px;overflow:hidden;min-width:0}
+        .export-mut-bar{height:100%;border-radius:3px;background:#4dabf7}
+        .export-mut-bar.gold{background:#f6a500}
+        .export-mut-bar.diamond{background:#00d2ff}
+        .export-mut-bar.rainbow{background:linear-gradient(90deg,#ff6bba,#f6c90e,#00d2ff)}
+        .export-mut-bar.galaxy{background:linear-gradient(90deg,#9b6bff,#6633cc)}
+        .export-mut-bar.cyber{background:#888}
+        .export-mut-bar.lava{background:linear-gradient(90deg,#ff4500,#ff8800)}
+        .export-mut-bar.candy{background:linear-gradient(90deg,#ff99cc,#ffccee)}
+
+        /* ACCESS */
+        .access-wrap{max-width:460px;margin:0 auto;text-align:center;padding:4rem 2rem}
+        .access-icon{font-size:3.5rem;margin-bottom:1.2rem}
+        .access-title{color:var(--text-primary);font-size:1.7rem;font-weight:700;margin-bottom:0.8rem}
+        .access-message{color:var(--text-secondary);font-size:0.9rem;margin-bottom:2rem;line-height:1.6}
+        .access-btn{background:var(--accent);border:none;border-radius:8px;padding:0.8rem 2.2rem;font-size:0.95rem;font-weight:700;color:#fff;cursor:pointer;transition:opacity 0.2s}
+        .access-btn:disabled{opacity:0.5;cursor:not-allowed}
+        .status-badge{margin-top:1.2rem;color:var(--text-muted);font-size:0.78rem}
+        .ip-display{color:var(--text-muted);font-size:0.7rem;margin-top:0.75rem}
+
+        @media(max-width:1000px){.main-layout{grid-template-columns:1fr}.stats-grid{grid-template-columns:repeat(2,1fr)}}
+        @media(max-width:560px){body{padding:0.75rem}.container{padding:1.2rem;border-radius:10px}.stats-grid{grid-template-columns:1fr 1fr}}
+    </style>
+</head>
+<body>
+<div id="app">
+
+    <!-- ACCESS GATE -->
+    <div v-if="!hasAccess" class="container">
+        <div class="access-wrap">
+            <div class="access-icon">🔒</div>
+            <div class="access-title">Access Denied</div>
+            <div class="access-message">You don't have permission to view this tracker.<br>Request access from the administrator.</div>
+            <button class="access-btn" @click="requestAccess" :disabled="requestSent">
+                {{ requestSent ? '✓ Request Sent' : 'Request Access' }}
+            </button>
+            <div v-if="requestSent"  class="status-badge">Request sent — waiting for approval…</div>
+            <div v-if="checking"     class="status-badge">Checking access…</div>
+            <div v-if="errorMessage" class="status-badge" style="color:#fca5a5">{{ errorMessage }}</div>
+            <div v-if="clientIP"     class="ip-display">Your IP: {{ clientIP }}</div>
+        </div>
+    </div>
+
+    <!-- MAIN APP -->
+    <div v-else class="container">
+        <div class="header">
+            <div class="header-left">
+                <h1>Custom Tracker</h1>
+                <p>Exist brainrots · click any brainrot to see mutations, traits &amp; owners</p>
+            </div>
+            <div class="header-buttons">
+                <button v-if="selectedAnimal" class="btn" @click="downloadImage">📸 Download Stats</button>
+                <button v-if="isAdmin" class="btn" @click="openAdminPanel">⚡ Admin</button>
+                <button class="settings-btn" @click="showSettings=true" title="Settings">⚙️</button>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card"><div class="stat-label">Total Brainrots</div><div class="stat-value">{{ formatNumber(stats.total) }}</div><div class="stat-sub">all time</div></div>
+            <div class="stat-card"><div class="stat-label">Unique Species</div><div class="stat-value">{{ stats.species }}</div><div class="stat-sub">different brainrots</div></div>
+            <div class="stat-card"><div class="stat-label">Total Exists</div><div class="stat-value">{{ formatNumber(stats.totalExist) }}</div><div class="stat-sub">currently living</div></div>
+            <div class="stat-card"><div class="stat-label">Active Players</div><div class="stat-value">{{ stats.activePlayers }}</div><div class="stat-sub">with brainrots</div></div>
+        </div>
+
+        <div class="main-layout">
+            <!-- LEFT list -->
+            <div class="panel">
+                <div class="panel-header"><h2>Brainrot Exists</h2><span>rarest → most common</span></div>
+                <div class="search-wrap">
+                    <input type="text" class="search-input" placeholder="🔍 Search brainrot by name…" v-model="searchQuery">
+                </div>
+                <div class="animals-list">
+                    <div v-if="loading" class="empty-state">⏳ Loading brainrots…</div>
+                    <div v-else-if="filteredAnimals.length===0 && searchQuery" class="empty-state">🔍 No brainrots matching "{{ searchQuery }}"</div>
+                    <div v-else-if="filteredAnimals.length===0" class="empty-state">🐾 No brainrots in database</div>
+                    <div v-else v-for="(animal,i) in filteredAnimals" :key="animal.name"
+                         class="animal-row" :class="{selected:selectedAnimal&&selectedAnimal.name===animal.name}"
+                         @click="selectAnimal(animal)">
+                        <div class="animal-rank">#{{ i+1 }}</div>
+                        <div class="animal-name">{{ animal.name }}</div>
+                        <div class="animal-stats">
+                            <div class="animal-exist">{{ formatNumber(animal.exist) }}</div>
+                            <div class="animal-percent">{{ animal.percent }}%</div>
+                            <div class="animal-bar"><div class="bar-fill" :style="{width:animal.barWidth+'%'}"></div></div>
+                        </div>
+                    </div>
+                </div>
+                <div v-if="!loading && filteredAnimals.length>0" class="search-info">
+                    Showing {{ filteredAnimals.length }} of {{ rankedAnimals.length }} brainrots
+                </div>
+            </div>
+
+            <!-- RIGHT detail -->
+            <div class="panel detail-panel">
+                <div v-if="!selectedAnimal">
+                    <div class="panel-header"><h2>Select a Brainrot</h2></div>
+                    <div class="empty-detail"><p>✨</p>Click on any brainrot from the list<br>to see mutations, traits and owners</div>
+                </div>
+                <div v-else>
+                    <div class="detail-title-block">
+                        <div>
+                            <h3>{{ selectedAnimal.name }}</h3>
+                            <p>{{ formatNumber(selectedAnimal.exist) }} exist · {{ selectedAnimal.percent }}% of all</p>
+                        </div>
+                        <button class="btn" style="font-size:0.75rem;padding:0.4rem 0.7rem" @click="downloadImage">📸 Save</button>
+                    </div>
+                    <div class="detail-mini-stats">
+                        <div class="mini-stat">
+                            <div class="mini-stat-label">Total Exists</div>
+                            <div class="mini-stat-value">{{ formatNumber(selectedAnimal.exist) }}</div>
+                        </div>
+                        <div class="mini-stat">
+                            <div class="mini-stat-label">With Mutation</div>
+                            <div class="mini-stat-value">{{ getMutationsForAnimal(selectedAnimal.name).reduce((s,m)=>s+m.count,0) }}</div>
+                        </div>
+                        <div class="mini-stat">
+                            <div class="mini-stat-label">With Traits</div>
+                            <div class="mini-stat-value">{{ getTraitsForAnimal(selectedAnimal.name).reduce((s,t)=>s+t.count,0) }}</div>
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <div class="section-label">✨ Mutations &amp; Traits</div>
+                        <div class="section-label" style="margin-bottom:0.5rem;font-size:0.63rem">Mutations</div>
+                        <div v-if="getMutationsForAnimal(selectedAnimal.name).length===0" style="color:var(--text-muted);font-size:0.8rem;padding:0.5rem 0">No mutation data</div>
+                        <div v-else>
+                            <div v-for="mut in getMutationsForAnimal(selectedAnimal.name)" :key="mut.name" class="mutation-row">
+                                <span class="mut-dot" :class="mutClass(mut.name)"></span>
+                                <span class="mut-name" :class="mutClass(mut.name)">✦ {{ mut.name }}</span>
+                                <div class="mut-bar-wrap"><div class="mut-bar" :class="mutClass(mut.name)" :style="{width:mutBarWidth(selectedAnimal.name,mut.count)+'%'}"></div></div>
+                                <span class="mut-count">{{ mut.count }}</span>
+                                <span class="mut-pct">({{ mutPct(selectedAnimal.name,mut.count) }}%)</span>
+                                <span style="color:var(--text-muted);font-size:0.75rem;cursor:default" title="Owners">👤</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <div class="section-label">⚡ Traits</div>
+                        <div v-if="getTraitsForAnimal(selectedAnimal.name).length===0" style="color:var(--text-muted);font-size:0.8rem;padding:0.5rem 0">No trait data</div>
+                        <div v-else>
+                            <div v-for="tr in getTraitsForAnimal(selectedAnimal.name)" :key="tr.name" class="mutation-row">
+                                <span class="mut-name" style="min-width:90px">{{ tr.name }}</span>
+                                <div class="mut-bar-wrap">
+                                    <div class="mut-bar" :style="{width: Math.round((tr.count / getTraitsForAnimal(selectedAnimal.name)[0].count)*100)+'%', background:'#4dabf7'}"></div>
+                                </div>
+                                <span class="mut-count">{{ formatNumber(tr.count) }}</span>
+                                <span class="mut-pct">({{ mutPct(selectedAnimal.name, tr.count) }}%)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <div class="section-label">👥 Owners</div>
+                        <div v-if="getOwnersForAnimal(selectedAnimal.name).length===0" style="color:var(--text-muted);font-size:0.8rem;padding:0.5rem 0">No owner data</div>
+                        <div v-else>
+                            <div v-for="own in getOwnersForAnimal(selectedAnimal.name)" :key="own.name" class="simple-item">
+                                <span class="item-name">{{ own.name }}</span><span class="item-val">{{ own.count }}×</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">RealTime Exists · Last update: {{ lastUpdate }}</div>
+    </div>
+
+    <!-- SETTINGS MODAL -->
+    <div v-if="showSettings" class="modal-overlay" @click.self="showSettings=false">
+        <div class="modal-box">
+            <h3>⚙️ Settings</h3>
+            <div style="color:var(--text-secondary);font-size:0.8rem;margin-bottom:1rem">
+                Choose a theme. Applies to the site and to downloaded stats images.
+            </div>
+            <div class="theme-grid">
+                <div class="theme-card" :class="{active:currentTheme==='default'}" @click="setTheme('default')">
+                    <div class="theme-check" v-if="currentTheme==='default'">✓</div>
+                    <div class="theme-preview" style="background:#132033">
+                        <div class="theme-preview-block" style="background:#1a2c42"></div>
+                        <div class="theme-preview-block" style="background:#4dabf7"></div>
+                        <div class="theme-preview-block" style="background:#0d1b2a"></div>
+                    </div>
+                    <div class="theme-name">Default</div>
+                    <div class="theme-sub">Dark Blue</div>
+                </div>
+                <div class="theme-card" :class="{active:currentTheme==='black'}" @click="setTheme('black')">
+                    <div class="theme-check" v-if="currentTheme==='black'">✓</div>
+                    <div class="theme-preview" style="background:#0a0a0a">
+                        <div class="theme-preview-block" style="background:#111"></div>
+                        <div class="theme-preview-block" style="background:#aaa"></div>
+                        <div class="theme-preview-block" style="background:#000"></div>
+                    </div>
+                    <div class="theme-name">Black</div>
+                    <div class="theme-sub">Pure Dark</div>
+                </div>
+                <div class="theme-card" :class="{active:currentTheme==='white'}" @click="setTheme('white')">
+                    <div class="theme-check" v-if="currentTheme==='white'">✓</div>
+                    <div class="theme-preview" style="background:#f0f4f8;border:1px solid #d4dde8">
+                        <div class="theme-preview-block" style="background:#ffffff"></div>
+                        <div class="theme-preview-block" style="background:#3a7bd5"></div>
+                        <div class="theme-preview-block" style="background:#eef2f7"></div>
+                    </div>
+                    <div class="theme-name">White</div>
+                    <div class="theme-sub">Light</div>
+                </div>
+            </div>
+            <div style="display:flex;justify-content:flex-end">
+                <button class="btn btn-accent" @click="showSettings=false">Done</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADMIN MODAL -->
+    <div v-if="showAdminModal" class="modal-overlay">
+        <div class="modal-box admin-modal-box">
+            <h3>⚡ Admin Panel</h3>
+            <div class="admin-tabs">
+                <div :class="['admin-tab',{active:adminTab==='delete'}]" @click="adminTab='delete'">Delete Brainrot</div>
+                <div :class="['admin-tab',{active:adminTab==='add'}]"    @click="adminTab='add'">Add Brainrot</div>
+            </div>
+            <div v-if="adminTab==='delete'">
+                <input type="text" placeholder="Player Username (Roblox)" v-model="deletePlayerName">
+                <input type="text" placeholder="Brainrot Name" v-model="deleteBrainrotName">
+                <button class="btn-delete" @click="deleteBrainrot">Delete Brainrot</button>
+                <div v-if="adminMessage" :class="adminMessageType==='success'?'success-msg':'error-msg'">{{ adminMessage }}</div>
+            </div>
+            <div v-if="adminTab==='add'">
+                <input type="text" placeholder="Player Username (Roblox)" v-model="addPlayerName">
+                <input type="text" placeholder="Brainrot Name" v-model="addBrainrotName">
+                <input type="text" placeholder="Mutation (optional)" v-model="addMutation">
+                <input type="text" placeholder="Trait (optional)" v-model="addTrait">
+                <button class="btn btn-accent" @click="addBrainrot">Add Brainrot</button>
+                <div v-if="adminMessage" :class="adminMessageType==='success'?'success-msg':'error-msg'">{{ adminMessage }}</div>
+            </div>
+            <div style="margin-top:1.2rem;text-align:center">
+                <button class="btn" @click="closeAdminPanel">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- EXPORT MODAL -->
+    <div v-if="showExportModal" class="modal-overlay" style="z-index:1001">
+        <div class="modal-box" style="max-width:600px;max-height:90vh;overflow-y:auto">
+            <div ref="exportCard" class="export-card">
+                <div class="export-title">
+                    <h2>{{ exportData.name }}</h2>
+                    <p>Brainrot Statistics Report</p>
+                </div>
+                <div class="export-mini-stats">
+                    <div class="export-mini-stat"><div class="export-mini-label">Total Exists</div><div class="export-mini-value">{{ formatNumber(exportData.totalExist) }}</div></div>
+                    <div class="export-mini-stat"><div class="export-mini-label">With Mutation</div><div class="export-mini-value">{{ exportData.mutations.reduce((s,m)=>s+m.count,0) }}</div></div>
+                    <div class="export-mini-stat"><div class="export-mini-label">With Traits</div><div class="export-mini-value">{{ exportData.traits.reduce((s,t)=>s+t.count,0) }}</div></div>
+                </div>
+                <div class="export-section">
+                    <div class="export-section-title">✨ Mutations</div>
+                    <div v-for="mut in exportData.mutations" :key="mut.name" class="export-mut-row">
+                        <span class="mut-dot" :class="mutClass(mut.name)"></span>
+                        <span style="flex:0 0 auto;min-width:75px;color:var(--text-primary);font-size:0.82rem;font-weight:500" :class="mutClass(mut.name)?'mut-name '+mutClass(mut.name):''">✦ {{ mut.name }}</span>
+                        <div class="export-mut-bar-wrap"><div class="export-mut-bar" :class="mutClass(mut.name)" :style="{width: exportData.mutations.length ? Math.round((mut.count/exportData.mutations[0].count)*100)+'%' : '0%'}"></div></div>
+                        <span style="color:var(--text-primary);font-size:0.8rem;font-weight:700;min-width:32px;text-align:right">{{ formatNumber(mut.count) }}</span>
+                        <span style="color:var(--text-muted);font-size:0.72rem;min-width:44px;text-align:right">({{ mutPct2(exportData.mutations,mut.count) }}%)</span>
+                    </div>
+                    <div v-if="exportData.mutations.length===0" class="export-item"><span class="export-item-name">No mutations</span><span class="export-item-value">—</span></div>
+                </div>
+                <div class="export-section">
+                    <div class="export-section-title">⚡ Traits</div>
+                    <div v-for="tr in exportData.traits" :key="tr.name" class="export-mut-row">
+                        <span style="flex:0 0 auto;min-width:80px;color:var(--text-primary);font-size:0.82rem;font-weight:500">{{ tr.name }}</span>
+                        <div class="export-mut-bar-wrap"><div class="export-mut-bar" :style="{width: exportData.traits.length ? Math.round((tr.count/exportData.traits[0].count)*100)+'%' : '0%', background:'#4dabf7'}"></div></div>
+                        <span style="color:var(--text-primary);font-size:0.8rem;font-weight:700;min-width:32px;text-align:right">{{ formatNumber(tr.count) }}</span>
+                        <span style="color:var(--text-muted);font-size:0.72rem;min-width:44px;text-align:right">({{ mutPct2(exportData.traits,tr.count) }}%)</span>
+                    </div>
+                    <div v-if="exportData.traits.length===0" class="export-item"><span class="export-item-name">No traits</span><span class="export-item-value">—</span></div>
+                </div>
+                <div class="export-footer">Generated: {{ new Date().toLocaleString() }}<br>Custom Tracker</div>
+            </div>
+            <div style="display:flex;justify-content:center;gap:1rem;margin-top:1.2rem">
+                <button class="btn btn-accent" @click="confirmDownload">⬇ Download Image</button>
+                <button class="btn" @click="closeExportModal">Close</button>
+            </div>
+            <div v-if="exportMessage" class="success-msg">{{ exportMessage }}</div>
+        </div>
+    </div>
+
+</div>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+<script>
+const { createApp, ref, computed, onMounted, onUnmounted, nextTick } = Vue;
+
+const firebaseConfig = {
+    apiKey:"AIzaSyCZJnsIh57sXyRiTTFDCf5bA3A7eP5dXEY",
+    authDomain:"tracker-8fe9b.firebaseapp.com",
+    databaseURL:"https://tracker-8fe9b-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId:"tracker-8fe9b",
+    storageBucket:"tracker-8fe9b.firebasestorage.app",
+    messagingSenderId:"342107922357",
+    appId:"1:342107922357:web:0e5e8723243ad01bd743fc"
+};
+
+let db=null;
+try{firebase.initializeApp(firebaseConfig);db=firebase.database();}
+catch(e){console.error('Firebase init error:',e);}
+
+const getClientIP=async()=>{
+    try{const r=await fetch('https://api.ipify.org?format=json');const d=await r.json();return d.ip;}
+    catch(e){return 'unknown';}
+};
+
+const THEME_BG={default:'#132033',black:'#0a0a0a',white:'#ffffff'};
+
+const app=createApp({
+    setup(){
+        const currentTheme=ref(localStorage.getItem('tracker-theme')||'default');
+        const applyTheme=(t)=>{
+            document.documentElement.setAttribute('data-theme',t==='default'?'':t);
+            localStorage.setItem('tracker-theme',t);
+        };
+        applyTheme(currentTheme.value);
+        const setTheme=(t)=>{currentTheme.value=t;applyTheme(t);};
+
+        const hasAccess=ref(false);
+        const isAdmin=ref(false);
+        const requestSent=ref(false);
+        const errorMessage=ref('');
+        const clientIP=ref('');
+        const checking=ref(true);
+        const showAdminModal=ref(false);
+        const showExportModal=ref(false);
+        const showSettings=ref(false);
+        const adminTab=ref('delete');
+        const adminMessage=ref('');
+        const adminMessageType=ref('');
+        const deletePlayerName=ref('');
+        const deleteBrainrotName=ref('');
+        const addPlayerName=ref('');
+        const addBrainrotName=ref('');
+        const addMutation=ref('');
+        const addTrait=ref('');
+        const exportData=ref({name:'',totalExist:0,percent:0,mutations:[],traits:[]});
+        const exportMessage=ref('');
+        const exportCard=ref(null);
+        const animals=ref([]);
+        const animalMutationsData=ref({});
+        const animalTraitsData=ref({});
+        const playerOwnersData=ref({});
+        const playerIdsMap=ref({});
+        const lastUpdate=ref('—');
+        const loading=ref(true);
+        const searchQuery=ref('');
+        const selectedAnimal=ref(null);
+        let accessListener=null,dataListener=null,checkInterval=null;
+
+        const checkAccess=async()=>{
+            if(!db){checking.value=false;errorMessage.value='Firebase connection failed';return;}
+            const ip=await getClientIP();
+            clientIP.value=ip;
+            if(!ip||ip==='unknown'){checking.value=false;return;}
+            const ipKey=ip.replace(/\./g,'_');
+            const accessRef=db.ref('access_requests/'+ipKey);
+            if(accessListener)accessListener();
+            accessListener=accessRef.on('value',(snap)=>{
+                const d=snap.val();
+                if(d&&d.allowed===true){hasAccess.value=true;isAdmin.value=d.admin===true;checking.value=false;loadAnimalData();}
+                else{checking.value=false;}
+            });
+        };
+
+        const requestAccess=async()=>{
+            if(requestSent.value||!db)return;
+            requestSent.value=true;
+            const ip=clientIP.value||await getClientIP();
+            clientIP.value=ip;
+            if(!ip||ip==='unknown'){errorMessage.value='Could not detect your IP';requestSent.value=false;return;}
+            const ipKey=ip.replace(/\./g,'_');
+            try{await db.ref('access_requests/'+ipKey).set({ip,timestamp:Date.now(),allowed:false,requested:true,admin:false});}
+            catch(e){errorMessage.value='Failed to send request';requestSent.value=false;}
+        };
+
+        const loadAnimalData=()=>{
+            if(!db)return;
+            const ref_=db.ref('DataService/animals');
+            if(dataListener)dataListener();
+            dataListener=ref_.on('value',(snap)=>{
+                const data=snap.val();
+                const counts={},muts={},traits={},owners={},playerNames={};
+                if(data&&typeof data==='object'){
+                    Object.keys(data).forEach(uid=>{
+                        const ua=data[uid];
+                        const proc=(a)=>{
+                            if(!a||!a.name||a.exist!==true)return;
+                            counts[a.name]=(counts[a.name]||0)+1;
+                            const ownerName=a.ownerName||`Player_${uid.slice(0,6)}`;
+                            playerNames[ownerName]=uid;
+                            if(!owners[a.name])owners[a.name]={};
+                            owners[a.name][ownerName]=(owners[a.name][ownerName]||0)+1;
+                            if(a.mutation&&a.mutation!==''){
+                                if(!muts[a.name])muts[a.name]={};
+                                muts[a.name][a.mutation]=(muts[a.name][a.mutation]||0)+1;
+                            }
+                            if(a.traits&&a.traits.length>0){
+                                if(!traits[a.name])traits[a.name]={};
+                                a.traits.forEach(t=>{traits[a.name][t]=(traits[a.name][t]||0)+1;});
+                            }
+                        };
+                        if(Array.isArray(ua))ua.forEach(proc);
+                        else if(ua&&typeof ua==='object')Object.keys(ua).forEach(k=>proc(ua[k]));
+                    });
+                }
+                animals.value=Object.keys(counts).map(name=>({name,exist:counts[name]}));
+                animalMutationsData.value=muts;
+                animalTraitsData.value=traits;
+                playerOwnersData.value=owners;
+                playerIdsMap.value=playerNames;
+                lastUpdate.value=new Date().toLocaleTimeString();
+                loading.value=false;
+            });
+        };
+
+        const deleteBrainrot=async()=>{
+            if(!deletePlayerName.value||!deleteBrainrotName.value){adminMessage.value='Fill all fields';adminMessageType.value='error';return;}
+            const uid=playerIdsMap.value[deletePlayerName.value];
+            if(!uid){adminMessage.value='Player not found';adminMessageType.value='error';return;}
+            try{
+                const r=db.ref('DataService/animals/'+uid);
+                const snap=await r.once('value');
+                const ua=snap.val();
+                if(ua){
+                    let na=[];
+                    if(Array.isArray(ua))na=ua.filter(a=>a&&a.name!==deleteBrainrotName.value);
+                    else if(typeof ua==='object')na=Object.keys(ua).map(k=>ua[k]).filter(a=>a&&a.name!==deleteBrainrotName.value);
+                    await r.set(na);
+                    adminMessage.value='Brainrot deleted!';adminMessageType.value='success';
+                    setTimeout(()=>{adminMessage.value='';},3000);loadAnimalData();
+                }
+            }catch(e){adminMessage.value='Error: '+e.message;adminMessageType.value='error';}
+        };
+
+        const addBrainrot=async()=>{
+            if(!addPlayerName.value||!addBrainrotName.value){adminMessage.value='Fill all fields';adminMessageType.value='error';return;}
+            const uid=playerIdsMap.value[addPlayerName.value];
+            if(!uid){adminMessage.value='Player not found';adminMessageType.value='error';return;}
+            try{
+                const r=db.ref('DataService/animals/'+uid);
+                const snap=await r.once('value');
+                let ua=snap.val()||[];
+                if(!Array.isArray(ua)){if(typeof ua==='object')ua=Object.keys(ua).map(k=>ua[k]);else ua=[];}
+                const na={name:addBrainrotName.value,exist:true,ownerId:uid,ownerName:addPlayerName.value,lastUpdate:Date.now()};
+                if(addMutation.value&&addMutation.value.trim()!=='')na.mutation=addMutation.value;
+                if(addTrait.value&&addTrait.value.trim()!=='')na.traits=[addTrait.value];
+                ua.push(na);
+                await r.set(ua);
+                adminMessage.value='Brainrot added!';adminMessageType.value='success';
+                addPlayerName.value=addBrainrotName.value=addMutation.value=addTrait.value='';
+                setTimeout(()=>{adminMessage.value='';},3000);loadAnimalData();
+            }catch(e){adminMessage.value='Error: '+e.message;adminMessageType.value='error';}
+        };
+
+        const openAdminPanel=()=>{showAdminModal.value=true;adminMessage.value='';};
+        const closeAdminPanel=()=>{
+            showAdminModal.value=false;
+            deletePlayerName.value=deleteBrainrotName.value=addPlayerName.value=addBrainrotName.value=addMutation.value=addTrait.value=adminMessage.value='';
+        };
+
+        const downloadImage=async()=>{
+            if(!selectedAnimal.value)return;
+            exportData.value={
+                name:selectedAnimal.value.name,
+                totalExist:selectedAnimal.value.exist,
+                percent:selectedAnimal.value.percent,
+                mutations:getMutationsForAnimal(selectedAnimal.value.name),
+                traits:getTraitsForAnimal(selectedAnimal.value.name)
+            };
+            showExportModal.value=true;
+            exportMessage.value='';
+        };
+
+        const confirmDownload=async()=>{
+            exportMessage.value='Generating image…';
+            await nextTick();
+            setTimeout(async()=>{
+                try{
+                    const el=exportCard.value;
+                    if(!el)throw new Error('Element not found');
+                    const bgColor=THEME_BG[currentTheme.value]||'#132033';
+                    const canvas=await html2canvas(el,{scale:2,backgroundColor:bgColor,logging:false,useCORS:true,allowTaint:false,windowWidth:el.scrollWidth,windowHeight:el.scrollHeight});
+                    const link=document.createElement('a');
+                    link.download=`${exportData.value.name}_stats.png`;
+                    link.href=canvas.toDataURL();
+                    link.click();
+                    exportMessage.value='Downloaded!';
+                    setTimeout(()=>{closeExportModal();},1500);
+                }catch(err){exportMessage.value='Failed: '+err.message;}
+            },100);
+        };
+
+        const closeExportModal=()=>{showExportModal.value=false;exportMessage.value='';};
+
+        const rankedAnimals=computed(()=>{
+            const sorted=[...animals.value].sort((a,b)=>a.exist-b.exist);
+            const total=sorted.reduce((s,a)=>s+a.exist,0);
+            const max=sorted.length?sorted[sorted.length-1].exist:1;
+            return sorted.map(a=>({...a,percent:total?((a.exist/total)*100).toFixed(2):'0.00',barWidth:(a.exist/max)*100}));
+        });
+
+        const filteredAnimals=computed(()=>{
+            if(!searchQuery.value.trim())return rankedAnimals.value.slice(0,50);
+            const q=searchQuery.value.toLowerCase();
+            return rankedAnimals.value.filter(a=>a.name.toLowerCase().includes(q)).slice(0,50);
+        });
+
+        const getMutationsForAnimal=(name)=>{const m=animalMutationsData.value[name]||{};return Object.keys(m).map(k=>({name:k,count:m[k]})).sort((a,b)=>b.count-a.count);};
+        const getTraitsForAnimal=(name)=>{const t=animalTraitsData.value[name]||{};return Object.keys(t).map(k=>({name:k,count:t[k]})).sort((a,b)=>b.count-a.count);};
+        const getOwnersForAnimal=(name)=>{const o=playerOwnersData.value[name]||{};return Object.keys(o).map(n=>({name:n,count:o[n]})).sort((a,b)=>b.count-a.count);};
+        const selectAnimal=(a)=>{selectedAnimal.value=a;};
+        const totalExistSum=computed(()=>animals.value.reduce((s,a)=>s+a.exist,0));
+        const activePlayersCount=computed(()=>Object.keys(playerIdsMap.value).length);
+        const stats=computed(()=>({total:totalExistSum.value,species:animals.value.length,totalExist:totalExistSum.value,activePlayers:activePlayersCount.value}));
+        const formatNumber=(n)=>{if(n>=1e6)return(n/1e6).toFixed(1)+'M';if(n>=1e3)return(n/1e3).toFixed(1)+'K';return n.toString();};
+
+        const MUTATION_CLASSES={
+            gold:'gold',Gold:'gold',
+            diamond:'diamond',Diamond:'diamond',
+            rainbow:'rainbow',Rainbow:'rainbow',
+            galaxy:'galaxy',Galaxy:'galaxy',
+            cyber:'cyber',Cyber:'cyber',
+            divine:'divine',Divine:'divine',
+            lava:'lava',Lava:'lava',
+            candy:'candy',Candy:'candy',
+            yinyang:'yinyang',YinYang:'yinyang',Yinyang:'yinyang',
+            bloodrot:'bloodrot',Bloodrot:'bloodrot',
+            radioactive:'radioactive',Radioactive:'radioactive',
+            cursed:'cursed',Cursed:'cursed'
+        };
+        const mutClass=(name)=>MUTATION_CLASSES[name]||'';
+        const mutBarWidth=(animalName,count)=>{const muts=getMutationsForAnimal(animalName);const max=muts.length?muts[0].count:1;return Math.round((count/max)*100);};
+        const mutPct=(animalName,count)=>{const total=selectedAnimal.value?selectedAnimal.value.exist:1;return((count/total)*100).toFixed(1);};
+        const mutPct2=(mutList,count)=>{const total=mutList.reduce((s,m)=>s+m.count,0)||1;return((count/total)*100).toFixed(1);};
+
+        const startAutoCheck=()=>{
+            checkInterval=setInterval(()=>{
+                if(!hasAccess.value&&db&&clientIP.value){
+                    db.ref('access_requests/'+clientIP.value.replace(/\./g,'_')).once('value',(s)=>{
+                        if(s.val()&&s.val().allowed===true){hasAccess.value=true;isAdmin.value=s.val().admin===true;}
+                    });
+                }
+            },3000);
+        };
+
+        onMounted(()=>{checkAccess();startAutoCheck();setTimeout(()=>{if(loading.value)loading.value=false;},5000);});
+        onUnmounted(()=>{
+            if(accessListener&&db&&clientIP.value)db.ref('access_requests/'+clientIP.value.replace(/\./g,'_')).off();
+            if(dataListener&&db)db.ref('DataService/animals').off();
+            if(checkInterval)clearInterval(checkInterval);
+        });
+
+        return{
+            hasAccess,isAdmin,requestSent,errorMessage,clientIP,checking,
+            showAdminModal,showExportModal,showSettings,
+            adminTab,adminMessage,adminMessageType,
+            deletePlayerName,deleteBrainrotName,addPlayerName,addBrainrotName,addMutation,addTrait,
+            exportData,exportMessage,exportCard,
+            animals,rankedAnimals,filteredAnimals,stats,lastUpdate,loading,searchQuery,selectedAnimal,
+            currentTheme,setTheme,
+            getMutationsForAnimal,getTraitsForAnimal,getOwnersForAnimal,selectAnimal,formatNumber,
+            mutClass,mutBarWidth,mutPct,mutPct2,
+            requestAccess,openAdminPanel,closeAdminPanel,deleteBrainrot,addBrainrot,
+            downloadImage,confirmDownload,closeExportModal
+        };
+    }
+});
+app.mount('#app');
+</script>
+</body>
+</html>
