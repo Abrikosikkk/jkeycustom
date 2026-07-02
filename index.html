@@ -210,7 +210,7 @@
         /* MAIN LAYOUT */
         .main-layout {
             display: grid;
-            grid-template-columns: 1fr 0.55fr;
+            grid-template-columns: 1fr;
             gap: 1.2rem;
         }
 
@@ -286,6 +286,90 @@
         .player-search-btn:disabled {
             opacity: 0.5;
             cursor: not-allowed;
+        }
+
+        /* FILTERS ROW (sort + rarity) */
+        .filters-row {
+            padding: 0 1rem 0.85rem;
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .sort-toggle-group {
+            display: flex;
+            border: 1px solid var(--border-strong);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .sort-toggle-btn {
+            background: var(--bg-body);
+            border: none;
+            color: var(--text-secondary);
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 0.5rem 0.8rem;
+            cursor: pointer;
+            transition: background 0.15s, color 0.15s;
+        }
+        .sort-toggle-btn:hover {
+            background: var(--bg-hover);
+        }
+        .sort-toggle-btn.active {
+            background: var(--accent);
+            color: #fff;
+        }
+        .rarity-select {
+            background: var(--bg-body);
+            border: 1px solid var(--border-strong);
+            border-radius: 8px;
+            padding: 0.5rem 0.7rem;
+            color: var(--text-primary);
+            font-size: 0.8rem;
+            outline: none;
+            cursor: pointer;
+        }
+        .rarity-select:focus {
+            border-color: var(--accent);
+        }
+        .rarity-tag {
+            font-size: 0.62rem;
+            font-weight: 700;
+            padding: 0.12rem 0.45rem;
+            border-radius: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .icon-svg {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            vertical-align: -2px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex-shrink: 0;
+        }
+        .input-icon-wrap {
+            position: relative;
+            flex: 1;
+            min-width: 150px;
+        }
+        .input-icon-wrap .icon-svg {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+        .input-icon-wrap .search-input {
+            width: 100%;
+            padding-left: 2.1rem;
         }
 
         /* ANIMAL LIST */
@@ -1293,10 +1377,10 @@
                     <p>Exist brainrots · click any brainrot to see mutations, traits &amp; owners</p>
                 </div>
                 <div class="header-buttons">
-                    <button v-if="selectedAnimal" class="btn" @click="downloadImage">📸 Download Stats</button>
-                    <button v-if="isAdmin" class="btn btn-accent" @click="openCodesPanel">🔑 Создать код</button>
-                    <button v-if="isAdmin" class="btn" @click="openAdminPanel">⚡ Admin</button>
-                    <button class="settings-btn" @click="showSettings=true" title="Settings">⚙️</button>
+                    <button v-if="selectedAnimal" class="btn" @click="downloadImage"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></svg> Download Stats</button>
+                    <button v-if="isAdmin" class="btn btn-accent" @click="openCodesPanel"><svg class="icon-svg" viewBox="0 0 24 24"><circle cx="8" cy="15" r="3"/><path d="M10.5 12.5L20 3M20 3h-3M20 3v3"/></svg> Создать код</button>
+                    <button v-if="isAdmin" class="btn" @click="openAdminPanel"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"/></svg> Admin</button>
+                    <button class="settings-btn" @click="showSettings=true" title="Settings"><svg class="icon-svg" viewBox="0 0 24 24" style="width:16px;height:16px;vertical-align:-3px"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
                 </div>
             </div>
 
@@ -1331,45 +1415,62 @@
                         <span>rarest → most common</span>
                     </div>
                     <div class="search-wrap">
-                        <input type="text" class="search-input" placeholder="🔍 Search brainrot by name…" v-model="searchQuery">
-                        <input type="text" class="search-input" placeholder="👤 Search by player name…" v-model="playerSearchQuery" @keyup.enter="searchPlayerAnimals">
+                        <div class="input-icon-wrap">
+                            <svg class="icon-svg" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+                            <input type="text" class="search-input" placeholder="Search brainrot by name…" v-model="searchQuery">
+                        </div>
+                        <div class="input-icon-wrap">
+                            <svg class="icon-svg" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+                            <input type="text" class="search-input" placeholder="Search by player name…" v-model="playerSearchQuery" @keyup.enter="searchPlayerAnimals">
+                        </div>
                         <button class="player-search-btn" @click="searchPlayerAnimals" :disabled="!playerSearchQuery.trim()">
-                            🔍 Show Player's Pets
+                            <svg class="icon-svg" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg> Show Player's Pets
                         </button>
                     </div>
-                    <div class="animals-list">
-                        <div v-if="loading" class="empty-state">⏳ Loading brainrots…</div>
-                        <div v-else-if="isPlayerSearchMode && playerAnimals.length === 0" class="empty-state">
-                            👤 No pets found for "{{ playerSearchQuery }}"
+                    <div class="filters-row">
+                        <div class="sort-toggle-group">
+                            <button class="sort-toggle-btn" :class="{active: sortOrder==='asc'}" @click="sortOrder='asc'" title="От самых редких (низкий Exist) к самым частым"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg> Low → High</button>
+                            <button class="sort-toggle-btn" :class="{active: sortOrder==='desc'}" @click="sortOrder='desc'" title="От самых частых (высокий Exist) к самым редким"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 5v14M5 12l7 7 7-7"/></svg> High → Low</button>
                         </div>
-                        <div v-else-if="isPlayerSearchMode" style="padding:0.5rem 1rem; background:var(--bg-selected); border-bottom:1px solid var(--border);">
-                            <span class="player-result-badge">👤 Showing {{ playerAnimals.length }} pets for: {{ playerSearchQuery }}</span>
-                            <button class="btn" style="padding:0.2rem 0.6rem; font-size:0.7rem; margin-left:0.6rem;" @click="clearPlayerSearch">✕ Clear</button>
+                        <select class="rarity-select" v-model="selectedRarity">
+                            <option value="all">All rarities</option>
+                            <option v-for="r in RARITY_ORDER" :key="r" :value="r">{{ r }}</option>
+                        </select>
+                    </div>
+                    <div class="animals-list">
+                        <div v-if="loading" class="empty-state"><svg class="icon-svg" viewBox="0 0 24 24" style="width:18px;height:18px"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg> Loading brainrots…</div>
+                        <div v-else-if="isPlayerSearchMode && playerAnimals.length === 0" class="empty-state">
+                            <svg class="icon-svg" viewBox="0 0 24 24" style="width:18px;height:18px"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg> No pets found for "{{ playerSearchQuery }}"
                         </div>
                         <!-- Player pets list (detailed view) -->
                         <div v-else-if="isPlayerSearchMode && playerAnimals.length > 0">
+                            <div style="padding:0.5rem 1rem; background:var(--bg-selected); border-bottom:1px solid var(--border);">
+                                <span class="player-result-badge"><svg class="icon-svg" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg> Showing {{ playerAnimals.length }} pets for: {{ playerSearchQuery }}</span>
+                                <button class="btn" style="padding:0.2rem 0.6rem; font-size:0.7rem; margin-left:0.6rem;" @click="clearPlayerSearch"><svg class="icon-svg" viewBox="0 0 24 24" style="width:11px;height:11px"><path d="M18 6L6 18M6 6l12 12"/></svg> Clear</button>
+                            </div>
                             <div v-for="(pet, idx) in playerAnimals" :key="idx" class="pet-item" @click="selectAnimalByName(pet.name)">
                                 <span style="color:var(--text-muted);font-size:0.7rem;min-width:24px;">#{{ idx+1 }}</span>
                                 <span class="pet-name">{{ pet.name }}</span>
                                 <div class="pet-details">
                                     <span v-if="pet.mutation" class="mut-tag" :style="{borderColor: mutationColor(pet.mutation)}">
-                                        ✦ {{ pet.mutation }}
+                                        <svg class="icon-svg" viewBox="0 0 24 24" style="width:11px;height:11px"><path d="M12 2l1.5 6.5L20 10l-6.5 1.5L12 18l-1.5-6.5L4 10l6.5-1.5L12 2z"/></svg> {{ pet.mutation }}
                                     </span>
                                     <span v-for="trait in pet.traits" :key="trait" class="trait-tag">
-                                        ⚡ {{ trait }}
+                                        <svg class="icon-svg" viewBox="0 0 24 24" style="width:11px;height:11px"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"/></svg> {{ trait }}
                                     </span>
                                 </div>
                             </div>
                         </div>
                         <!-- Regular list -->
-                        <div v-else-if="filteredAnimals.length===0 && searchQuery" class="empty-state">🔍 No brainrots matching "{{ searchQuery }}"</div>
-                        <div v-else-if="filteredAnimals.length===0" class="empty-state">🐾 No brainrots in database</div>
+                        <div v-else-if="filteredAnimals.length===0 && (searchQuery || selectedRarity!=='all')" class="empty-state"><svg class="icon-svg" viewBox="0 0 24 24" style="width:18px;height:18px"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg> No brainrots matching your filters</div>
+                        <div v-else-if="filteredAnimals.length===0" class="empty-state">No brainrots in database</div>
                         <div v-else v-for="(animal,i) in filteredAnimals" :key="animal.name"
                         class="animal-row" :class="{selected:selectedAnimal&&selectedAnimal.name===animal.name}"
                         @click="selectAnimal(animal)">
                         <div class="animal-rank">#{{ i+1 }}</div>
                         <img :src="animalImgCandidates(animal.name)[0]" class="animal-icon" :alt="animal.name" @error="onListIconError($event, animal.name)" loading="lazy">
                         <div class="animal-name">{{ animal.name }}</div>
+                        <span class="rarity-tag" :style="{background: rarityColor(animal.rarity) + '22', color: rarityColor(animal.rarity), border: '1px solid ' + rarityColor(animal.rarity)}">{{ animal.rarity }}</span>
                         <div class="animal-stats">
                             <div class="animal-exist">{{ formatNumber(animal.exist) }}</div>
                             <div class="animal-percent">{{ animal.percent }}%</div>
@@ -1383,12 +1484,6 @@
                     Showing {{ displayAnimals.length }} of {{ rankedAnimals.length }} brainrots
                 </div>
             </div>
-
-            <!-- RIGHT detail (full stats now open in a popup, see STATS MODAL below) -->
-            <div class="panel detail-panel">
-                <div class="panel-header"><h2>Select a Brainrot</h2></div>
-                <div class="empty-detail"><p>✨</p>Click on any brainrot from the list<br>to see mutations, traits and owners</div>
-            </div>
         </div>
 
         <div class="footer">RealTime Exists · Last update: {{ lastUpdate }}</div>
@@ -1397,10 +1492,12 @@
     <!-- STATS MODAL -->
     <div v-if="selectedAnimal" class="modal-overlay" @click.self="selectedAnimal=null">
         <div class="modal-box stats-modal-box" style="max-width:640px;max-height:92vh;overflow-y:auto;position:relative;">
-            <button class="modal-close-x" @click="selectedAnimal=null" title="Close">✕</button>
+            <button class="modal-close-x" @click="selectedAnimal=null" title="Close"><svg class="icon-svg" viewBox="0 0 24 24" style="width:13px;height:13px"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
 
             <div class="stats-modal-header">
-                <h2>{{ selectedAnimal.name }}</h2>
+                <h2>{{ selectedAnimal.name }}
+                    <span class="rarity-tag" :style="{background: rarityColor(getRarity(selectedAnimal.name)) + '22', color: rarityColor(getRarity(selectedAnimal.name)), border: '1px solid ' + rarityColor(getRarity(selectedAnimal.name)), marginLeft: '0.5rem', verticalAlign: 'middle'}">{{ getRarity(selectedAnimal.name) }}</span>
+                </h2>
                 <img v-if="animalImageOk" :src="currentAnimalImgSrc" class="stats-modal-image" :alt="selectedAnimal.name" @error="tryNextAnimalImg" loading="lazy">
             </div>
 
@@ -1423,7 +1520,7 @@
             </div>
 
             <div class="stats-card-block">
-                <div class="stats-card-block-title">✨ Per-mutation breakdown</div>
+                <div class="stats-card-block-title"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 2l1.5 6.5L20 10l-6.5 1.5L12 18l-1.5-6.5L4 10l6.5-1.5L12 2z"/></svg> Per-mutation breakdown</div>
                 <div v-if="getMutationsForAnimal(selectedAnimal.name).length===0" style="color:var(--text-muted);font-size:0.8rem;padding:0.5rem 0">No mutation data</div>
                 <div v-else>
                     <div v-for="mut in getMutationsForAnimal(selectedAnimal.name)" :key="mut.name" class="mutation-row">
@@ -1437,7 +1534,7 @@
             </div>
 
             <div class="stats-card-block">
-                <div class="stats-card-block-title">🏷️ Trait breakdown — all mutations</div>
+                <div class="stats-card-block-title"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M20 12l-8 8-9-9V4h7l10 10z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg> Trait breakdown — all mutations</div>
                 <div v-if="getTraitsForAnimal(selectedAnimal.name).length===0" style="color:var(--text-muted);font-size:0.8rem;padding:0.5rem 0">No trait data</div>
                 <div v-else>
                     <div v-for="tr in getTraitsForAnimal(selectedAnimal.name)" :key="tr.name" class="mutation-row">
@@ -1452,7 +1549,7 @@
             </div>
 
             <div class="stats-card-block">
-                <div class="stats-card-block-title">👥 Owners with Mutations</div>
+                <div class="stats-card-block-title"><svg class="icon-svg" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M2 20c0-3.3 3.1-5 7-5s7 1.7 7 5"/><circle cx="17" cy="9" r="2.5"/><path d="M15.5 13.2c2.7.4 4.5 1.7 4.5 3.8"/></svg> Owners with Mutations</div>
                 <div v-if="getOwnersWithMutations(selectedAnimal.name).length===0" style="color:var(--text-muted);font-size:0.8rem;padding:0.5rem 0">No owner data</div>
                 <div v-else>
                     <div v-for="owner in getOwnersWithMutations(selectedAnimal.name)" :key="owner.name" class="owner-mut-item">
@@ -1468,7 +1565,7 @@
             </div>
 
             <div style="display:flex;justify-content:center;margin-top:1.3rem;">
-                <button class="btn btn-accent" @click="downloadImage">📸 Download Stats</button>
+                <button class="btn btn-accent" @click="downloadImage"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></svg> Download Stats</button>
             </div>
         </div>
     </div>
@@ -1476,13 +1573,13 @@
     <!-- SETTINGS MODAL -->
     <div v-if="showSettings" class="modal-overlay" @click.self="showSettings=false">
         <div class="modal-box">
-            <h3>⚙️ Settings</h3>
+            <h3><svg class="icon-svg" viewBox="0 0 24 24" style="width:16px;height:16px;vertical-align:-3px"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> Settings</h3>
             <div style="color:var(--text-secondary);font-size:0.8rem;margin-bottom:1rem">
                 Choose a theme. Applies to the site and to downloaded stats images.
             </div>
             <div class="theme-grid">
                 <div class="theme-card" :class="{active:currentTheme==='default'}" @click="setTheme('default')">
-                    <div class="theme-check" v-if="currentTheme==='default'">✓</div>
+                    <div class="theme-check" v-if="currentTheme==='default'"><svg class="icon-svg" viewBox="0 0 24 24" style="width:12px;height:12px;stroke:#fff"><path d="M20 6L9 17l-5-5"/></svg></div>
                     <div class="theme-preview" style="background:#132033">
                         <div class="theme-preview-block" style="background:#1a2c42"></div>
                         <div class="theme-preview-block" style="background:#4dabf7"></div>
@@ -1492,7 +1589,7 @@
                     <div class="theme-sub">Dark Blue</div>
                 </div>
                 <div class="theme-card" :class="{active:currentTheme==='black'}" @click="setTheme('black')">
-                    <div class="theme-check" v-if="currentTheme==='black'">✓</div>
+                    <div class="theme-check" v-if="currentTheme==='black'"><svg class="icon-svg" viewBox="0 0 24 24" style="width:12px;height:12px;stroke:#fff"><path d="M20 6L9 17l-5-5"/></svg></div>
                     <div class="theme-preview" style="background:#0a0a0a">
                         <div class="theme-preview-block" style="background:#111"></div>
                         <div class="theme-preview-block" style="background:#aaa"></div>
@@ -1502,7 +1599,7 @@
                     <div class="theme-sub">Pure Dark</div>
                 </div>
                 <div class="theme-card" :class="{active:currentTheme==='white'}" @click="setTheme('white')">
-                    <div class="theme-check" v-if="currentTheme==='white'">✓</div>
+                    <div class="theme-check" v-if="currentTheme==='white'"><svg class="icon-svg" viewBox="0 0 24 24" style="width:12px;height:12px;stroke:#fff"><path d="M20 6L9 17l-5-5"/></svg></div>
                     <div class="theme-preview" style="background:#f0f4f8;border:1px solid #d4dde8">
                         <div class="theme-preview-block" style="background:#ffffff"></div>
                         <div class="theme-preview-block" style="background:#3a7bd5"></div>
@@ -1521,7 +1618,7 @@
     <!-- ADMIN MODAL -->
     <div v-if="showAdminModal" class="modal-overlay">
         <div class="modal-box admin-modal-box">
-            <h3>⚡ Admin Panel</h3>
+            <h3><svg class="icon-svg" viewBox="0 0 24 24" style="width:16px;height:16px;vertical-align:-3px"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"/></svg> Admin Panel</h3>
             <div class="admin-tabs">
                 <div :class="['admin-tab',{active:adminTab==='delete'}]" @click="adminTab='delete'">Delete Brainrot</div>
                 <div :class="['admin-tab',{active:adminTab==='add'}]" @click="adminTab='add'">Add Brainrot</div>
@@ -1561,10 +1658,10 @@
                     <div class="export-mini-stat"><div class="export-mini-label">With Traits</div><div class="export-mini-value">{{ exportData.traits.reduce((s,t)=>s+t.count,0) }}</div></div>
                 </div>
                 <div class="export-section">
-                    <div class="export-section-title">✨ Mutations</div>
+                    <div class="export-section-title"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 2l1.5 6.5L20 10l-6.5 1.5L12 18l-1.5-6.5L4 10l6.5-1.5L12 2z"/></svg> Mutations</div>
                     <div v-for="mut in exportData.mutations" :key="mut.name" class="export-mut-row">
                         <span class="mut-dot" :class="mutClass(mut.name)"></span>
-                        <span style="flex:0 0 auto;min-width:75px;color:var(--text-primary);font-size:0.82rem;font-weight:500" :class="mutClass(mut.name)?'mut-name '+mutClass(mut.name):''">✦ {{ mut.name }}</span>
+                        <span style="flex:0 0 auto;min-width:75px;color:var(--text-primary);font-size:0.82rem;font-weight:500" :class="mutClass(mut.name)?'mut-name '+mutClass(mut.name):''"><svg class="icon-svg" viewBox="0 0 24 24" style="width:11px;height:11px"><path d="M12 2l1.5 6.5L20 10l-6.5 1.5L12 18l-1.5-6.5L4 10l6.5-1.5L12 2z"/></svg> {{ mut.name }}</span>
                         <div class="export-mut-bar-wrap"><div class="export-mut-bar" :class="mutClass(mut.name)" :style="{width: exportData.mutations.length ? Math.round((mut.count/exportData.mutations[0].count)*100)+'%' : '0%'}"></div></div>
                         <span style="color:var(--text-primary);font-size:0.8rem;font-weight:700;min-width:32px;text-align:right">{{ formatNumber(mut.count) }}</span>
                         <span style="color:var(--text-muted);font-size:0.72rem;min-width:44px;text-align:right">({{ mutPct2(exportData.mutations,mut.count) }}%)</span>
@@ -1572,7 +1669,7 @@
                     <div v-if="exportData.mutations.length===0" class="export-item"><span class="export-item-name">No mutations</span><span class="export-item-value">—</span></div>
                 </div>
                 <div class="export-section">
-                    <div class="export-section-title">⚡ Traits</div>
+                    <div class="export-section-title"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"/></svg> Traits</div>
                     <div v-for="tr in exportData.traits" :key="tr.name" class="export-mut-row">
                         <span style="flex:0 0 auto;min-width:80px;color:var(--text-primary);font-size:0.82rem;font-weight:500">{{ tr.name }}</span>
                         <div class="export-mut-bar-wrap"><div class="export-mut-bar" :style="{width: exportData.traits.length ? Math.round((tr.count/exportData.traits[0].count)*100)+'%' : '0%', background:'#4dabf7'}"></div></div>
@@ -1584,7 +1681,7 @@
                 <div class="export-footer">Generated: {{ new Date().toLocaleString() }}<br>Custom Tracker</div>
             </div>
             <div style="display:flex;justify-content:center;gap:1rem;margin-top:1.2rem">
-                <button class="btn btn-accent" @click="confirmDownload">⬇ Download Image</button>
+                <button class="btn btn-accent" @click="confirmDownload"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></svg> Download Image</button>
                 <button class="btn" @click="closeExportModal">Close</button>
             </div>
             <div v-if="exportMessage" class="success-msg">{{ exportMessage }}</div>
@@ -1594,13 +1691,13 @@
     <!-- CODES MODAL -->
     <div v-if="showCodesModal" class="modal-overlay" @click.self="showCodesModal=false">
         <div class="modal-box admin-modal-box" style="max-width:600px;max-height:90vh;overflow-y:auto">
-            <h3>🔑 Управление кодами доступа</h3>
+            <h3><svg class="icon-svg" viewBox="0 0 24 24" style="width:16px;height:16px;vertical-align:-3px"><circle cx="8" cy="15" r="3"/><path d="M10.5 12.5L20 3M20 3h-3M20 3v3"/></svg> Управление кодами доступа</h3>
             <div style="display:flex;gap:0.75rem;align-items:flex-end;flex-wrap:wrap;margin-bottom:1.2rem">
                 <div>
                     <div style="color:var(--text-muted);font-size:0.72rem;margin-bottom:0.3rem">Лимит входов (0 = безлимит)</div>
                     <input type="number" min="0" v-model="newCodeLimit" placeholder="0" style="width:130px">
                 </div>
-                <button class="btn btn-accent" @click="createCode">➕ Создать код</button>
+                <button class="btn btn-accent" @click="createCode"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg> Создать код</button>
             </div>
             <div v-if="codesMessage" :class="codesMessageType==='success'?'success-msg':'error-msg'" style="margin-bottom:0.75rem">{{ codesMessage }}</div>
             <div v-if="accessCodes.length===0" style="color:var(--text-muted);font-size:0.82rem;padding:1rem 0">Нет активных кодов</div>
@@ -1720,6 +1817,8 @@
             const lastUpdate = ref('—');
             const loading = ref(true);
             const searchQuery = ref('');
+            const sortOrder = ref('asc'); // 'asc' = от низкого Exist к высокому, 'desc' = наоборот
+            const selectedRarity = ref('all');
             const playerSearchQuery = ref('');
             const selectedAnimal = ref(null);
             const animalImageOk = ref(true);
@@ -2206,10 +2305,10 @@
                 y += 76;
 
                 // Секция Mutations
-                y = drawSection(ctx, '✨ MUTATIONS', data.mutations, data.mutations, y, W, pad, t, true);
+                y = drawSection(ctx, 'MUTATIONS', data.mutations, data.mutations, y, W, pad, t, true);
                 y += 12;
                 // Секция Traits
-                drawSection(ctx, '⚡ TRAITS', data.traits, data.traits, y, W, pad, t, false);
+                drawSection(ctx, 'TRAITS', data.traits, data.traits, y, W, pad, t, false);
 
                 // Footer
                 ctx.fillStyle = t.textMuted;
@@ -2304,7 +2403,7 @@
                     ctx.fillStyle = mColor ? mColor.text : t.textPrimary;
                     ctx.font = '11px Inter, sans-serif';
                     ctx.textAlign = 'left';
-                    ctx.fillText((isMutation ? '✦ ' : '') + item.name, pad+16, ry+16);
+                    ctx.fillText((isMutation ? '• ' : '') + item.name, pad+16, ry+16);
 
                     ctx.fillStyle = t.border;
                     roundRect(ctx, barX, ry+6, barW, 8, 4);
@@ -2354,18 +2453,76 @@
             const closeExportModal = () => { showExportModal.value = false;
                 exportMessage.value = ''; };
 
+            // ========== RARITY DATABASE ==========
+            // Сопоставление имени брейнрота с его редкостью (Common / Rare / Epic / Legendary /
+            // Mythic / Brainrot God / Secret / OG). Список собран по актуальным гайдам/вики игры
+            // "Steal a Brainrot" и не претендует на 100% полноту — в игре 470+ брейнротов, и
+            // разработчик добавляет новые почти каждую субботу. Если каких-то имён не хватает,
+            // их легко дописать сюда (ключ — точное имя, значение — одна из строк RARITY_ORDER).
+            const RARITY_ORDER = ['Common', 'Rare', 'Epic', 'Legendary', 'Mythic', 'Brainrot God', 'Secret', 'OG'];
+            const RARITY_MAP = {
+                // Common
+                'Noobini Pizzanini': 'Common', 'Lirili Larila': 'Common', 'Lirilì Larilà': 'Common',
+                'Tim Cheese': 'Common', 'FluriFlura': 'Common', 'Talpa Di Fero': 'Common',
+                'Svinina Bombardino': 'Common', 'Racooni Jandelini': 'Common', 'Pipi Kiwi': 'Common',
+                'Pipi Corni': 'Common',
+                // Rare
+                'Trippi Troppi': 'Rare', 'Gangster Footera': 'Rare', 'Bandito Bobritto': 'Rare',
+                'Boneca Ambalabu': 'Rare', 'Cacto Hipopotamo': 'Rare', 'Ta Ta Ta Ta Sahur': 'Rare',
+                'Tric Trac Baraboom': 'Rare', 'Pipi Avocado': 'Rare', 'Pinealotto Fruttarino': 'Rare',
+                // Epic
+                'Cappuccino Assassino': 'Epic', 'Brr Brr Patapim': 'Epic', 'Trulimero Trulicina': 'Epic',
+                'Bambini Crostini': 'Epic', 'Bananita Dolphinita': 'Epic', 'Perochello Lemonchello': 'Epic',
+                'Brri Brri Bicus Dicus Bombicus': 'Epic', 'Ti Ti Ti Sahur': 'Epic', 'Mummio Rappitto': 'Epic',
+                'Penguino Cocosino': 'Epic',
+                // Legendary
+                'Burbaloni Loliloli': 'Legendary', 'Chimpanzini Bananini': 'Legendary',
+                'Ballerina Cappuccina': 'Legendary', 'Seraphino Gruyero': 'Legendary',
+                'Puffaball': 'Legendary', 'Glorbo Fruttodillo': 'Legendary',
+                'Bombombini Gusini': 'Legendary',
+                // Mythic
+                'Frigo Camelo': 'Mythic', 'Berenjello Angello': 'Mythic', 'Los Noobinis': 'Mythic',
+                'Tob Tobi Tobi': 'Mythic',
+                // Brainrot God
+                'Cocofanto Elefanto': 'Brainrot God', 'Dumborino Miracello': 'Brainrot God',
+                'Nuclearo Dinossauro': 'Brainrot God', 'Los Combinasionas': 'Brainrot God',
+                // Secret
+                'Griffin': 'Secret', 'Jackorilla': 'Secret', 'La Vacca Saturno Saturnita': 'Secret',
+                'Celestial Pegasus': 'Secret', 'Cerberus': 'Secret', 'Capitano Moby': 'Secret',
+                'Dragon Cannelloni': 'Secret', 'Hydra Dragon Cannelloni': 'Secret',
+                'Dragon Gingerini': 'Secret', 'Chillin Chili': 'Secret', 'Chipso': 'Secret',
+                'Queso': 'Secret', 'Coffin Tung Tung Tung Sahur': 'Secret', 'Gold Elf': 'Secret',
+                // OG (все 6 подтверждённых)
+                'Strawberry Elephant': 'OG', 'Meowl': 'OG', 'Headless Horseman': 'OG',
+                'John Pork': 'OG', 'Spyder Elephant': 'OG', 'Skibidi Toilet': 'OG'
+            };
+            const getRarity = (name) => RARITY_MAP[name] || 'Unknown';
+            const RARITY_COLORS = {
+                'Common': '#9aa5b1', 'Rare': '#4dabf7', 'Epic': '#a56bff', 'Legendary': '#ffb84d',
+                'Mythic': '#ff6bba', 'Brainrot God': '#ff4d4d', 'Secret': '#ffd24d', 'OG': '#ff2e63',
+                'Unknown': '#5a6b80'
+            };
+            const rarityColor = (r) => RARITY_COLORS[r] || RARITY_COLORS['Unknown'];
+
             const rankedAnimals = computed(() => {
-                const sorted = [...animals.value].sort((a, b) => a.exist - b.exist);
+                const dir = sortOrder.value === 'desc' ? -1 : 1;
+                const sorted = [...animals.value].sort((a, b) => (a.exist - b.exist) * dir);
                 const total = sorted.reduce((s, a) => s + a.exist, 0);
-                const max = sorted.length ? sorted[sorted.length - 1].exist : 1;
+                const max = sorted.length ? Math.max(...sorted.map(a => a.exist)) : 1;
                 return sorted.map(a => ({ ...a, percent: total ? ((a.exist / total) * 100).toFixed(2) :
-                        '0.00', barWidth: (a.exist / max) * 100 }));
+                        '0.00', barWidth: max ? (a.exist / max) * 100 : 0, rarity: getRarity(a.name) }));
             });
 
             const filteredAnimals = computed(() => {
-                if (!searchQuery.value.trim()) return rankedAnimals.value.slice(0, 50);
-                const q = searchQuery.value.toLowerCase();
-                return rankedAnimals.value.filter(a => a.name.toLowerCase().includes(q)).slice(0, 50);
+                let list = rankedAnimals.value;
+                if (selectedRarity.value !== 'all') {
+                    list = list.filter(a => a.rarity === selectedRarity.value);
+                }
+                const q = searchQuery.value.trim().toLowerCase();
+                if (q) list = list.filter(a => a.name.toLowerCase().includes(q));
+                // Без активных фильтров показываем первые 50 (для производительности),
+                // при поиске/фильтре по редкости — весь подходящий список.
+                return (q || selectedRarity.value !== 'all') ? list : list.slice(0, 50);
             });
 
             const displayAnimals = computed(() => {
@@ -2545,6 +2702,11 @@
                 lastUpdate,
                 loading,
                 searchQuery,
+                sortOrder,
+                selectedRarity,
+                RARITY_ORDER,
+                getRarity,
+                rarityColor,
                 playerSearchQuery,
                 selectedAnimal,
                 animalImageOk,
