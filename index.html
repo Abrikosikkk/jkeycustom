@@ -2108,6 +2108,118 @@
                 exportMessage.value = '';
             };
 
+            // Пытаемся загрузить иконку способом, который НЕ помечает canvas как "грязный"
+            // (tainted), иначе toDataURL() упадёт с ошибкой при экспорте.
+            const tryLoadCrossOriginImage = (url) => new Promise((resolve) => {
+                try {
+                    const img = new Image();
+                    img.crossOrigin = 'anonymous';
+                    img.onload = () => resolve(img);
+                    img.onerror = () => resolve(null);
+                    // добавляем метку времени, чтобы браузер не переиспользовал старую
+                    // некорс-версию картинки из кэша (иначе снова получим "грязный" canvas)
+                    img.src = url + (url.includes('?') ? '&' : '?') + '_cb=' + Date.now();
+                } catch (e) { resolve(null); }
+            });
+            const buildSafeIconImage = async (name) => {
+                const candidates = animalImgCandidates(name);
+                // Метод 1: обычная загрузка с crossOrigin=anonymous (работает если сервер отдаёт CORS-заголовки)
+                for (const url of candidates) {
+                    const img = await tryLoadCrossOriginImage(url);
+                    if (img) return img;
+                }
+                // Метод 2: fetch блоба через XHR и конвертация в data URI (работает для одного домена с сайтом)
+                for (const url of candidates) {
+                    const img = await fetchIconViaXHR(url);
+                    if (img) return img;
+                }
+                return null;
+            };
+
+            const renderStatsCanvas = (data, t, iconImg) => {
+                const W = 560, pad = 32;
+                let y = pad;
+
+                const mutH = Math.max(data.mutations.length, 1) * 28 + 50;
+                const trH = Math.max(data.traits.length, 1) * 28 + 50;
+                const iconH = iconImg ? 82 : 0;
+                const H = pad + 30 + 6 + iconH + 18 + 12 + 84 + 16 + mutH + 12 + trH + 12 + 36 + pad;
+
+                const cv = document.createElement('canvas');
+                cv.width = W * 2; cv.height = H * 2;
+                const ctx = cv.getContext('2d');
+                ctx.scale(2, 2);
+
+                // Фон карточки
+                ctx.fillStyle = t.bg;
+                ctx.fillRect(0, 0, W, H);
+                ctx.strokeStyle = t.borderStrong;
+                ctx.lineWidth = 1;
+                roundRect(ctx, 0, 0, W, H, 12);
+                ctx.stroke();
+
+                // Название
+                ctx.fillStyle = t.textPrimary;
+                ctx.font = 'bold 22px Inter, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText(data.name, W/2, y + 22);
+                y += 32;
+
+                // Иконка
+                if (iconImg) {
+                    const iconSize = 72, iconX = (W - iconSize) / 2;
+                    ctx.save();
+                    roundRect(ctx, iconX, y, iconSize, iconSize, 14);
+                    ctx.clip();
+                    ctx.drawImage(iconImg, iconX, y, iconSize, iconSize);
+                    ctx.restore();
+                    y += iconSize + 10;
+                }
+
+                // Subtitle
+                ctx.fillStyle = t.textMuted;
+                ctx.font = '11px Inter, sans-serif';
+                ctx.fillText('Brainrot Statistics Report', W/2, y + 10);
+                y += 22;
+
+                // Mini stats
+                const stats = [
+                    { label: 'TOTAL EXISTS', value: data.totalExist },
+                    { label: 'WITH MUTATION', value: data.mutations.reduce((s,m)=>s+m.count,0) },
+                    { label: 'WITH TRAITS', value: data.traits.reduce((s,t)=>s+t.count,0) }
+                ];
+                const sw = (W - pad*2 - 16) / 3;
+                stats.forEach((s, i) => {
+                    const sx = pad + i * (sw + 8);
+                    ctx.fillStyle = t.card;
+                    ctx.strokeStyle = t.border;
+                    roundRect(ctx, sx, y, sw, 60, 10);
+                    ctx.fill(); ctx.stroke();
+                    ctx.fillStyle = t.textMuted;
+                    ctx.font = '9px Inter, sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(s.label, sx + sw/2, y + 18);
+                    ctx.fillStyle = t.textPrimary;
+                    ctx.font = 'bold 18px Inter, sans-serif';
+                    ctx.fillText(s.value, sx + sw/2, y + 44);
+                });
+                y += 76;
+
+                // Секция Mutations
+                y = drawSection(ctx, '✨ MUTATIONS', data.mutations, data.mutations, y, W, pad, t, true);
+                y += 12;
+                // Секция Traits
+                drawSection(ctx, '⚡ TRAITS', data.traits, data.traits, y, W, pad, t, false);
+
+                // Footer
+                ctx.fillStyle = t.textMuted;
+                ctx.font = '10px Inter, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText('Generated: ' + new Date().toLocaleString() + ' · Custom Tracker', W/2, H - 14);
+
+                return cv;
+            };
+
             const confirmDownload = async () => {
                 exportMessage.value = 'Generating image…';
                 await nextTick();
@@ -2122,106 +2234,26 @@
                         };
                         const t = themes[theme] || themes.default;
 
-                        // Иконка: сначала пробуем уже загруженный <img> элемент со страницы
-                        // (без повторного сетевого запроса — надёжнее всего),
-                        // и только если его нет, догружаем через XHR, перебирая варианты пути.
                         let iconImg = null;
-                        if (cachedIconEl && cachedIconEl.complete && cachedIconEl.naturalWidth > 0) {
-                            iconImg = cachedIconEl;
-                        } else {
-                            const candidates = animalImgCandidates(data.name);
-                            for (const url of candidates) {
-                                iconImg = await fetchIconViaXHR(url);
-                                if (iconImg) break;
-                            }
+                        try { iconImg = await buildSafeIconImage(data.name); } catch (e) { iconImg = null; }
+
+                        let cv = renderStatsCanvas(data, t, iconImg);
+                        let dataUrl;
+                        try {
+                            dataUrl = cv.toDataURL('image/png');
+                        } catch (taintErr) {
+                            // Canvas оказался "грязным" (картинка с другого домена без CORS) —
+                            // пересобираем картинку без иконки, чтобы скачивание не падало полностью.
+                            cv = renderStatsCanvas(data, t, null);
+                            dataUrl = cv.toDataURL('image/png');
+                            exportMessage.value = 'Downloaded (icon skipped — image host blocks embedding)';
                         }
-
-                        const W = 560, pad = 32;
-                        let y = pad;
-
-                        // Считаем высоту
-                        const mutH = Math.max(data.mutations.length, 1) * 28 + 50;
-                        const trH = Math.max(data.traits.length, 1) * 28 + 50;
-                        const iconH = iconImg ? 82 : 0;
-                        const H = pad + 30 + 6 + iconH + 18 + 12 + 84 + 16 + mutH + 12 + trH + 12 + 36 + pad;
-
-                        const cv = document.createElement('canvas');
-                        cv.width = W * 2; cv.height = H * 2;
-                        const ctx = cv.getContext('2d');
-                        ctx.scale(2, 2);
-
-                        // Фон карточки
-                        ctx.fillStyle = t.bg;
-                        ctx.fillRect(0, 0, W, H);
-                        ctx.strokeStyle = t.borderStrong;
-                        ctx.lineWidth = 1;
-                        roundRect(ctx, 0, 0, W, H, 12);
-                        ctx.stroke();
-
-                        // Название
-                        ctx.fillStyle = t.textPrimary;
-                        ctx.font = 'bold 22px Inter, sans-serif';
-                        ctx.textAlign = 'center';
-                        ctx.fillText(data.name, W/2, y + 22);
-                        y += 32;
-
-                        // Иконка
-                        if (iconImg) {
-                            const iconSize = 72, iconX = (W - iconSize) / 2;
-                            ctx.save();
-                            roundRect(ctx, iconX, y, iconSize, iconSize, 14);
-                            ctx.clip();
-                            ctx.drawImage(iconImg, iconX, y, iconSize, iconSize);
-                            ctx.restore();
-                            y += iconSize + 10;
-                        }
-
-                        // Subtitle
-                        ctx.fillStyle = t.textMuted;
-                        ctx.font = '11px Inter, sans-serif';
-                        ctx.fillText('Brainrot Statistics Report', W/2, y + 10);
-                        y += 22;
-
-                        // Mini stats
-                        const stats = [
-                            { label: 'TOTAL EXISTS', value: data.totalExist },
-                            { label: 'WITH MUTATION', value: data.mutations.reduce((s,m)=>s+m.count,0) },
-                            { label: 'WITH TRAITS', value: data.traits.reduce((s,t)=>s+t.count,0) }
-                        ];
-                        const sw = (W - pad*2 - 16) / 3;
-                        stats.forEach((s, i) => {
-                            const sx = pad + i * (sw + 8);
-                            ctx.fillStyle = t.card;
-                            ctx.strokeStyle = t.border;
-                            roundRect(ctx, sx, y, sw, 60, 10);
-                            ctx.fill(); ctx.stroke();
-                            ctx.fillStyle = t.textMuted;
-                            ctx.font = '9px Inter, sans-serif';
-                            ctx.textAlign = 'center';
-                            ctx.fillText(s.label, sx + sw/2, y + 18);
-                            ctx.fillStyle = t.textPrimary;
-                            ctx.font = 'bold 18px Inter, sans-serif';
-                            ctx.fillText(s.value, sx + sw/2, y + 44);
-                        });
-                        y += 76;
-
-                        // Секция Mutations
-                        y = drawSection(ctx, '✨ MUTATIONS', data.mutations, data.mutations, y, W, pad, t, true);
-                        y += 12;
-                        // Секция Traits
-                        drawSection(ctx, '⚡ TRAITS', data.traits, data.traits, y, W, pad, t, false);
-
-                        // Footer
-                        ctx.fillStyle = t.textMuted;
-                        ctx.font = '10px Inter, sans-serif';
-                        ctx.textAlign = 'center';
-                        ctx.fillText('Generated: ' + new Date().toLocaleString() + ' · Custom Tracker', W/2, H - 14);
 
                         const link = document.createElement('a');
                         link.download = data.name + '_stats.png';
-                        link.href = cv.toDataURL('image/png');
+                        link.href = dataUrl;
                         link.click();
-                        exportMessage.value = 'Downloaded!';
+                        if (!exportMessage.value.startsWith('Downloaded (icon')) exportMessage.value = 'Downloaded!';
                         setTimeout(() => { closeExportModal(); }, 1500);
                     } catch (err) { exportMessage.value = 'Failed: ' + err.message; }
                 }, 100);
