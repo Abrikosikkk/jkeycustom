@@ -2371,6 +2371,36 @@
                 ctx.closePath();
             }
 
+            // Рисует иконку по массиву точек (координаты во "viewBox" 24x24, как у SVG-иконок сайта),
+            // масштабируя её к нужному размеру и позиции. mode 'fill' — заливка, 'stroke' — контур.
+            function drawIconPath(ctx, points, x, y, size, color, mode) {
+                const s = size / 24;
+                ctx.beginPath();
+                points.forEach(([px, py], i) => {
+                    const cx = x + px * s, cy = y + py * s;
+                    if (i === 0) ctx.moveTo(cx, cy); else ctx.lineTo(cx, cy);
+                });
+                ctx.closePath();
+                if (mode === 'stroke') {
+                    ctx.strokeStyle = color;
+                    ctx.lineWidth = 1.6;
+                    ctx.lineJoin = 'round';
+                    ctx.stroke();
+                } else {
+                    ctx.fillStyle = color;
+                    ctx.fill();
+                }
+            }
+            // Иконка-звёздочка (мутации) — соответствует SVG-иконке в остальном интерфейсе
+            const SPARKLE_ICON_PTS = [[12,2],[13.5,8.5],[20,10],[13.5,11.5],[12,18],[10.5,11.5],[4,10],[10.5,8.5]];
+            // Иконка-бирка (заголовок секции трейтов)
+            const TAG_ICON_PTS = [[3,4],[12,4],[20,12],[12,20],[3,11]];
+            // Иконка-молния (трейты построчно)
+            const BOLT_ICON_PTS = [[13,2],[3,14],[10,14],[9,22],[19,10],[12,10]];
+            const drawSparkleIcon = (ctx, x, y, size, color) => drawIconPath(ctx, SPARKLE_ICON_PTS, x, y, size, color, 'fill');
+            const drawTagIcon = (ctx, x, y, size, color) => drawIconPath(ctx, TAG_ICON_PTS, x, y, size, color, 'stroke');
+            const drawBoltIcon = (ctx, x, y, size, color) => drawIconPath(ctx, BOLT_ICON_PTS, x, y, size, color, 'fill');
+
             function drawSection(ctx, title, items, allItems, y, W, pad, t, isMutation) {
                 const rowH = 28;
                 const secH = Math.max(items.length,1)*rowH + 46;
@@ -2382,7 +2412,9 @@
                 ctx.fillStyle = t.textSecondary;
                 ctx.font = 'bold 10px Inter, sans-serif';
                 ctx.textAlign = 'left';
-                ctx.fillText(title, pad+12, y+18);
+                if (isMutation) drawSparkleIcon(ctx, pad+12, y+9, 11, t.textSecondary);
+                else drawTagIcon(ctx, pad+12, y+9, 11, t.textSecondary);
+                ctx.fillText(title, pad+27, y+18);
 
                 if (items.length === 0) {
                     ctx.fillStyle = t.textMuted;
@@ -2403,7 +2435,10 @@
                     ctx.fillStyle = mColor ? mColor.text : t.textPrimary;
                     ctx.font = '11px Inter, sans-serif';
                     ctx.textAlign = 'left';
-                    ctx.fillText((isMutation ? '• ' : '') + item.name, pad+16, ry+16);
+                    const rowIconColor = mColor ? mColor.text : (isMutation ? '#63b3ed' : t.textPrimary);
+                    if (isMutation) drawSparkleIcon(ctx, pad+16, ry+7, 10, rowIconColor);
+                    else drawBoltIcon(ctx, pad+16, ry+7, 10, rowIconColor);
+                    ctx.fillText(item.name, pad+30, ry+16);
 
                     ctx.fillStyle = t.border;
                     roundRect(ctx, barX, ry+6, barW, 8, 4);
