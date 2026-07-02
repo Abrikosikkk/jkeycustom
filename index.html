@@ -1434,7 +1434,7 @@
                         </div>
                         <select class="rarity-select" v-model="selectedRarity">
                             <option value="all">All rarities</option>
-                            <option v-for="r in RARITY_ORDER" :key="r" :value="r">{{ r }}</option>
+                            <option v-for="r in availableRarities" :key="r" :value="r">{{ r }}</option>
                         </select>
                     </div>
                     <div class="animals-list">
@@ -1809,6 +1809,7 @@
             const animals = ref([]);
             const animalMutationsData = ref({});
             const animalTraitsData = ref({});
+            const animalRarityData = ref({}); // редкость, полученная из DataService (Firebase)
             const playerOwnersData = ref({});
             const playerIdsMap = ref({});
             const playerAnimalsCache = ref({});
@@ -1925,6 +1926,7 @@
                     const counts = {},
                         muts = {},
                         traits = {},
+                        rarities = {},
                         owners = {},
                         playerNames = {};
                     const playerAnimalsMap = {};
@@ -1939,6 +1941,16 @@
                                 counts[a.name] = (counts[a.name] || 0) + 1;
                                 const ownerName = a.ownerName || `Player_${uid.slice(0, 6)}`;
                                 playerNames[ownerName] = uid;
+
+                                // Редкость приходит прямо из DataService (игры). Поддерживаем разные
+                                // варианты названия поля на случай, если в игре оно называется иначе.
+                                const rawRarity = a.rarity || a.Rarity || a.tier || a.Tier || a.rarityName ||
+                                    a.RarityName || null;
+                                if (rawRarity && String(rawRarity).trim() !== '') {
+                                    const rn = normalizeRarityLabel(String(rawRarity).trim());
+                                    if (!rarities[a.name]) rarities[a.name] = {};
+                                    rarities[a.name][rn] = (rarities[a.name][rn] || 0) + 1;
+                                }
 
                                 // Track mutations per owner for this animal
                                 if (!ownerMutations[ownerName]) ownerMutations[ownerName] = {};
@@ -2003,6 +2015,19 @@
                         });
                     });
                     ownerMutationsMap.value = ownerMutMap;
+
+                    // Для каждого брейнрота берём самое частое встреченное значение редкости
+                    // (на случай, если где-то в данных оно записано с опечаткой/несовпадением регистра)
+                    const rarityResolved = {};
+                    Object.keys(rarities).forEach(name => {
+                        const counts_ = rarities[name];
+                        let best = null, bestCount = 0;
+                        Object.keys(counts_).forEach(r => {
+                            if (counts_[r] > bestCount) { best = r; bestCount = counts_[r]; }
+                        });
+                        if (best) rarityResolved[name] = best;
+                    });
+                    animalRarityData.value = rarityResolved;
 
                     animals.value = Object.keys(counts).map(name => ({ name, exist: counts[name] }));
                     animalMutationsData.value = muts;
@@ -2531,7 +2556,29 @@
                 'Strawberry Elephant': 'OG', 'Meowl': 'OG', 'Headless Horseman': 'OG',
                 'John Pork': 'OG', 'Spyder Elephant': 'OG', 'Skibidi Toilet': 'OG'
             };
-            const getRarity = (name) => RARITY_MAP[name] || 'Unknown';
+            // Приводим произвольное значение редкости из DataService к единому написанию
+            // (совпадает по буквам, но игнорирует регистр — 'epic', 'EPIC', 'Epic' → 'Epic').
+            // Если пришло что-то незнакомое (например, новая редкость, добавленная в игру),
+            // просто аккуратно оформляем его (первая буква каждого слова заглавная) и используем как есть —
+            // фильтр редкости в списке подхватит его автоматически.
+            const normalizeRarityLabel = (raw) => {
+                const known = RARITY_ORDER.find(r => r.toLowerCase() === raw.toLowerCase());
+                if (known) return known;
+                return raw.replace(/\s+/g, ' ').trim().split(' ')
+                    .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+            };
+            const getRarity = (name) => animalRarityData.value[name] || RARITY_MAP[name] || 'Unknown';
+            // Список редкостей для выпадающего фильтра: сначала известные тиры (в игровом порядке,
+            // только те, что реально встречаются в текущих данных), затем любые новые/нестандартные
+            // значения из DataService по алфавиту, 'Unknown' — всегда последним.
+            const availableRarities = computed(() => {
+                const present = new Set(animals.value.map(a => getRarity(a.name)));
+                const known = RARITY_ORDER.filter(r => present.has(r));
+                const extra = [...present].filter(r => r !== 'Unknown' && !RARITY_ORDER.includes(r)).sort();
+                const result = [...known, ...extra];
+                if (present.has('Unknown')) result.push('Unknown');
+                return result;
+            });
             const RARITY_COLORS = {
                 'Common': '#9aa5b1', 'Rare': '#4dabf7', 'Epic': '#a56bff', 'Legendary': '#ffb84d',
                 'Mythic': '#ff6bba', 'Brainrot God': '#ff4d4d', 'Secret': '#ffd24d', 'OG': '#ff2e63',
@@ -2740,6 +2787,7 @@
                 sortOrder,
                 selectedRarity,
                 RARITY_ORDER,
+                availableRarities,
                 getRarity,
                 rarityColor,
                 playerSearchQuery,
