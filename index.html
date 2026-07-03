@@ -1378,8 +1378,6 @@
                 </div>
                 <div class="header-buttons">
                     <button v-if="selectedAnimal" class="btn" @click="downloadImage"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></svg> Download Stats</button>
-                    <button v-if="isAdmin" class="btn btn-accent" @click="openCodesPanel"><svg class="icon-svg" viewBox="0 0 24 24"><circle cx="8" cy="15" r="3"/><path d="M10.5 12.5L20 3M20 3h-3M20 3v3"/></svg> Создать код</button>
-                    <button v-if="isAdmin" class="btn" @click="openAdminPanel"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"/></svg> Admin</button>
                     <button class="settings-btn" @click="showSettings=true" title="Settings"><svg class="icon-svg" viewBox="0 0 24 24" style="width:16px;height:16px;vertical-align:-3px"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
                 </div>
             </div>
@@ -1616,32 +1614,6 @@
     </div>
 
     <!-- ADMIN MODAL -->
-    <div v-if="showAdminModal" class="modal-overlay">
-        <div class="modal-box admin-modal-box">
-            <h3><svg class="icon-svg" viewBox="0 0 24 24" style="width:16px;height:16px;vertical-align:-3px"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"/></svg> Admin Panel</h3>
-            <div class="admin-tabs">
-                <div :class="['admin-tab',{active:adminTab==='delete'}]" @click="adminTab='delete'">Delete Brainrot</div>
-                <div :class="['admin-tab',{active:adminTab==='add'}]" @click="adminTab='add'">Add Brainrot</div>
-            </div>
-            <div v-if="adminTab==='delete'">
-                <input type="text" placeholder="Player Username (Roblox)" v-model="deletePlayerName">
-                <input type="text" placeholder="Brainrot Name" v-model="deleteBrainrotName">
-                <button class="btn-delete" @click="deleteBrainrot">Delete Brainrot</button>
-                <div v-if="adminMessage" :class="adminMessageType==='success'?'success-msg':'error-msg'">{{ adminMessage }}</div>
-            </div>
-            <div v-if="adminTab==='add'">
-                <input type="text" placeholder="Player Username (Roblox)" v-model="addPlayerName">
-                <input type="text" placeholder="Brainrot Name" v-model="addBrainrotName">
-                <input type="text" placeholder="Mutation (optional)" v-model="addMutation">
-                <input type="text" placeholder="Trait (optional)" v-model="addTrait">
-                <button class="btn btn-accent" @click="addBrainrot">Add Brainrot</button>
-                <div v-if="adminMessage" :class="adminMessageType==='success'?'success-msg':'error-msg'">{{ adminMessage }}</div>
-            </div>
-            <div style="margin-top:1.2rem;text-align:center">
-                <button class="btn" @click="closeAdminPanel">Close</button>
-            </div>
-        </div>
-    </div>
 
     <!-- EXPORT MODAL -->
     <div v-if="showExportModal" class="modal-overlay" style="z-index:1001">
@@ -1688,44 +1660,6 @@
         </div>
     </div>
 
-    <!-- CODES MODAL -->
-    <div v-if="showCodesModal" class="modal-overlay" @click.self="showCodesModal=false">
-        <div class="modal-box admin-modal-box" style="max-width:600px;max-height:90vh;overflow-y:auto">
-            <h3><svg class="icon-svg" viewBox="0 0 24 24" style="width:16px;height:16px;vertical-align:-3px"><circle cx="8" cy="15" r="3"/><path d="M10.5 12.5L20 3M20 3h-3M20 3v3"/></svg> Управление кодами доступа</h3>
-            <div style="display:flex;gap:0.75rem;align-items:flex-end;flex-wrap:wrap;margin-bottom:1.2rem">
-                <div>
-                    <div style="color:var(--text-muted);font-size:0.72rem;margin-bottom:0.3rem">Лимит входов (0 = безлимит)</div>
-                    <input type="number" min="0" v-model="newCodeLimit" placeholder="0" style="width:130px">
-                </div>
-                <button class="btn btn-accent" @click="createCode"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg> Создать код</button>
-            </div>
-            <div v-if="codesMessage" :class="codesMessageType==='success'?'success-msg':'error-msg'" style="margin-bottom:0.75rem">{{ codesMessage }}</div>
-            <div v-if="accessCodes.length===0" style="color:var(--text-muted);font-size:0.82rem;padding:1rem 0">Нет активных кодов</div>
-            <table v-else class="codes-table">
-                <thead>
-                    <tr>
-                        <th>Код</th>
-                        <th>Лимит</th>
-                        <th>Использований</th>
-                        <th>Создан</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="code in accessCodes" :key="code.id">
-                        <td><span class="code-value">{{ code.code }}</span></td>
-                        <td style="color:var(--text-secondary)">{{ code.limit === 0 ? '∞' : code.limit }}</td>
-                        <td style="color:var(--text-secondary)">{{ code.uses }}</td>
-                        <td style="color:var(--text-muted);font-size:0.72rem">{{ code.createdAt }}</td>
-                        <td><button class="btn-tiny-delete" @click="deleteCode(code.id)">Удалить</button></td>
-                    </tr>
-                </tbody>
-            </table>
-            <div style="margin-top:1.2rem;text-align:center">
-                <button class="btn" @click="showCodesModal=false">Закрыть</button>
-            </div>
-        </div>
-    </div>
 
 </div>
 </script>
@@ -1755,16 +1689,6 @@
         console.error('Firebase init error:', e);
     }
 
-    const getClientIP = async () => {
-        try {
-            const r = await fetch('https://api.ipify.org?format=json');
-            const d = await r.json();
-            return d.ip;
-        } catch (e) {
-            return 'unknown';
-        }
-    };
-
     const THEME_BG = { default: '#132033', black: '#0a0a0a', white: '#ffffff' };
 
     const app = createApp({
@@ -1778,30 +1702,11 @@
             const setTheme = (t) => { currentTheme.value = t;
                 applyTheme(t); };
 
-            const hasAccess = ref(false);
-            const isAdmin = ref(false);
+            const hasAccess = ref(true);
             const requestSent = ref(false);
             const errorMessage = ref('');
-            const accessCodeInput = ref('');
-            const clientIP = ref('');
-            const checking = ref(false);
-            const showCodesModal = ref(false);
-            const accessCodes = ref([]);
-            const newCodeLimit = ref(0);
-            const codesMessage = ref('');
-            const codesMessageType = ref('');
-            const showAdminModal = ref(false);
             const showExportModal = ref(false);
             const showSettings = ref(false);
-            const adminTab = ref('delete');
-            const adminMessage = ref('');
-            const adminMessageType = ref('');
-            const deletePlayerName = ref('');
-            const deleteBrainrotName = ref('');
-            const addPlayerName = ref('');
-            const addBrainrotName = ref('');
-            const addMutation = ref('');
-            const addTrait = ref('');
             const exportData = ref({ name: '', totalExist: 0, percent: 0, mutations: [], traits: [], iconBase64: '' });
             const exportMessage = ref('');
             const exportCard = ref(null);
@@ -1809,7 +1714,7 @@
             const animals = ref([]);
             const animalMutationsData = ref({});
             const animalTraitsData = ref({});
-            const animalRarityData = ref({}); // редкость, полученная из DataService (Firebase)
+            const brainrotRarityMap = ref({}); // редкость, читается из локального файла Brainrots.txt
             const playerOwnersData = ref({});
             const playerIdsMap = ref({});
             const playerAnimalsCache = ref({});
@@ -1830,92 +1735,11 @@
                 dataListener = null,
                 cachedIconEl = null;
 
-            const ADMIN_IP = '81.20.107.194';
-
             const checkAccess = async () => {
                 hasAccess.value = true;
                 if (!db) { errorMessage.value = 'Firebase connection failed'; return; }
-                try {
-                    const ip = await getClientIP();
-                    clientIP.value = ip;
-                    if (ip === ADMIN_IP) {
-                        isAdmin.value = true;
-                        loadCodes();
-                    }
-                } catch (e) { /* тихо игнорируем */ }
                 loadAnimalData();
             };
-
-            const submitAccessCode = async () => {
-                const code = accessCodeInput.value.trim();
-                if (!code || !db) return;
-                checking.value = true;
-                errorMessage.value = '';
-                try {
-                    const snap = await db.ref('access_codes').orderByChild('code').equalTo(code).once('value');
-                    const val = snap.val();
-                    if (!val) { errorMessage.value = 'Неверный код'; checking.value = false; return; }
-                    const key = Object.keys(val)[0];
-                    const entry = val[key];
-                    if (entry.limit > 0 && entry.uses >= entry.limit) {
-                        errorMessage.value = 'Код исчерпан'; checking.value = false; return;
-                    }
-                    await db.ref('access_codes/' + key + '/uses').set((entry.uses || 0) + 1);
-                    localStorage.setItem('tracker-access-code', code);
-                    hasAccess.value = true;
-                    isAdmin.value = false;
-                    loadAnimalData();
-                } catch (e) { errorMessage.value = 'Ошибка: ' + e.message; }
-                checking.value = false;
-            };
-
-            const loadCodes = () => {
-                if (!db) return;
-                db.ref('access_codes').on('value', snap => {
-                    const val = snap.val();
-                    if (!val) { accessCodes.value = []; return; }
-                    accessCodes.value = Object.keys(val).map(k => ({
-                        id: k,
-                        code: val[k].code,
-                        limit: val[k].limit || 0,
-                        uses: val[k].uses || 0,
-                        createdAt: val[k].createdAt ? new Date(val[k].createdAt).toLocaleDateString('ru') : '—'
-                    }));
-                });
-            };
-
-            const generateCode = () => {
-                const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-                let r = '';
-                for (let i = 0; i < 8; i++) r += chars[Math.floor(Math.random() * chars.length)];
-                return r;
-            };
-
-            const createCode = async () => {
-                if (!db) return;
-                const code = generateCode();
-                const limit = parseInt(newCodeLimit.value) || 0;
-                try {
-                    await db.ref('access_codes').push({ code, limit, uses: 0, createdAt: Date.now() });
-                    codesMessage.value = 'Код создан: ' + code;
-                    codesMessageType.value = 'success';
-                    setTimeout(() => { codesMessage.value = ''; }, 4000);
-                } catch (e) { codesMessage.value = 'Ошибка: ' + e.message; codesMessageType.value = 'error'; }
-            };
-
-            const deleteCode = async (id) => {
-                if (!db) return;
-                try {
-                    await db.ref('access_codes/' + id).remove();
-                    codesMessage.value = 'Код удалён';
-                    codesMessageType.value = 'success';
-                    setTimeout(() => { codesMessage.value = ''; }, 2000);
-                } catch (e) { codesMessage.value = 'Ошибка: ' + e.message; codesMessageType.value = 'error'; }
-            };
-
-            const openCodesPanel = () => { showCodesModal.value = true; codesMessage.value = ''; };
-
-            const requestAccess = () => {}; // legacy stub
 
             const loadAnimalData = () => {
                 if (!db) return;
@@ -1926,7 +1750,6 @@
                     const counts = {},
                         muts = {},
                         traits = {},
-                        rarities = {},
                         owners = {},
                         playerNames = {};
                     const playerAnimalsMap = {};
@@ -1941,16 +1764,6 @@
                                 counts[a.name] = (counts[a.name] || 0) + 1;
                                 const ownerName = a.ownerName || `Player_${uid.slice(0, 6)}`;
                                 playerNames[ownerName] = uid;
-
-                                // Редкость приходит прямо из DataService (игры). Поддерживаем разные
-                                // варианты названия поля на случай, если в игре оно называется иначе.
-                                const rawRarity = a.rarity || a.Rarity || a.tier || a.Tier || a.rarityName ||
-                                    a.RarityName || null;
-                                if (rawRarity && String(rawRarity).trim() !== '') {
-                                    const rn = normalizeRarityLabel(String(rawRarity).trim());
-                                    if (!rarities[a.name]) rarities[a.name] = {};
-                                    rarities[a.name][rn] = (rarities[a.name][rn] || 0) + 1;
-                                }
 
                                 // Track mutations per owner for this animal
                                 if (!ownerMutations[ownerName]) ownerMutations[ownerName] = {};
@@ -2015,19 +1828,6 @@
                         });
                     });
                     ownerMutationsMap.value = ownerMutMap;
-
-                    // Для каждого брейнрота берём самое частое встреченное значение редкости
-                    // (на случай, если где-то в данных оно записано с опечаткой/несовпадением регистра)
-                    const rarityResolved = {};
-                    Object.keys(rarities).forEach(name => {
-                        const counts_ = rarities[name];
-                        let best = null, bestCount = 0;
-                        Object.keys(counts_).forEach(r => {
-                            if (counts_[r] > bestCount) { best = r; bestCount = counts_[r]; }
-                        });
-                        if (best) rarityResolved[name] = best;
-                    });
-                    animalRarityData.value = rarityResolved;
 
                     animals.value = Object.keys(counts).map(name => ({ name, exist: counts[name] }));
                     animalMutationsData.value = muts;
@@ -2113,66 +1913,6 @@
                 if (animal) {
                     selectAnimal(animal);
                 }
-            };
-
-            const deleteBrainrot = async () => {
-                if (!deletePlayerName.value || !deleteBrainrotName.value) { adminMessage.value = 'Fill all fields';
-                    adminMessageType.value = 'error'; return; }
-                const uid = playerIdsMap.value[deletePlayerName.value];
-                if (!uid) { adminMessage.value = 'Player not found';
-                    adminMessageType.value = 'error'; return; }
-                try {
-                    const r = db.ref('DataService/animals/' + uid);
-                    const snap = await r.once('value');
-                    const ua = snap.val();
-                    if (ua) {
-                        let na = [];
-                        if (Array.isArray(ua)) na = ua.filter(a => a && a.name !== deleteBrainrotName.value);
-                        else if (typeof ua === 'object') na = Object.keys(ua).map(k => ua[k]).filter(a => a && a
-                            .name !== deleteBrainrotName.value);
-                        await r.set(na);
-                        adminMessage.value = 'Brainrot deleted!';
-                        adminMessageType.value = 'success';
-                        setTimeout(() => { adminMessage.value = ''; }, 3000);
-                        loadAnimalData();
-                    }
-                } catch (e) { adminMessage.value = 'Error: ' + e.message;
-                    adminMessageType.value = 'error'; }
-            };
-
-            const addBrainrot = async () => {
-                if (!addPlayerName.value || !addBrainrotName.value) { adminMessage.value = 'Fill all fields';
-                    adminMessageType.value = 'error'; return; }
-                const uid = playerIdsMap.value[addPlayerName.value];
-                if (!uid) { adminMessage.value = 'Player not found';
-                    adminMessageType.value = 'error'; return; }
-                try {
-                    const r = db.ref('DataService/animals/' + uid);
-                    const snap = await r.once('value');
-                    let ua = snap.val() || [];
-                    if (!Array.isArray(ua)) { if (typeof ua === 'object') ua = Object.keys(ua).map(k => ua[k]);
-                        else ua = []; }
-                    const na = { name: addBrainrotName.value, exist: true, ownerId: uid, ownerName: addPlayerName
-                            .value, lastUpdate: Date.now() };
-                    if (addMutation.value && addMutation.value.trim() !== '') na.mutation = addMutation.value;
-                    if (addTrait.value && addTrait.value.trim() !== '') na.traits = [addTrait.value];
-                    ua.push(na);
-                    await r.set(ua);
-                    adminMessage.value = 'Brainrot added!';
-                    adminMessageType.value = 'success';
-                    addPlayerName.value = addBrainrotName.value = addMutation.value = addTrait.value = '';
-                    setTimeout(() => { adminMessage.value = ''; }, 3000);
-                    loadAnimalData();
-                } catch (e) { adminMessage.value = 'Error: ' + e.message;
-                    adminMessageType.value = 'error'; }
-            };
-
-            const openAdminPanel = () => { showAdminModal.value = true;
-                adminMessage.value = ''; };
-            const closeAdminPanel = () => {
-                showAdminModal.value = false;
-                deletePlayerName.value = deleteBrainrotName.value = addPlayerName.value = addBrainrotName.value =
-                    addMutation.value = addTrait.value = adminMessage.value = '';
             };
 
             const loadIconBase64 = async (name) => {
@@ -2514,63 +2254,90 @@
                 exportMessage.value = ''; };
 
             // ========== RARITY DATABASE ==========
-            // Сопоставление имени брейнрота с его редкостью (Common / Rare / Epic / Legendary /
-            // Mythic / Brainrot God / Secret / OG). Список собран по актуальным гайдам/вики игры
-            // "Steal a Brainrot" и не претендует на 100% полноту — в игре 470+ брейнротов, и
-            // разработчик добавляет новые почти каждую субботу. Если каких-то имён не хватает,
-            // их легко дописать сюда (ключ — точное имя, значение — одна из строк RARITY_ORDER).
+            // Редкости брейнротов больше не хранятся в коде и не берутся из DataService (Firebase).
+            // Вместо этого они читаются напрямую из локального файла Brainrots.txt — оригинального
+            // Lua-скрипта игры (лежит рядом с index.html) — при загрузке страницы. Это гарантирует,
+            // что редкости всегда актуальны и совпадают с тем, что реально в игре.
             const RARITY_ORDER = ['Common', 'Rare', 'Epic', 'Legendary', 'Mythic', 'Brainrot God', 'Secret', 'OG'];
-            const RARITY_MAP = {
-                // Common
-                'Noobini Pizzanini': 'Common', 'Lirili Larila': 'Common', 'Lirilì Larilà': 'Common',
-                'Tim Cheese': 'Common', 'FluriFlura': 'Common', 'Talpa Di Fero': 'Common',
-                'Svinina Bombardino': 'Common', 'Racooni Jandelini': 'Common', 'Pipi Kiwi': 'Common',
-                'Pipi Corni': 'Common',
-                // Rare
-                'Trippi Troppi': 'Rare', 'Gangster Footera': 'Rare', 'Bandito Bobritto': 'Rare',
-                'Boneca Ambalabu': 'Rare', 'Cacto Hipopotamo': 'Rare', 'Ta Ta Ta Ta Sahur': 'Rare',
-                'Tric Trac Baraboom': 'Rare', 'Pipi Avocado': 'Rare', 'Pinealotto Fruttarino': 'Rare',
-                // Epic
-                'Cappuccino Assassino': 'Epic', 'Brr Brr Patapim': 'Epic', 'Trulimero Trulicina': 'Epic',
-                'Bambini Crostini': 'Epic', 'Bananita Dolphinita': 'Epic', 'Perochello Lemonchello': 'Epic',
-                'Brri Brri Bicus Dicus Bombicus': 'Epic', 'Ti Ti Ti Sahur': 'Epic', 'Mummio Rappitto': 'Epic',
-                'Penguino Cocosino': 'Epic',
-                // Legendary
-                'Burbaloni Loliloli': 'Legendary', 'Chimpanzini Bananini': 'Legendary',
-                'Ballerina Cappuccina': 'Legendary', 'Seraphino Gruyero': 'Legendary',
-                'Puffaball': 'Legendary', 'Glorbo Fruttodillo': 'Legendary',
-                'Bombombini Gusini': 'Legendary',
-                // Mythic
-                'Frigo Camelo': 'Mythic', 'Berenjello Angello': 'Mythic', 'Los Noobinis': 'Mythic',
-                'Tob Tobi Tobi': 'Mythic',
-                // Brainrot God
-                'Cocofanto Elefanto': 'Brainrot God', 'Dumborino Miracello': 'Brainrot God',
-                'Nuclearo Dinossauro': 'Brainrot God', 'Los Combinasionas': 'Brainrot God',
-                // Secret
-                'Griffin': 'Secret', 'Jackorilla': 'Secret', 'La Vacca Saturno Saturnita': 'Secret',
-                'Celestial Pegasus': 'Secret', 'Cerberus': 'Secret', 'Capitano Moby': 'Secret',
-                'Dragon Cannelloni': 'Secret', 'Hydra Dragon Cannelloni': 'Secret',
-                'Dragon Gingerini': 'Secret', 'Chillin Chili': 'Secret', 'Chipso': 'Secret',
-                'Queso': 'Secret', 'Coffin Tung Tung Tung Sahur': 'Secret', 'Gold Elf': 'Secret',
-                // OG (все 6 подтверждённых)
-                'Strawberry Elephant': 'OG', 'Meowl': 'OG', 'Headless Horseman': 'OG',
-                'John Pork': 'OG', 'Spyder Elephant': 'OG', 'Skibidi Toilet': 'OG'
+
+            // Декодирует Lua-эскейпы вида \195\172 (десятичные байты UTF-8), которые Roblox использует
+            // для непечатаемых/юникодных символов в строках (например, "Liril\195\172 Laril\195\160").
+            const decodeLuaEscapes = (str) => {
+                return str.replace(/(?:\\\d{1,3})+/g, (seq) => {
+                    const bytes = (seq.match(/\\(\d{1,3})/g) || []).map(m => parseInt(m.slice(1), 10));
+                    try {
+                        return new TextDecoder('utf-8').decode(new Uint8Array(bytes));
+                    } catch (e) {
+                        return seq;
+                    }
+                });
             };
-            // Приводим произвольное значение редкости из DataService к единому написанию
-            // (совпадает по буквам, но игнорирует регистр — 'epic', 'EPIC', 'Epic' → 'Epic').
-            // Если пришло что-то незнакомое (например, новая редкость, добавленная в игру),
-            // просто аккуратно оформляем его (первая буква каждого слова заглавная) и используем как есть —
-            // фильтр редкости в списке подхватит его автоматически.
-            const normalizeRarityLabel = (raw) => {
-                const known = RARITY_ORDER.find(r => r.toLowerCase() === raw.toLowerCase());
-                if (known) return known;
-                return raw.replace(/\s+/g, ' ').trim().split(' ')
-                    .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+
+            // Разбирает содержимое Brainrots.txt (Lua-таблица брейнротов) и строит карту
+            // "имя брейнрота" -> "редкость". Понимает и ["Key"] = {...}, и bareKey = {...},
+            // и числовые ключи вида ["67"] = {...}. Достаточно надёжен для реального игрового
+            // скрипта: отслеживает глубину вложенных фигурных скобок, чтобы не перепутать поля
+            // вложенных таблиц (ObtainedFrom и т.д.) с полями самой записи брейнрота.
+            const parseBrainrotRarities = (text) => {
+                const map = {};
+                const lines = text.split('\n');
+                const entryStartRe = /^\s*(?:\["((?:[^"\\]|\\.)*)"\]|([A-Za-z_][A-Za-z0-9_]*))\s*=\s*\{/;
+
+                let i = 0;
+                while (i < lines.length) {
+                    const m = lines[i].match(entryStartRe);
+                    if (m) {
+                        const rawKey = m[1] !== undefined ? m[1] : m[2];
+                        const key = decodeLuaEscapes(rawKey);
+
+                        let depth = 0;
+                        let block = '';
+                        let j = i;
+                        for (; j < lines.length; j++) {
+                            const l = lines[j];
+                            for (const ch of l) {
+                                if (ch === '{') depth++;
+                                else if (ch === '}') depth--;
+                            }
+                            block += l + '\n';
+                            if (depth === 0) break;
+                        }
+
+                        const rarityMatch = block.match(/\[?"?Rarity"?\]?\s*=\s*"((?:[^"\\]|\\.)*)"/);
+                        const displayNameMatch = block.match(/\[?"?DisplayName"?\]?\s*=\s*"((?:[^"\\]|\\.)*)"/);
+
+                        if (rarityMatch) {
+                            const rarity = decodeLuaEscapes(rarityMatch[1]);
+                            map[key] = rarity;
+                            if (displayNameMatch) {
+                                map[decodeLuaEscapes(displayNameMatch[1])] = rarity;
+                            }
+                        }
+                        i = j + 1;
+                    } else {
+                        i++;
+                    }
+                }
+                return map;
             };
-            const getRarity = (name) => animalRarityData.value[name] || RARITY_MAP[name] || 'Unknown';
+
+            // Загружает Brainrots.txt (должен лежать в той же папке, что и index.html) и заполняет
+            // brainrotRarityMap. Вызывается один раз при старте приложения.
+            const loadBrainrotRarities = async () => {
+                try {
+                    const res = await fetch('Brainrots.txt', { cache: 'no-store' });
+                    if (!res.ok) throw new Error('HTTP ' + res.status);
+                    const text = await res.text();
+                    brainrotRarityMap.value = parseBrainrotRarities(text);
+                } catch (e) {
+                    console.error('Не удалось загрузить Brainrots.txt с редкостями:', e);
+                }
+            };
+
+            const getRarity = (name) => brainrotRarityMap.value[name] || 'Unknown';
             // Список редкостей для выпадающего фильтра: сначала известные тиры (в игровом порядке,
             // только те, что реально встречаются в текущих данных), затем любые новые/нестандартные
-            // значения из DataService по алфавиту, 'Unknown' — всегда последним.
+            // значения из Brainrots.txt по алфавиту, 'Unknown' — всегда последним.
             const availableRarities = computed(() => {
                 const present = new Set(animals.value.map(a => getRarity(a.name)));
                 const known = RARITY_ORDER.filter(r => present.has(r));
@@ -2741,37 +2508,18 @@
 
 
             onMounted(() => { checkAccess();
+                loadBrainrotRarities();
                 setTimeout(() => { if (loading.value) loading.value = false; }, 5000); });
             onUnmounted(() => {
                 if (dataListener && db) db.ref('DataService/animals').off();
-                if (db) db.ref('access_codes').off();
             });
 
             return {
                 hasAccess,
-                isAdmin,
                 requestSent,
                 errorMessage,
-                accessCodeInput,
-                clientIP,
-                checking,
-                showCodesModal,
-                accessCodes,
-                newCodeLimit,
-                codesMessage,
-                codesMessageType,
-                showAdminModal,
                 showExportModal,
                 showSettings,
-                adminTab,
-                adminMessage,
-                adminMessageType,
-                deletePlayerName,
-                deleteBrainrotName,
-                addPlayerName,
-                addBrainrotName,
-                addMutation,
-                addTrait,
                 exportData,
                 exportMessage,
                 exportCard,
@@ -2815,14 +2563,6 @@
                 mutPct,
                 mutPct2,
                 mutationColor,
-                requestAccess,
-                submitAccessCode,
-                openCodesPanel,
-                createCode,
-                deleteCode,
-                openAdminPanel,                closeAdminPanel,
-                deleteBrainrot,
-                addBrainrot,
                 downloadImage,
                 confirmDownload,
                 closeExportModal,

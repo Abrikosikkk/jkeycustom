@@ -1,0 +1,4498 @@
+--na ukraine vipal grad eto pupkin ninovat
+
+local v1 = game:GetService("ReplicatedStorage");
+local l_RunService_0 = game:GetService("RunService");
+local v2 = v1:WaitForChild("Datas")
+local v3 = require(v2.LuckyBlocks)
+require(v2.Rarities)
+local v4 = v1:WaitForChild("Shared")
+local v_u_6 = require(v4.Updates)
+local v6 = {
+	["Noobini Pizzanini"] = {
+		["DisplayName"] = "Noobini Pizzanini",
+		["Rarity"] = "Common",
+		["Price"] = 25,
+		["Generation"] = 1,
+		["RoadWeight"] = 95
+	},
+	["Liril\195\172 Laril\195\160"] = {
+		["DisplayName"] = "Liril\195\172 Laril\195\160",
+		["Rarity"] = "Common",
+		["Price"] = 250,
+		["Generation"] = 3,
+		["RoadWeight"] = 55
+	},
+	["Tim Cheese"] = {
+		["DisplayName"] = "Tim Cheese",
+		["Rarity"] = "Common",
+		["Price"] = 500,
+		["Generation"] = 5,
+		["RoadWeight"] = 50
+	},
+	["Fluriflura"] = {
+		["DisplayName"] = "Fluriflura",
+		["Rarity"] = "Common",
+		["Price"] = 750,
+		["Generation"] = 7,
+		["RoadWeight"] = 45
+	},
+	["Svinina Bombardino"] = {
+		["DisplayName"] = "Svinina Bombardino",
+		["Rarity"] = "Common",
+		["Price"] = 1250,
+		["Generation"] = 10,
+		["RoadWeight"] = 40
+	},
+	["Talpa Di Fero"] = {
+		["DisplayName"] = "Talpa Di Fero",
+		["Rarity"] = "Common",
+		["Price"] = 1000,
+		["Generation"] = 9,
+		["RoadWeight"] = 43
+	},
+	["Pipi Kiwi"] = {
+		["DisplayName"] = "Pipi Kiwi",
+		["Rarity"] = "Common",
+		["Price"] = 1500,
+		["Generation"] = 13,
+		["RoadWeight"] = 37
+	},
+	["Pipi Corni"] = {
+		["DisplayName"] = "Pipi Corni",
+		["Rarity"] = "Common",
+		["Price"] = 1750,
+		["Generation"] = 14
+	},
+	["Raccooni Jandelini"] = {
+		["DisplayName"] = "Raccooni Jandelini",
+		["Rarity"] = "Common",
+		["Price"] = 1350,
+		["Generation"] = 12,
+		["IgnoreIndexCounter"] = true
+	},
+	["Trippi Troppi"] = {
+		["DisplayName"] = "Trippi Troppi",
+		["Rarity"] = "Rare",
+		["Price"] = 2000,
+		["Generation"] = 15,
+		["RoadWeight"] = 30
+	},
+	["Tung Tung Tung Sahur"] = {
+		["DisplayName"] = "Tung Tung Tung Sahur",
+		["Rarity"] = "Rare",
+		["Price"] = 3000,
+		["Generation"] = 25,
+		["RoadWeight"] = 27
+	},
+	["Gangster Footera"] = {
+		["DisplayName"] = "Gangster Footera",
+		["Rarity"] = "Rare",
+		["Price"] = 4000,
+		["Generation"] = 30,
+		["RoadWeight"] = 25
+	},
+	["Boneca Ambalabu"] = {
+		["DisplayName"] = "Boneca Ambalabu",
+		["Rarity"] = "Rare",
+		["Price"] = 5000,
+		["Generation"] = 40,
+		["RoadWeight"] = 20
+	},
+	["Ta Ta Ta Ta Sahur"] = {
+		["DisplayName"] = "Ta Ta Ta Ta Sahur",
+		["Rarity"] = "Rare",
+		["Price"] = 7500,
+		["Generation"] = 55,
+		["RoadWeight"] = 17
+	},
+	["Tric Trac Baraboom"] = {
+		["DisplayName"] = "Tric Trac Baraboom",
+		["Rarity"] = "Rare",
+		["Price"] = 36000,
+		["Generation"] = 65,
+		["RoadWeight"] = 15
+	},
+	["Malame Amarele"] = {
+		["DisplayName"] = "Malame Amarele",
+		["Rarity"] = "Epic",
+		["Price"] = 23500,
+		["Generation"] = 140
+	},
+	["Bandito Axolito"] = {
+		["DisplayName"] = "Bandito Axolito",
+		["Rarity"] = "Legendary",
+		["Price"] = 12500,
+		["Generation"] = 1200
+	},
+	["Bandito Bobritto"] = {
+		["DisplayName"] = "Bandito Bobritto",
+		["Rarity"] = "Rare",
+		["Price"] = 4500,
+		["Generation"] = 35,
+		["RoadWeight"] = 22.5
+	},
+	["Recolor Bobritto"] = {
+		["DisplayName"] = "Recolor Bobritto",
+		["Rarity"] = "Mythic",
+		["Price"] = 1000000,
+		["Generation"] = 16000,
+	},
+	["Cacto Hipopotamo"] = {
+		["DisplayName"] = "Cacto Hipopotamo",
+		["Rarity"] = "Rare",
+		["Price"] = 6500,
+		["Generation"] = 50,
+		["RoadWeight"] = 18.5
+	},
+	["Pipi Avocado"] = {
+		["DisplayName"] = "Pipi Avocado",
+		["Rarity"] = "Rare",
+		["Price"] = 9500,
+		["Generation"] = 70
+	},
+	["Cappuccino Assassino"] = {
+		["DisplayName"] = "Cappuccino Assassino",
+		["Rarity"] = "Epic",
+		["Price"] = 10000,
+		["Generation"] = 75,
+		["RoadWeight"] = 13
+	},
+	["Brr Brr Patapim"] = {
+		["DisplayName"] = "Brr Brr Patapim",
+		["Rarity"] = "Epic",
+		["Price"] = 15000,
+		["Generation"] = 100,
+		["RoadWeight"] = 10
+	},
+	["Trulimero Trulicina"] = {
+		["DisplayName"] = "Trulimero Trulicina",
+		["Rarity"] = "Epic",
+		["Price"] = 20000,
+		["Generation"] = 125,
+		["RoadWeight"] = 7
+	},
+	["Bananita Dolphinita"] = {
+		["DisplayName"] = "Bananita Dolphinita",
+		["Rarity"] = "Epic",
+		["Price"] = 25000,
+		["Generation"] = 150,
+		["RoadWeight"] = 5
+	},
+	["Brri Brri Bicus Dicus Bombicus"] = {
+		["DisplayName"] = "Brri Brri Bicus Dicus Bombicus",
+		["Rarity"] = "Epic",
+		["Price"] = 30000,
+		["Generation"] = 175,
+		["RoadWeight"] = 3.5
+	},
+	["Bambini Crostini"] = {
+		["DisplayName"] = "Bambini Crostini",
+		["Rarity"] = "Epic",
+		["Price"] = 22500,
+		["Generation"] = 135,
+		["RoadWeight"] = 6
+	},
+	["Perochello Lemonchello"] = {
+		["DisplayName"] = "Perochello Lemonchello",
+		["Rarity"] = "Epic",
+		["Price"] = 27500,
+		["Generation"] = 160,
+		["RoadWeight"] = 4.5
+	},
+	["Avocadini Guffo"] = {
+		["DisplayName"] = "Avocadini Guffo",
+		["Rarity"] = "Epic",
+		["Price"] = 35000,
+		["Generation"] = 225,
+		["RoadWeight"] = 3
+	},
+	["Salamino Penguino"] = {
+		["DisplayName"] = "Salamino Penguino",
+		["Rarity"] = "Epic",
+		["Price"] = 40000,
+		["Generation"] = 250,
+		["RoadWeight"] = 2.5
+	},
+	["Ti Ti Ti Sahur"] = {
+		["DisplayName"] = "Ti Ti Ti Sahur",
+		["Rarity"] = "Epic",
+		["Price"] = 37500,
+		["Generation"] = 225
+	},
+	["Penguino Cocosino"] = {
+		["DisplayName"] = "Penguino Cocosino",
+		["Rarity"] = "Epic",
+		["Price"] = 45000,
+		["Generation"] = 300
+	},
+	["Avocadini Antilopini"] = {
+		["DisplayName"] = "Avocadini Antilopini",
+		["Rarity"] = "Epic",
+		["Price"] = 17500,
+		["Generation"] = 115,
+		["RoadWeight"] = 8.5,
+	},
+	["Burbaloni Loliloli"] = {
+		["DisplayName"] = "Burbaloni Loliloli",
+		["Rarity"] = "Legendary",
+		["Price"] = 35000,
+		["Generation"] = 200,
+		["RoadWeight"] = 1
+	},
+	["Chimpanzini Bananini"] = {
+		["DisplayName"] = "Chimpanzini Bananini",
+		["Rarity"] = "Legendary",
+		["Price"] = 50000,
+		["Generation"] = 300,
+		["RoadWeight"] = 0.75
+	},
+	["Big Pizzanini"] = {
+		["DisplayName"] = "Big Pizzanini",
+		["Rarity"] = "Legendary",
+		["Price"] = 450000,
+		["Generation"] = 1000,
+		["RoadWeight"] = 0.05
+	},
+	["Ballerina Cappuccina"] = {
+		["DisplayName"] = "Ballerina Cappuccina",
+		["Rarity"] = "Legendary",
+		["Price"] = 100000,
+		["Generation"] = 500,
+		["RoadWeight"] = 0.55
+	},
+	["Chef Crabracadabra"] = {
+		["DisplayName"] = "Chef Crabracadabra",
+		["Rarity"] = "Legendary",
+		["Price"] = 150000,
+		["Generation"] = 600,
+		["RoadWeight"] = 0.5
+	},
+	["Glorbo Fruttodrillo"] = {
+		["DisplayName"] = "Glorbo Fruttodrillo",
+		["Rarity"] = "Legendary",
+		["Price"] = 200000,
+		["Generation"] = 750,
+		["RoadWeight"] = 0.45
+	},
+	["Blueberrinni Octopusini"] = {
+		["DisplayName"] = "Blueberrinni Octopusini",
+		["Rarity"] = "Legendary",
+		["Price"] = 250000,
+		["Generation"] = 1000,
+		["RoadWeight"] = 0.4
+	},
+	["Lionel Cactuseli"] = {
+		["DisplayName"] = "Lionel Cactuseli",
+		["Rarity"] = "Legendary",
+		["Price"] = 175000,
+		["Generation"] = 650,
+		["RoadWeight"] = 0.47
+	},
+	["Pandaccini Bananini"] = {
+		["DisplayName"] = "Pandaccini Bananini",
+		["Rarity"] = "Legendary",
+		["Price"] = 300000,
+		["Generation"] = 1250,
+		["RoadWeight"] = 0.35
+	},
+	["Strawberrelli Flamingelli"] = {
+		["DisplayName"] = "Strawberrelli Flamingelli",
+		["Rarity"] = "Legendary",
+		["Price"] = 275000,
+		["Generation"] = 1150,
+		["RoadWeight"] = 0.37
+	},
+	["Cocosini Mama"] = {
+		["DisplayName"] = "Cocosini Mama",
+		["Rarity"] = "Legendary",
+		["Price"] = 285000,
+		["Generation"] = 1200
+	},
+	["Pi Pi Watermelon"] = {
+		["DisplayName"] = "Pi Pi Watermelon",
+		["Rarity"] = "Legendary",
+		["Price"] = 315000,
+		["Generation"] = 1300
+	},
+	["Sigma Boy"] = {
+		["DisplayName"] = "Sigma Boy",
+		["Rarity"] = "Legendary",
+		["Price"] = 325000,
+		["Generation"] = 1350,
+		["RoadWeight"] = 0.3
+	},
+	["Sigma Girl"] = {
+		["DisplayName"] = "Sigma Girl",
+		["Rarity"] = "Legendary",
+		["Price"] = 340000,
+		["Generation"] = 3600
+	},
+	["Pipi Potato"] = {
+		["DisplayName"] = "Pipi Potato",
+		["Rarity"] = "Legendary",
+		["Price"] = 265000,
+		["Generation"] = 1100,
+		["RoadWeight"] = 0.385
+	},
+	["Quivioli Ameleonni"] = {
+		["DisplayName"] = "Quivioli Ameleonni",
+		["Rarity"] = "Legendary",
+		["Price"] = 225000,
+		["Generation"] = 3600,
+		["RoadWeight"] = 0.425,
+	},
+	["Frigo Camelo"] = {
+		["DisplayName"] = "Frigo Camelo",
+		["Rarity"] = "Mythic",
+		["Price"] = 350000,
+		["Generation"] = 1400,
+		["RoadWeight"] = 0.2
+	},
+	["Anomali"] = {
+		["DisplayName"] = "Anomali",
+		["Rarity"] = "Mythic",
+		["Price"] = 750000,
+		["Generation"] = 4405,
+		["RoadWeight"] = 0.1
+	},
+	["Orangutini Ananassini"] = {
+		["DisplayName"] = "Orangutini Ananassini",
+		["Rarity"] = "Mythic",
+		["Price"] = 400000,
+		["Generation"] = 1750,
+		["RoadWeight"] = 0.18
+	},
+	["Bombardiro Crocodilo"] = {
+		["DisplayName"] = "Bombardiro Crocodilo",
+		["Rarity"] = "Mythic",
+		["Price"] = 500000,
+		["Generation"] = 2500,
+		["RoadWeight"] = 0.15
+	},
+	["Bombombini Gusini"] = {
+		["DisplayName"] = "Bombombini Gusini",
+		["Rarity"] = "Mythic",
+		["Price"] = 1000000,
+		["Generation"] = 5000,
+		["RoadWeight"] = 0.14
+	},
+	["Rhino Toasterino"] = {
+		["DisplayName"] = "Rhino Toasterino",
+		["Rarity"] = "Mythic",
+		["Price"] = 450000,
+		["Generation"] = 2150,
+		["RoadWeight"] = 0.16
+	},
+	["Cavallo Virtuoso"] = {
+		["DisplayName"] = "Cavallo Virtuoso",
+		["Rarity"] = "Mythic",
+		["Price"] = 2500000,
+		["Generation"] = 7500,
+		["RoadWeight"] = 0.1
+	},
+	["Spioniro Golubiro"] = {
+		["DisplayName"] = "Spioniro Golubiro",
+		["Rarity"] = "Mythic",
+		["Price"] = 750000,
+		["Generation"] = 3500
+	},
+	["Zibra Zubra Zibralini"] = {
+		["DisplayName"] = "Zibra Zubra Zibralini",
+		["Rarity"] = "Mythic",
+		["Price"] = 1500000,
+		["Generation"] = 6000
+	},
+	["Tigrilini Watermelini"] = {
+		["DisplayName"] = "Tigrilini Watermelini",
+		["Rarity"] = "Mythic",
+		["Price"] = 1750000,
+		["Generation"] = 6500
+	},
+	["Gorillo Watermelondrillo"] = {
+		["DisplayName"] = "Gorillo Watermelondrillo",
+		["Rarity"] = "Mythic",
+		["Price"] = 3000000,
+		["Generation"] = 8000,
+		["RoadWeight"] = 0.08
+	},
+	["Avocadorilla"] = {
+		["DisplayName"] = "Avocadorilla",
+		["Rarity"] = "Mythic",
+		["Price"] = 2000000,
+		["Generation"] = 7000
+	},
+	["Ganganzelli Trulala"] = {
+		["DisplayName"] = "Ganganzelli Trulala",
+		["Rarity"] = "Mythic",
+		["Price"] = 3750000,
+		["Generation"] = 36000
+	},
+	["Tob Tobi Tobi"] = {
+		["DisplayName"] = "Tob Tobi Tobi",
+		["Rarity"] = "Mythic",
+		["Price"] = 3250000,
+		["Generation"] = 8500
+	},
+	["Te Te Te Sahur"] = {
+		["DisplayName"] = "Te Te Te Sahur",
+		["Rarity"] = "Mythic",
+		["Price"] = 4000000,
+		["Generation"] = 9500,
+		["RoadWeight"] = 0.07
+	},
+	["Tracoducotulu Delapeladustuz"] = {
+		["DisplayName"] = "Tracoducotulu Delapeladustuz",
+		["Rarity"] = "Mythic",
+		["Price"] = 4250000,
+		["Generation"] = 12000,
+		["RoadWeight"] = 0.06
+	},
+	["Lerulerulerule"] = {
+		["DisplayName"] = "Lerulerulerule",
+		["Rarity"] = "Mythic",
+		["Price"] = 3500000,
+		["Generation"] = 8750,
+		["RoadWeight"] = 0.75
+	},
+	["Carloo"] = {
+		["DisplayName"] = "Carloo",
+		["Rarity"] = "Mythic",
+		["Price"] = 4500000,
+		["Generation"] = 13500,
+		["IgnoreIndexCounter"] = true
+	},
+	["Sybau Sahur"] = {
+		["DisplayName"] = "Sybau Sahur",
+		["Rarity"] = "Mythic",
+		["Price"] = 6500000,
+		["Generation"] = 83500,
+		["IgnoreIndexCounter"] = true
+	},
+	["Carrotini Brainini"] = {
+		["DisplayName"] = "Carrotini Brainini",
+		["Rarity"] = "Mythic",
+		["Price"] = 4750000,
+		["Generation"] = 15000,
+	},
+	["Cocofanto Elefanto"] = {
+		["DisplayName"] = "Cocofanto Elefanto",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 5000000,
+		["Generation"] = 17500,
+		["RoadWeight"] = 0.05
+	},
+	["Recolor Dragon"] = {
+		["DisplayName"] = "Recolor Dragon",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 15000000,
+		["Generation"] = 275000
+	},
+	["Tralalero Tralala"] = {
+		["DisplayName"] = "Tralalero Tralala",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 10000000,
+		["Generation"] = 50000,
+		["RoadWeight"] = 0.01
+	},
+	["Recolor Tralalero"] = {
+		["DisplayName"] = "Recolor Tralalero",
+		["Rarity"] = "Secret",
+		["Price"] = 10000000000,
+		["Generation"] = 100000000
+	},
+	["Odin Din Din Dun"] = {
+		["DisplayName"] = "Odin Din Din Dun",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 15000000,
+		["Generation"] = 75000,
+		["RoadWeight"] = 0.007
+	},
+	["Pomidorini Anaktuzini"] = {
+		["DisplayName"] = "Pomidorini Anaktuzini",
+		["Rarity"] = "Secret",
+		["Price"] = 250000000,
+		["Generation"] = 350000,
+		["RoadWeight"] = 0.0001
+	},
+	["Girafa Celestre"] = {
+		["DisplayName"] = "Girafa Celestre",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 7500000,
+		["Generation"] = 20000,
+		["RoadWeight"] = 0.03
+	},
+	["Trenostruzzo Turbo 3000"] = {
+		["DisplayName"] = "Trenostruzzo Turbo 3000",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 25000000,
+		["Generation"] = 150000,
+		["RoadWeight"] = 0.005
+	},
+	["Matteo"] = {
+		["DisplayName"] = "Matteo",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 10000000,
+		["Generation"] = 50000,
+		["IgnoreIndexCounter"] = true,
+		["SpawnVFX"] = "Matteo",
+		["SpawnDelay"] = 3
+	},
+	["Tigroligre Frutonni"] = {
+		["DisplayName"] = "Tigroligre Frutonni",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 14000000,
+		["Generation"] = 60000
+	},
+	["Orcalero Orcala"] = {
+		["DisplayName"] = "Orcalero Orcala",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 25000000,
+		["Generation"] = 100000
+	},
+	["Unclito Samito"] = {
+		["DisplayName"] = "Unclito Samito",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 20000000,
+		["Generation"] = 75000,
+		["IgnoreIndexCounter"] = true
+	},
+	["Gattatino Nyanino"] = {
+		["DisplayName"] = "Gattatino Nyanino",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 7500000,
+		["Generation"] = 35000,
+		["IgnoreIndexCounter"] = true,
+		["SpawnVFX"] = "Gattatino Nyanino",
+		["SpawnDelay"] = 9
+	},
+	["Espresso Signora"] = {
+		["DisplayName"] = "Espresso Signora",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 25000000,
+		["Generation"] = 70000,
+		["IgnoreIndexCounter"] = true
+	},
+	["Ballerino Lololo"] = {
+		["DisplayName"] = "Ballerino Lololo",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 35000000,
+		["Generation"] = 200000,
+		["RoadWeight"] = 0.0001
+	},
+	["Piccione Macchina"] = {
+		["DisplayName"] = "Piccione Macchina",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 40000000,
+		["Generation"] = 225000,
+		["RoadWeight"] = 0.0008
+	},
+	["Los Crocodillitos"] = {
+		["DisplayName"] = "Los Crocodillitos",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 12500000,
+		["Generation"] = 55000
+	},
+	["Tukanno Bananno"] = {
+		["DisplayName"] = "Tukanno Bananno",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 22500000,
+		["Generation"] = 100000
+	},
+	["Trippi Troppi Troppa Trippa"] = {
+		["DisplayName"] = "Trippi Troppi Troppa Trippa",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 30000000,
+		["Generation"] = 175000,
+		["RoadWeight"] = 0.0035
+	},
+	["Los Tungtungtungcitos"] = {
+		["DisplayName"] = "Los Tungtungtungcitos",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 37500000,
+		["Generation"] = 210000
+	},
+	["Bulbito Bandito Traktorito"] = {
+		["DisplayName"] = "Bulbito Bandito Traktorito",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 35000000,
+		["Generation"] = 205000,
+		["IgnoreIndexCounter"] = true
+	},
+	["Los Orcalitos"] = {
+		["DisplayName"] = "Los Orcalitos",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 45000000,
+		["Generation"] = 235000
+	},
+	["Tipi Topi Taco"] = {
+		["DisplayName"] = "Tipi Topi Taco",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 20000000,
+		["Generation"] = 75000,
+		["IgnoreIndexCounter"] = true,
+		["SpawnVFX"] = "Taco",
+		["SpawnDelay"] = 3
+	},
+	["Bombardini Tortinii"] = {
+		["DisplayName"] = "Bombardini Tortinii",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 50000000,
+		["Generation"] = 225000,
+		["IgnoreIndexCounter"] = true,
+		["SpawnVFX"] = "Taco",
+		["SpawnDelay"] = 3,
+	},
+	["Tralalita Tralala"] = {
+		["DisplayName"] = "Tralalita Tralala",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 20000000,
+		["Generation"] = 100000,
+		["RoadWeight"] = 0.006
+	},
+	["Friliri Fralira"] = {
+		["DisplayName"] = "Friliri Fralira",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 60000000,
+		["Generation"] = 340000,
+		["RoadWeight"] = 0.008
+	},
+	["Urubini Flamenguini"] = {
+		["DisplayName"] = "Urubini Flamenguini",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 30000000,
+		["Generation"] = 150000,
+		["IgnoreIndexCounter"] = true
+	},
+	["Belula Beluga"] = {
+		["DisplayName"] = "Belula Beluga",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 60000000,
+		["Generation"] = 236000
+	},
+	["Alessio"] = {
+		["DisplayName"] = "Alessio",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 17500000,
+		["Generation"] = 85000,
+		["IgnoreIndexCounter"] = true
+	},
+	["Pakrahmatmamat"] = {
+		["DisplayName"] = "Pakrahmatmamat",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 37500000,
+		["Generation"] = 215000,
+		["RoadWeight"] = 0.0009
+	},
+	["Los Bombinitos"] = {
+		["DisplayName"] = "Los Bombinitos",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 42500000,
+		["Generation"] = 220000,
+		["IgnoreIndexCounter"] = true
+	},
+	["Brr es Teh Patipum"] = {
+		["DisplayName"] = "Brr es Teh Patipum",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 40000000,
+		["Generation"] = 225000
+	},
+	["Tartaruga Cisterna"] = {
+		["DisplayName"] = "Tartaruga Cisterna",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 45000000,
+		["Generation"] = 250000
+	},
+	["Cacasito Satalito"] = {
+		["DisplayName"] = "Cacasito Satalito",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 45000000,
+		["Generation"] = 240000,
+		["RoadWeight"] = 0.0006,
+	},
+	["Mastodontico Telepiedone"] = {
+		["DisplayName"] = "Mastodontico Telepiedone",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 47500000,
+		["Generation"] = 275000,
+	},
+	["Crabbo Limonetta"] = {
+		["DisplayName"] = "Crabbo Limonetta",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 46000000,
+		["Generation"] = 235000,
+		["IgnoreIndexCounter"] = true,
+	},
+	["La Vacca Saturno Saturnita"] = {
+		["DisplayName"] = "La Vacca Saturno Saturnita",
+		["Rarity"] = "Secret",
+		["Price"] = 50000000,
+		["Generation"] = 300000,
+		["RoadWeight"] = 0.0005
+	},
+	["La Vacca Saturnita Better"] = {
+		["DisplayName"] = "La Vacca Saturnita Better",
+		["Rarity"] = "Better",
+		["Price"] = 2500000000,
+		["Generation"] = 8400000
+	},
+	["Los Tralaleritos"] = {
+		["DisplayName"] = "Los Tralaleritos",
+		["Rarity"] = "Secret",
+		["Price"] = 100000000,
+		["Generation"] = 500000,
+		["RoadWeight"] = 0.0001
+	},
+	["Graipuss Medussi"] = {
+		["DisplayName"] = "Graipuss Medussi",
+		["Rarity"] = "Secret",
+		["Price"] = 250000000,
+		["Generation"] = 1000000,
+		["RoadWeight"] = 1e-6
+	},
+	["Recolor Graipuss"] = {
+		["DisplayName"] = "Recolor Graipuss",
+		["Rarity"] = "Legendary",
+		["Price"] = 45000,
+		["Generation"] = 930,
+	},
+	["La Grande Combinasion"] = {
+		["DisplayName"] = "La Grande Combinasion",
+		["Rarity"] = "Secret",
+		["OverheadYOffsetModifier"] = 0.8,
+		["Price"] = 1000000000,
+		["Generation"] = 10000000,
+		["RoadWeight"] = 1e-8
+	},
+	["La Mobilis Combinasion"] = {
+		["DisplayName"] = "La Mobilis Combinasion",
+		["Rarity"] = "Secret",
+		["OverheadYOffsetModifier"] = 0.8,
+		["Price"] = 2500000000,
+		["Generation"] = 25000000
+	},
+	["Garama and Madundung"] = {
+		["DisplayName"] = "Garama and Madundung",
+		["Rarity"] = "Secret",
+		["Price"] = 10000000000,
+		["Generation"] = 50000000,
+		["RoadWeight"] = 1e-10
+	},
+	["Rainbow Pupkin"] = {
+		["DisplayName"] = "Rainbow Pupkin",
+		["Rarity"] = "Secret",
+		["Price"] = 50000000,
+		["Generation"] = 5000000
+	},
+	["Tevo and Remo"] = {
+		["DisplayName"] = "Tevo and Remo",
+		["Rarity"] = "Secret",
+		["Price"] = 27000000000,
+		["Generation"] = 67000000
+	},
+	["Festive Garama and Madundung"] = {
+		["DisplayName"] = "Festive Garama and Madundung",
+		["Rarity"] = "Secret",
+		["Price"] = 360000000,
+		["Generation"] = 9300000,
+	},
+	["Torrtuginni Dragonfrutini"] = {
+		["DisplayName"] = "Torrtuginni Dragonfrutini",
+		["Rarity"] = "Secret",
+		["Price"] = 125000000,
+		["Generation"] = 350000
+	},
+	["Tipi Topi Mango"] = {
+		["DisplayName"] = "Tipi Topi Mango",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 20000000,
+		["Generation"] = 75000
+	},
+	["Los Tipi Mangos"] = {
+		["DisplayName"] = "Los Tipi Mangos",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 46000000,
+		["Generation"] = 260000
+	},
+	["Gattito Mangoto"] = {
+		["DisplayName"] = "Gattito Mangoto",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 32500000,
+		["Generation"] = 160000
+	},
+	["Las Tralaleritas"] = {
+		["DisplayName"] = "Las Tralaleritas",
+		["Rarity"] = "Secret",
+		["Price"] = 150000000,
+		["Generation"] = 650000,
+		["RoadWeight"] = 0.00007
+	},
+	["Las Orcalitas"] = {
+		["DisplayName"] = "Las Orcalitos",
+		["Rarity"] = "Secret",
+		["Price"] = 450000000,
+		["Generation"] = 2650000,
+		["RoadWeight"] = 0.00003
+	},
+	["Pot Hotspot"] = {
+		["DisplayName"] = "Pot Hotspot",
+		["Rarity"] = "Secret",
+		["Price"] = 600000000,
+		["Generation"] = 2500000
+	},
+	["Nuclearo Dinossauro"] = {
+		["DisplayName"] = "Nuclearo Dinossauro",
+		["Rarity"] = "Secret",
+		["Price"] = 2500000000,
+		["Generation"] = 15000000,
+		["RoadWeight"] = 1e-10
+	},
+	["Las Vaquitas Saturnitas"] = {
+		["DisplayName"] = "Las Vaquitas Saturnitas",
+		["Rarity"] = "Secret",
+		["Price"] = 200000000,
+		["Generation"] = 750000
+	},
+	["Chicleteira Bicicleteira"] = {
+		["DisplayName"] = "Chicleteira Bicicleteira",
+		["Rarity"] = "Secret",
+		["Price"] = 750000000,
+		["Generation"] = 3500000,
+		["RoadWeight"] = 1e-10,
+	},
+	["Agarrini la Palini"] = {
+		["DisplayName"] = "Agarrini la Palini",
+		["Rarity"] = "Secret",
+		["Price"] = 80000000,
+		["Generation"] = 425000
+	},
+	["Bombardiro Enotiro"] = {
+		["DisplayName"] = "Bombardiro Enotiro",
+		["Rarity"] = "Secret",
+		["Price"] = 645500000,
+		["Generation"] = 5425000
+	},
+	["Los Combinasionas"] = {
+		["DisplayName"] = "Los Combinasionas",
+		["Rarity"] = "Secret",
+		["Price"] = 2000000000,
+		["Generation"] = 15000000
+	},
+	["Las Combinasionas"] = {
+		["DisplayName"] = "Las Combinasionas",
+		["Rarity"] = "Secret",
+		["Price"] = 2250000000,
+		["Generation"] = 20000000
+	},
+	["La Grinde Combinasion"] = {
+		["DisplayName"] = "La Grinde Combinasion",
+		["Rarity"] = "Secret",
+		["Price"] = 3250000000,
+		["Generation"] = 30000000
+	},
+	["Karkerkar Kurkur"] = {
+		["DisplayName"] = "Karkerkar Kurkur",
+		["Rarity"] = "Secret",
+		["Price"] = 100000000,
+		["Generation"] = 300000,
+		["IgnoreIndexCounter"] = true,
+		["SpawnVFX"] = "Karkerkar Kurkur",
+		["SpawnDelay"] = 3
+	},
+	["Dragon Cannelloni"] = {
+		["DisplayName"] = "Dragon Cannelloni",
+		["Rarity"] = "Secret",
+		["Price"] = 200000000000,
+		["Generation"] = 200000000,
+		["RoadWeight"] = 1e-12
+	},
+	["Calc Blud"] = {
+		["DisplayName"] = "Calc Blud",
+		["Rarity"] = "Secret",
+		["Price"] = 167000000000,
+		["Generation"] = 167000000,
+	},
+	["123"] = {
+		["DisplayName"] = "123",
+		["Rarity"] = "Secret",
+		["Price"] = 123000000000,
+		["Generation"] = 123000000,
+		["RoadWeight"] = 6.7e-14
+	},
+	["Ice Cannelloni"] = {
+		["DisplayName"] = "Ice Cannelloni",
+		["Rarity"] = "Secret",
+		["Price"] = 350000000000,
+		["Generation"] = 350000000,
+		["RoadWeight"] = 1e-15
+	},
+	["Chickeno Drip"] = {
+		["DisplayName"] = "Chickeno Drip",
+		["Rarity"] = "Secret",
+		["Price"] = 370000000000,
+		["Generation"] = 370000000,
+		["RoadWeight"] = 1e-16
+	},
+	["Cannelloni Skeletoni"] = {
+		["DisplayName"] = "Cannelloni Skeletoni",
+		["Rarity"] = "Secret",
+		["Price"] = 200000000000,
+		["Generation"] = 200000000,
+		["RoadWeight"] = 1e-12
+	},
+	["Big Dragon Cannelloni"] = {
+		["DisplayName"] = "Big Dragon Cannelloni",
+		["Rarity"] = "Common",
+		["Price"] = 1,
+		["Generation"] = 1,
+		["RoadWeight"] = 1e-13,
+		["HideFromIndex"] = true
+	},
+	["Blackbord Lavagna"] = {
+		["DisplayName"] = "Blackbord Lavagna",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 54000000,
+		["Generation"] = 160000
+	},
+	["Chache Chicha"] = {
+		["DisplayName"] = "Chache Chicha",
+		["Rarity"] = "Secret",
+		["Price"] = 360000000,
+		["Generation"] = 1425000
+	},
+	["Los Hotspotsitos"] = {
+		["DisplayName"] = "Los Hotspotsitos",
+		["Rarity"] = "Secret",
+		["Price"] = 3000000000,
+		["Generation"] = 20000000,
+		["IgnoreIndexCounter"] = true
+	},
+	["Esok Sekolah"] = {
+		["DisplayName"] = "Esok Sekolah",
+		["Rarity"] = "Secret",
+		["Price"] = 3500000000,
+		["Generation"] = 30000000,
+		["IgnoreIndexCounter"] = true
+	},
+	
+	["Devil Sekolah"] = {
+		["DisplayName"] = "Devil Sekolah",
+		["Rarity"] = "Secret",
+		["Price"] = 5500000000,
+		["Generation"] = 50000000,
+		["IgnoreIndexCounter"] = true,
+		["RoadWeight"] = 5.0e-13
+	},
+	
+	["Los Sekolitos"] = {
+		["DisplayName"] = "Los Sekolitos",
+		["Rarity"] = "Secret",
+		["Price"] = 7500000000,
+		["Generation"] = 55000000,
+		["IgnoreIndexCounter"] = true
+	},
+	
+	["Nooo My Hotspot"] = {
+		["DisplayName"] = "Nooo My Hotspot",
+		["Rarity"] = "Secret",
+		["Price"] = 500000000,
+		["Generation"] = 1500000,
+		["IgnoreIndexCounter"] = true,
+		["SpawnVFX"] = "Taco",
+		["SpawnDelay"] = 3
+	},
+	["Los Matteos"] = {
+		["DisplayName"] = "Los Matteos",
+		["Rarity"] = "Secret",
+		["Price"] = 100000000,
+		["Generation"] = 300000,
+		["IgnoreIndexCounter"] = true,
+		["SpawnVFX"] = "Matteo",
+		["SpawnDelay"] = 3
+	},
+	["Job Job Job Sahur"] = {
+		["DisplayName"] = "Job Job Job Sahur",
+		["Rarity"] = "Secret",
+		["Price"] = 175000000,
+		["Generation"] = 700000,
+		["RoadWeight"] = 5e-6
+	},
+	["Dul Dul Dul"] = {
+		["DisplayName"] = "Dul Dul Dul",
+		["Rarity"] = "Secret",
+		["Price"] = 150000000,
+		["Generation"] = 375000,
+		["IgnoreIndexCounter"] = true
+	},
+	["Chicleteira"] = {
+		["DisplayName"] = "Chicleteira",
+		["Rarity"] = "Secret",
+		["Price"] = 500000000,
+		["Generation"] = 2000000,
+		["RoadWeight"] = 1e-7
+	},
+	["Blackhole Goat"] = {
+		["DisplayName"] = "Blackhole Goat",
+		["Rarity"] = "Secret",
+		["Price"] = 75000000,
+		["Generation"] = 400000,
+		["IgnoreIndexCounter"] = true
+	},
+	["Dogini Defaltini"] = {
+		["DisplayName"] = "Dogini Defaltini",
+		["Rarity"] = "Secret",
+		["Price"] = 105000000,
+		["Generation"] = 750000,
+		["IgnoreIndexCounter"] = true
+	},
+	["Los Spyderinis"] = {
+		["DisplayName"] = "Los Spyderinis",
+		["Rarity"] = "Secret",
+		["Price"] = 360000000,
+		["Generation"] = 425000,
+		["IgnoreIndexCounter"] = true,
+		["SpawnVFX"] = "Los Spyderinis",
+		["SpawnDelay"] = 3.5
+	},
+	["Ketupat Kepat"] = {
+		["DisplayName"] = "Ketupat Kepat",
+		["Rarity"] = "Secret",
+		["Price"] = 5000000000,
+		["Generation"] = 35000000,
+		["RoadWeight"] = 5e-11
+	},
+	["Raccooni Pupkinini"] = {
+		["DisplayName"] = "Raccooni Pupkinini",
+		["Rarity"] = "Secret",
+		["Price"] = 5000000000,
+		["Generation"] = 35000000,
+		["RoadWeight"] = 5e-11
+	},
+	["Extinct Tralalero"] = {
+		["DisplayName"] = "Extinct Tralalero",
+		["Rarity"] = "Secret",
+		["Price"] = 125000000,
+		["TriggerEvent"] = "Extinct",
+		["SpawnVFX"] = "Extinct",
+		["Generation"] = 450000,
+	},
+	["Extinct Ballerina"] = {
+		["DisplayName"] = "Extinct Ballerina",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 23500000,
+		["TriggerEvent"] = "Extinct",
+		["SpawnVFX"] = "Extinct",
+		["Generation"] = 125000,
+	},
+	["Extinct Matteo"] = {
+		["DisplayName"] = "Extinct Matteo",
+		["Rarity"] = "Secret",
+		["Price"] = 140000000,
+		["TriggerEvent"] = "Extinct",
+		["SpawnVFX"] = "Extinct",
+		["Generation"] = 625000,
+	},
+	["67"] = {
+		["DisplayName"] = "67",
+		["Rarity"] = "Secret",
+		["Price"] = 1250000000,
+		["Generation"] = 7500000,
+		["RoadWeight"] = 2.5e-11,
+	},
+	["Inverted 67"] = {
+		["DisplayName"] = "Inverted 67",
+		["Rarity"] = "Secret",
+		["Price"] = 4250000000,
+		["Generation"] = 10500000,
+	},
+	["666"] = {
+		["DisplayName"] = "666",
+		["Rarity"] = "Secret",
+		["Price"] = 1,
+		["Generation"] = 1,
+		["RoadWeight"] = 2.5e-11,
+		["HideFromIndex"] = true
+	},
+	["Mango"] = {
+		["DisplayName"] = "Mango",
+		["Rarity"] = "Secret",
+		["Price"] = 25000000000000,
+		["Generation"] = 1000000000000,
+		["RoadWeight"] = 2.5e-11,
+		["HideFromIndex"] = true
+	},
+	["Dragonfly"] = {
+		["DisplayName"] = "Dragonfly", 
+		["Rarity"] = "Brainrot God", 
+		["Price"] = 200000000, 
+		["Generation"] = 100000, 
+		["RoadWeight"] = 0.05
+	},
+	["Los Udin din din dun"] = {
+		["DisplayName"] = "Los Udin din din dun", 
+		["Rarity"] = "Secret", 
+		["Price"] = 300000000, 
+		["Generation"] = 75000000, 
+		["RoadWeight"] = 1.0E-5
+	}, 
+	["Los Chicleteiras"] = {
+		["DisplayName"] = "Los Chicleteiras",
+		["Rarity"] = "Secret",
+		["Price"] = 1200000000,
+		["Generation"] = 7000000,
+		["RoadWeight"] = 2.5e-11,
+	},
+	["La Supreme Combinasion"] = {
+		["DisplayName"] = "La Supreme Combinasion",
+		["Rarity"] = "Secret",
+		["Price"] = 200000000000,
+		["Generation"] = 200000000
+	},
+	["Bisonte Giuppitere"] = {
+		["DisplayName"] = "Bisonte Giuppitere",
+		["Rarity"] = "Secret",
+		["Price"] = 75000000,
+		["Generation"] = 300000,
+		["IgnoreIndexCounter"] = true
+	},
+	["Guerriro Digitale"] = {
+		["DisplayName"] = "Guerriro Digitale",
+		["Rarity"] = "Secret",
+		["Price"] = 120000000,
+		["Generation"] = 550000,
+		["IgnoreIndexCounter"] = true,
+	},
+	["Ketchuru and Musturu"] = {
+		["DisplayName"] = "Ketchuru and Musturu",
+		["Rarity"] = "Secret",
+		["Price"] = 7500000000,
+		["Generation"] = 42500000,
+		["RoadWeight"] = 2.5e-11,
+	},
+	["Spaghetti Tualetti"] = {
+		["DisplayName"] = "Spaghetti Tualetti",
+		["Rarity"] = "Secret",
+		["Price"] = 15000000000,
+		["Generation"] = 60000000,
+	},
+	["Rang Ring Ring"] = {
+		["DisplayName"] = "Rang Ring Ring",
+		["Rarity"] = "Secret",
+		["Price"] = 10000000000,
+		["Generation"] = 40000000,
+	},
+	
+	["Killerini Spyderini"] = {
+		["DisplayName"] = "Killerini Spyderini",
+		["Rarity"] = "Secret",
+		["Price"] = 100000000,
+		["Generation"] = 325000,
+		["SpawnVFX"] = "Los Spyderinis",
+		["SpawnDelay"] = 3.5,
+	},
+	["Killer"] = {
+		["DisplayName"] = "Killer",
+		["Rarity"] = "Secret",
+		["Price"] = 228888888,
+		["Generation"] = 2288888,
+		["SpawnVFX"] = "Killer",
+		["SpawnDelay"] = 3.5,
+	},
+	["Christmasini Killerini"] = {
+		["DisplayName"] = "Christmasini Killerini",
+		["Rarity"]= "Secret",
+		["Price"] = 50000000000,
+		["Generation"] = 37500000,
+		["SpawnVFX"] = "Winter Hour",
+		["SpawnDelay"] = 3
+	};
+	["Los Killerinis"] = {
+		["DisplayName"] = "Los Killerinis",
+		["Rarity"] = "Secret",
+		["Price"] = 122222888888,
+		["Generation"] = 42000000,
+		["SpawnVFX"] = "Killer",
+		["SpawnDelay"] = 3
+	},
+	["Killerini Bodyrini"] = {
+		["DisplayName"] = "Killerini Bodyrini",
+		["Rarity"] = "Secret",
+		["Price"] = 2280000000,
+		["Generation"] = 22800000,
+		["SpawnVFX"] = "Killer",
+		["SpawnDelay"] = 3
+	},
+	["La Killer Combinasion"] = {
+		["DisplayName"] = "La Killer Combinasion",
+		["Rarity"] = "Secret",
+		["Price"] = 456000000000,
+		["Generation"] = 228000000,
+	},
+	["Los Nooo My Hotspotsitos"] = {
+		["DisplayName"] = "Los Nooo My Hotspotsitos",
+		["Rarity"] = "Secret",
+		["Price"] = 1000000000,
+		["Generation"] = 5000000,
+		["IgnoreIndexCounter"] = true,
+		["SpawnVFX"] = "Taco",
+		["SpawnDelay"] = 3
+	},
+	["La Extinct Grande"] = {
+		["DisplayName"] = "La Extinct Grande",
+		["Rarity"] = "Secret",
+		["Price"] = 3250000000,
+		["Generation"] = 23500000,
+		["IgnoreIndexCounter"] = true,
+		["SpawnVFX"] = "Extinct",
+		["SpawnDelay"] = 3
+	},
+	["Okak"] = {
+		["DisplayName"] = "Okak",
+		["Rarity"] = "Secret",
+		["Price"] = 1000000000,
+		["Generation"] = 5000000,
+		["SpawnVFX"] = "Okak",
+		["IgnoreIndexCounter"] = true,
+		["RoadWeight"] = 7e-7,
+		["SpawnDelay"] = 3
+	},
+	["Los Tipi Tacos"] = {
+		["DisplayName"] = "Los Tipi Tacos",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 46000000,
+		["Generation"] = 260000,
+		["IgnoreIndexCounter"] = true,
+		["SpawnVFX"] = "Taco",
+		["SpawnDelay"] = 3
+	},
+	["Gattito Tacoto"] = {
+		["DisplayName"] = "Gattito Tacoto",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 32500000,
+		["Generation"] = 165000,
+		["IgnoreIndexCounter"] = true,
+		["SpawnVFX"] = "Taco",
+		["SpawnDelay"] = 3
+	},
+	["Chihuanini Taconini"] = {
+		["DisplayName"] = "Chihuanini Taconini",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 8500000,
+		["Generation"] = 45000,
+		["IgnoreIndexCounter"] = true,
+		["SpawnVFX"] = "Taco",
+		["SpawnDelay"] = 3
+	},
+	["Capi Taco"] = {
+		["DisplayName"] = "Capi Taco",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 31000000,
+		["Generation"] = 155000,
+		["IgnoreIndexCounter"] = true,
+		["SpawnVFX"] = "Taco",
+		["SpawnDelay"] = 3,
+	},
+	["Las Sis"] = {
+		["DisplayName"] = "Las Sis",
+		["Rarity"] = "Secret",
+		["Price"] = 2500000000,
+		["Generation"] = 17500000,
+		["IgnoreIndexCounter"] = true,
+		["SpawnDelay"] = 3
+	},
+	["Toiletto Focaccino"] = {
+		["DisplayName"] = "Toiletto Focaccino",
+		["Rarity"] = "Mythic",
+		["Price"] = 4850000,
+		["Generation"] = 16000,
+	},
+	["Brasilini Berimbini"] = {
+		["DisplayName"] = "Brasilini Berimbini",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 55000000,
+		["Generation"] = 285000,
+	},
+	["Money Money Puggy"] = {
+		["DisplayName"] = "Money Money Puggy",
+		["Rarity"] = "Secret",
+		["Price"] = 2600000000,
+		["Generation"] = 21000000,
+	},
+	["Recolor Puggy"] = {
+		["DisplayName"] = "Recolor Puggy",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 26000000,
+		["Generation"] = 138000,
+	},
+	["Noo my examine"] = {
+		["DisplayName"] = "Noo my examine",
+		["Rarity"] = "Secret",
+		["Price"] = 525000000,
+		["Generation"] = 1750000,
+	},
+	["Yess my examine"] = {
+		["DisplayName"] = "Yess my examine",
+		["Rarity"] = "Secret",
+		["Price"] = 130000000,
+		["Generation"] = 575000,
+	},
+	["Karker Sahur"] = {
+		["DisplayName"] = "Karker Sahur",
+		["Rarity"] = "Secret",
+		["Price"] = 185000000,
+		["Generation"] = 725000,
+	},
+	["Los Primos"] = {
+		["DisplayName"] = "Los Primos",
+		["Rarity"] = "Secret",
+		["Price"] = 3750000000,
+		["Generation"] = 31000000,
+	},
+	["Tang Tang Keletang"] = {
+		["DisplayName"] = "Tang Tang Keletang",
+		["Rarity"] = "Secret",
+		["Price"] = 4500000000,
+		["Generation"] = 33500000,
+		["RoadWeight"] = 7.5e-11,
+	},
+	["Los Keletangs"] = {
+		["DisplayName"] = "Los Keletangs",
+		["Rarity"] = "Secret",
+		["Price"] = 50000000000,
+		["Generation"] = 50000000,
+		["HideFromIndex"] = true
+	},
+	["Celularcini Viciosini"] = {
+		["DisplayName"] = "Celularcini Viciosini",
+		["Rarity"] = "Secret",
+		["Price"] = 2700000000,
+		["Generation"] = 22500000,
+		["IgnoreIndexCounter"] = true,
+	},
+	["Squalo Cavallo"] = {
+		["DisplayName"] = "Squalo Cavallo",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 45000000,
+		["Generation"] = 250000,
+		["IgnoreIndexCounter"] = true,
+		["SpawnDelay"] = 3
+	},
+	["Sixty-Seven"] = {
+		["DisplayName"] = "67.",
+		["Rarity"] = "Secret",
+		["Price"] = 1250000000,
+		["Generation"] = 7500000,
+		["IgnoreIndexCounter"] = true,
+	},
+	["Madung"] = {
+		["DisplayName"] = "Madung",
+		["Rarity"] = "Secret",
+		["Price"] = 3000000000,
+		["Generation"] = 20000000,
+		["IgnoreIndexCounter"] = true,
+	},
+	["Garamararam"] = {
+		["DisplayName"] = "Garamararam",
+		["Rarity"] = "Secret",
+		["Price"] = 7000000000,
+		["Generation"] = 35000000,
+		["IgnoreIndexCounter"] = true,
+	},
+	["Svinino Pumpkinino"] = {
+		["DisplayName"] = "Svinino Pumpkinino",
+		["Rarity"] = "Secret",
+		["Price"] = 30000,
+		["Generation"] = 200,
+		["IgnoreIndexCounter"] = true,
+		["SpawnDelay"] = 20
+	},
+	["Cocotank"] = {
+		["DisplayName"] = "Cocotank",
+		["Rarity"] = "Secret",
+		["Price"] = 7000000000,
+		["Generation"] = 35000000,
+		["IgnoreIndexCounter"] = true,
+	},
+	["Mr Carrot"] = {
+		["DisplayName"] = "Mr Carrot",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 60000000,
+		["Generation"] = 200000,
+		["RoadWeight"] = 0.0001
+	},
+	["Miner Tung Tung Sahur"] = {
+		["DisplayName"] = "Miner Tung Tung Sahur",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 60000000,
+		["Generation"] = 200000,
+		["RoadWeight"] = 0.0001
+	},
+	["Los Mr Carrotitos"] = {
+		["DisplayName"] = "Los Mr Carrotitos",
+		["Rarity"] = "Secret",
+		["Price"] = 1300000000,
+		["Generation"] = 5000000,
+		["RoadWeight"] = 0.0001
+	},
+	["Trenostruzzo Turbo 4000"] = {
+		["DisplayName"] = "Trenostruzzo Turbo 4000",
+		["Rarity"] = "Secret",
+		["Price"] = 100000000,
+		["Generation"] = 310000,
+		["IgnoreIndexCounter"] = true,
+	},
+	["Quesadilla Crocodila"] = {
+		["DisplayName"] = "Quesadilla Crocodila",
+		["Rarity"] = "Secret",
+		["Price"] = 700000000,
+		["Generation"] = 3000000,
+		["IgnoreIndexCounter"] = true,
+	},
+	["Fragola La La La"] = {
+		["DisplayName"] = "Fragola La La La",
+		["Rarity"] = "Secret",
+		["Price"] = 4250000000,
+		["Generation"] = 32500000,
+		["IgnoreIndexCounter"] = true,
+	},
+	["La Cucaracha"] = {
+		["DisplayName"] = "La Cucaracha",
+		["Rarity"] = "Secret",
+		["Price"] = 110000000,
+		["Generation"] = 475000,
+		["IgnoreIndexCounter"] = true,
+	},
+	["La Bloocuracha"] = {
+		["DisplayName"] = "La Bloocuracha",
+		["Rarity"] = "Secret",
+		["Price"] = 360000000,
+		["Generation"] = 3475000,
+		["IgnoreIndexCounter"] = true,
+	},
+	["Mango Mango Mango"] = {
+		["DisplayName"] = "Mango Mango Mango",
+		["Rarity"] = "Secret",
+		["Price"] = 250000000,
+		["Generation"] = 975000,
+		["IgnoreIndexCounter"] = true,
+	},
+	["To to to Sahur"] = {
+		["DisplayName"] = "To to to Sahur",
+		["Rarity"] = "Secret",
+		["Price"] = 575000000,
+		["Generation"] = 2250000,
+		["SpawnDelay"] = 3.5,
+		["IgnoreIndexCounter"] = true,
+
+	},
+	["Tictac Sahur"] = {
+		["DisplayName"] = "Tictac Sahur",
+		["Rarity"] = "Secret",
+		["Price"] = 6000000000,
+		["Generation"] = 37500000,
+		["SpawnDelay"] = 3.5,
+		["IgnoreIndexCounter"] = true,
+	},
+	["Mariachi Corazoni"] = {
+		["DisplayName"] = "Mariachi Corazoni",
+		["Rarity"] = "Secret",
+		["Price"] = 1750000000,
+		["Generation"] = 12500000,
+		["SpawnDelay"] = 3.5,
+		["IgnoreIndexCounter"] = true,
+	},
+	["Los Tacoritas"] = {
+		["DisplayName"] = "Los Tacoritas",
+		["Rarity"] = "Secret",
+		["Price"] = 4000000000,
+		["Generation"] = 32000000,
+		["SpawnDelay"] = 3.5,
+		["IgnoreIndexCounter"] = true,
+	},
+	["Crab"] = {
+		["DisplayName"] = "Crab",
+		["Rarity"] = "Secret",
+		["Price"] = 4000000000,
+		["Generation"] = 32000000,
+		["SpawnDelay"] = 3.5,
+		["IgnoreIndexCounter"] = true,
+	},
+	["Witching Girl"] = {
+		["DisplayName"] = "Witching Girl",
+		["Rarity"] = "Secret",
+		["Price"] = 4000000000,
+		["Generation"] = 32000000,
+		["SpawnDelay"] = 3.5,
+		["IgnoreIndexCounter"] = true,
+	},
+	["Apple Gazelle"] = {
+		["DisplayName"] = "Apple Gazelle",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 45500000,
+		["Generation"] = 255000,
+		["SpawnDelay"] = 3.5,
+		["IgnoreIndexCounter"] = true,
+	},
+	["La Sahur Combinasion"] = {
+		["DisplayName"] = "La Sahur Combinasion",
+		["Rarity"] = "Secret",
+		["Price"] = 550000000,
+		["Generation"] = 2000000,
+		["IgnoreIndexCounter"] = true,
+	},
+	["Tacorita Bicicleta"] = {
+		["DisplayName"] = "Tacorita Bicicleta",
+		["Rarity"] = "Secret",
+		["Price"] = 2250000000,
+		["Generation"] = 16500000,
+		["SpawnVFX"] = "Taco",
+		["IgnoreIndexCounter"] = true,
+	},
+	["Aborini Halloini"] = {
+		["DisplayName"] = "Aborini Halloini",
+		["Rarity"] = "Secret",
+		["Price"] = 5000000000,
+		["Generation"] = 25000000,
+	},
+	["La Karkerkar Combinasion"] = {
+		["DisplayName"] = "La Karkerkar Combinasion",
+		["Rarity"] = "Secret",
+		["Price"] = 2500000000,
+		["Generation"] = 17500000,
+		["IgnoreIndexCounter"] = true,
+	},
+	["Tralaledon"] = {
+		["DisplayName"] = "Tralaledon",
+		["Rarity"] = "Secret",
+		["Price"] = 3000000000,
+		["Generation"] = 27500000,
+		["IgnoreIndexCounter"] = true,
+	},
+	["Los Bros"] = {
+		["DisplayName"] = "Los Bros",
+		["Rarity"] = "Secret",
+		["Price"] = 6000000000,
+		["Generation"] = 37500000,
+		["IgnoreIndexCounter"] = true,
+	},
+	["Mushrini Moo"] = {
+		["DisplayName"] = "Mushrini Moo",
+		["Rarity"] = "Secret",
+		["Price"] = 35000000000,
+		["Generation"] = 100500000,
+		["IgnoreIndexCounter"] = true,
+	},
+	["Las Capuchinas"] = {
+		["DisplayName"] = "Las Capuchinas",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 32500000,
+		["Generation"] = 185000,
+		["IgnoreIndexCounter"] = true,
+	},
+	["Los Garama and Madundung"] = {
+		["DisplayName"] = "Los Garama and Madundung",
+		["Rarity"] = "Secret",
+		["Price"] = 20000000000,
+		["Generation"] = 80000000,
+		["IgnoreIndexCounter"] = true,
+	},
+	["Orcalita Orcala"] = {
+		["DisplayName"] = "Orcalita Orcala",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 45000000,
+		["Generation"] = 240000,
+		["IgnoreIndexCounter"] = true,
+	},
+	["Brutto Gialutto"] = {
+		["DisplayName"] = "Brutto Gialutto",
+		["Rarity"] = "Mythic",
+		["Price"] = 600000,
+		["Generation"] = 3000,
+		["IgnoreIndexCounter"] = true,
+	},
+	["Gorillo Subwoofero"] = {
+		["DisplayName"] = "Gorillo Subwoofero",
+		["Rarity"] = "Mythic",
+		["Price"] = 2750000,
+		["Generation"] = 7750,
+		["IgnoreIndexCounter"] = true,
+	},
+	["Los Noobinis"] = {
+		["DisplayName"] = "Los Noobinis",
+		["Rarity"] = "Mythic",
+		["Price"] = 4350000,
+		["Generation"] = 12500,
+		["IgnoreIndexCounter"] = true,
+	},
+	["Caramello Filtrello"] = {
+		["DisplayName"] = "Caramello Filtrello",
+		["Rarity"] = "Legendary",
+		["Price"] = 255000,
+		["Generation"] = 1050,
+		["IgnoreIndexCounter"] = true,
+	},
+	["Corn Corn Corn Sahur"] = {
+		["DisplayName"] = "Corn Corn Corn Sahur",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 45000000,
+		["Generation"] = 250000,
+		["IgnoreIndexCounter"] = true,
+	},
+	["Scariti Pumpkiniti"] = {
+		["DisplayName"] = "Scariti Pumpkiniti",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 50000000,
+		["Generation"] = 550000,
+		["IgnoreIndexCounter"] = true,
+	},
+	["Mythic Lucky Block"] = {
+		["DisplayName"] = "Lucky Block",
+		["Rarity"] = "Mythic",
+		["Price"] = 2500000,
+		["Generation"] = 0,
+		["RoadWeight"] = 0.05,
+		["LuckyBlock"] = v3["Mythic Lucky Block"],
+		["HideFromIndex"] = true
+	},
+	["Brainrot God Lucky Block"] = {
+		["DisplayName"] = "Lucky Block",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 25000000,
+		["Generation"] = 0,
+		["RoadWeight"] = 0.001,
+		["LuckyBlock"] = v3["Brainrot God Lucky Block"],
+		["HideFromIndex"] = true
+	},
+	["Secret Lucky Block"] = {
+		["DisplayName"] = "Lucky Block",
+		["Rarity"] = "Secret",
+		["Price"] = 750000000,
+		["Generation"] = 0,
+		["RoadWeight"] = 7e-7,
+		["LuckyBlock"] = v3["Secret Lucky Block"],
+		["HideFromIndex"] = true
+	},
+	["Mango Lucky Block"] = {
+		["DisplayName"] = "Lucky Block",
+		["Rarity"] = "Secret",
+		["Price"] = 888000000,
+		["Generation"] = 0,
+		["LuckyBlock"] = v3["Mango Lucky Block"],
+		["HideFromIndex"] = true
+	},
+	["Admin Lucky Block"] = {
+		["DisplayName"] = "Lucky Block",
+		["Rarity"] = "Admin",
+		["Price"] = 100000000,
+		["Generation"] = 0,
+		["LuckyBlock"] = v3["Admin Lucky Block"],
+		["HideFromIndex"] = true
+	},
+	["Killer Lucky Block"] = {
+		["DisplayName"] = "Lucky Block",
+		["Rarity"] = "Admin",
+		["Price"] = 228000000,
+		["Generation"] = 0,
+		["LuckyBlock"] = v3["Killer Lucky Block"],
+		["HideFromIndex"] = true
+	},
+	["Mystery Crate"] = {
+		["DisplayName"] = "Crate",
+		["Rarity"] = "Mystery",
+		["Price"] = 500000000,
+		["Generation"] = 0,
+		["LuckyBlock"] = v3["Mystery Crate"],
+		["HideFromIndex"] = true
+	},
+	["Pizza Crate"] = {
+		["DisplayName"] = "Crate",
+		["Rarity"] = "Pizza",
+		["Price"] = 760000000,
+		["Generation"] = 0,
+		["LuckyBlock"] = v3["Pizza Crate"],
+		["HideFromIndex"] = true
+	},
+	["SixtySeven Lucky Block"] = {
+		["DisplayName"] = "Lucky Block",
+		["Rarity"] = "SixtySeven",
+		["Price"] = 670000000,
+		["Generation"] = 0,
+		["LuckyBlock"] = v3["SixtySeven Lucky Block"],
+		["HideFromIndex"] = true
+	},
+	["Supreme Lucky Block"] = {
+		["DisplayName"] = "Lucky Block",
+		["Rarity"] = "Secret",
+		["Price"] = 300000000,
+		["Generation"] = 0,
+		["LuckyBlock"] = v3["Supreme Lucky Block"],
+		["HideFromIndex"] = true
+	},
+	["Helloween Lucky Block"] = {
+		["DisplayName"] = "Lucky Block",
+		["Rarity"] = "Admin",
+		["Price"] = 310000000,
+		["Generation"] = 0,
+		["TriggerEvent"] = "Helloween",
+		["LuckyBlock"] = v3["Helloween Lucky Block"],
+		["HideFromIndex"] = true
+	},
+	["Elite Lucky Block"] = {
+		["DisplayName"] = "Lucky Block",
+		["Rarity"] = "Secret",
+		["Price"] = 123,
+		["Generation"] = 0,
+		["LuckyBlock"] = v3["Elite Lucky Block"],
+		["HideFromIndex"] = true
+	},
+	["Taco Lucky Block"] = {
+		["DisplayName"] = "Lucky Block",
+		["Rarity"] = "Taco",
+		["Price"] = 100000000,
+		["Generation"] = 0,
+		["SpawnVFX"] = "Taco",
+		["LuckyBlock"] = v3["Taco Lucky Block"],
+		["SpawnDelay"] = 3,
+		["HideFromIndex"] = true
+	},
+	["Limited Lucky Block"] = {
+		["DisplayName"] = "Lucky Block",
+		["Rarity"] = "Limited",
+		["Price"] = 700000000,
+		["Generation"] = 0,
+		["LuckyBlock"] = v3["Limited Lucky Block"],
+		["HideFromIndex"] = true,
+	},
+	["Octo Lucky Block"] = {
+		DisplayName = "Octo Lucky Block",
+		Rarity = "Summer",
+		Price = 600000000,
+		Generation = 0,
+		HideFromIndex = true,
+		SpawnVFX = "Summer",
+		SpawnDelay = 3,
+		LuckyBlock = v3["Octo Lucky Block"]
+	},
+	["Premium Octo Lucky Block"] = {
+		DisplayName = "Premium Octo Lucky Block",
+		Rarity = "Summer",
+		Price = 600000000,
+		Generation = 0,
+		HideFromIndex = true,
+		SpawnVFX = "Summer",
+		SpawnDelay = 3,
+		LuckyBlock = v3["Premium Octo Lucky Block"]
+	},
+	["Los Tortus"] = {
+		["DisplayName"] = "Los Tortus",
+		["Rarity"] = "Secret",
+		["Price"] = 100000000,
+		["Generation"] = 500000,
+		["IgnoreIndexCounter"] = true,
+	},
+	["Los Karkeritos"] = {
+		["DisplayName"] = "Los Karkeritos",
+		["Rarity"] = "Secret",
+		["Price"] = 200000000,
+		["Generation"] = 750000,
+		["SpawnVFX"] = "Karkerkar Kurkur",
+		["SpawnDelay"] = 3,
+		["IgnoreIndexCounter"] = true,
+	},
+	["Los Jobcitos"] = {
+		["DisplayName"] = "Los Jobcitos",
+		["Rarity"] = "Secret",
+		["Price"] = 500000000,
+		["Generation"] = 1500000,
+		["IgnoreIndexCounter"] = true,
+	},
+	["Los 67"] = {
+		["DisplayName"] = "Los 67",
+		["Rarity"] = "Secret",
+		["Price"] = 2750000000,
+		["Generation"] = 22500000,
+		["IgnoreIndexCounter"] = true,
+	},
+	["Los Lucky Blocks"] = {
+		["DisplayName"] = "Los Lucky Blocks",
+		["Rarity"] = "Admin",
+		["Price"] = 250000000,
+		["Generation"] = 0,
+		["LuckyBlock"] = v3["Los Lucky Blocks"],
+		["HideFromIndex"] = true,
+	},
+	["Los Secret Lucky Blocks"] = {
+		["DisplayName"] = "Los Secret Lucky Blocks",
+		["Rarity"] = "Secret",
+		["Price"] = 7500000000,
+		["Generation"] = 0,
+		["LuckyBlock"] = v3["Los Secret Lucky Blocks"],
+		["HideFromIndex"] = true,
+	},
+	["La Secret Combinasion"] = {
+		["DisplayName"] = "La Secret Combinasion",
+		["Rarity"] = "Secret",
+		["Price"] = 50000000000,
+		["IgnoreIndexCounter"] = true,
+		["Generation"] = 125000000,
+	},
+	["La Secret Scary"] = {
+		["DisplayName"] = "La Secret Scary",
+		["Rarity"] = "Secret",
+		["Price"] = 500000000,
+		["IgnoreIndexCounter"] = true,
+		["Generation"] = 12300000,
+	},
+	["Burguro And Fryuro"] = {
+		["DisplayName"] = "Burguro And Fryuro",
+		["Rarity"] = "Secret",
+		["Price"] = 75000000000,
+		["IgnoreIndexCounter"] = true,
+		["Generation"] = 150000000,
+		["RoadWeight"] = 5e-12,
+	},
+	["Los Meal"] = {
+		["DisplayName"] = "Los Meal",
+		["Rarity"] = "Secret",
+		["Price"] = 85000000000,
+		["IgnoreIndexCounter"] = true,
+		["Generation"] = 170000000,
+		["RoadWeight"] = 5e-12,
+	},
+	["Scheletro Zucca"] = {
+		["DisplayName"] = "Scheletro Zucca",
+		["Rarity"] = "Secret",
+		["Price"] = 400000000,
+		["IgnoreIndexCounter"] = true,
+		["Generation"] = 10000000,
+		["RoadWeight"] = 5e-12,
+	},
+	["Chillin Chili"] = {
+		["DisplayName"] = "Chillin Chili",
+		["Rarity"] = "Secret",
+		["Price"] = 3000000000,
+		["Generation"] = 30000000,
+	},
+	["Los Chillins"] = {
+		["DisplayName"] = "Los Chillins",
+		["Rarity"] = "Secret",
+		["Price"] = 1000000000,
+		["Generation"] = 13600000,
+	},
+	["Randomi"] = {
+		["DisplayName"] = "Randomi",
+		["Rarity"] = "Secret",
+		["Price"] = 70000000000,
+		["Generation"] = 9000000,
+	},
+	["Zombie Tralala"] = {
+		["DisplayName"] = "Zombie Tralala",
+		["Rarity"] = "Secret",
+		["Price"] = 100000000,
+		["Generation"] = 500000,
+		["IgnoreIndexCounter"] = true,
+		["SpawnDelay"] = 3;
+	},
+	["Frankentteo"] = {
+		["DisplayName"] = "Frankentteo",
+		["Rarity"] = "Secret",
+		["Price"] = 175000000,
+		["Generation"] = 700000,
+		["IgnoreIndexCounter"] = true,
+		["SpawnDelay"] = 3;
+	},
+	["La Vacca Jacko Linterino"] = {
+		["DisplayName"] = "La Vacca Jacko Linterino",
+		["Rarity"] = "Secret",
+		["Price"] = 225000000,
+		["Generation"] = 850000,
+		["IgnoreIndexCounter"] = true,
+		["SpawnDelay"] = 3;
+	},
+	["Perrito Burrito"] = {
+		["DisplayName"] = "Perrito Burrito", 
+		["Rarity"] = "Secret", 
+		["Price"] = 250000000, 
+		["Generation"] = 1000000, 
+		["SpawnDelay"] = 3, 
+		["IgnoreIndexCounter"] = true
+	}, 
+	["Vampira Cappucina"] = {
+		["DisplayName"] = "Vampira Cappucina",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 24500000,
+		["Generation"] = 125000,
+		["IgnoreIndexCounter"] = true,
+		["SpawnDelay"] = 3;
+	},
+	["Vulturino Skeletono"] = {
+		["DisplayName"] = "Vulturino Skeletono",
+		["Rarity"] = "Secret",
+		["Price"] = 110000000,
+		["Generation"] = 500000,
+	},
+	["Chicleteirina Bicicleteirina"] = {
+		["DisplayName"] = "Chicleteirina Bicicleteirina",
+		["Rarity"] = "Secret",
+		["Price"] = 850000000,
+		["Generation"] = 4000000,
+		["RoadWeight"] = 5e-08
+	},
+	["Chicleteira Bicicleteirina"] = {
+		["DisplayName"] = "Chicleteira Bicicleteirina",
+		["Rarity"] = "Secret",
+		["Price"] = 850000000,
+		["Generation"] = 4000000,
+		["RoadWeight"] = 5e-08
+	},
+	["Eviledon"] = {
+		["DisplayName"] = "Eviledon",
+		["Rarity"] = "Secret",
+		["Price"] = 3850000000,
+		["Generation"] = 31500000,
+	},
+	["Los Mobilis"] = {
+		["DisplayName"] = "Los Mobilis",
+		["Rarity"] = "Secret",
+		["Price"] = 2300000000,
+		["Generation"] = 22000000,
+	},
+	["La Spooky Grande"] = {
+		["DisplayName"] = "La Spooky Grande",
+		["Rarity"] = "Secret",
+		["Price"] = 23600000000,
+		["Generation"] = 24500000
+	},
+	["La Spooxtinct Grande"] = {
+		["DisplayName"] = "La Spooxtinct Grande",
+		["Rarity"] = "Secret",
+		["Price"] = 8150000000,
+		["Generation"] = 50000000
+	},
+	["Spooky and Pumpky"] = {
+		["DisplayName"] = "Spooky and Pumpky",
+		["Rarity"] = "Secret",
+		["Price"] = 25000000000,
+		["Generation"] = 80000000,
+	},
+	["Raccoon"] = {
+		["DisplayName"] = "Raccoon",
+		["Rarity"] = "Secret",
+		["Price"] = 25000000000,
+		["Generation"] = 80000000,
+	},
+	["Jacko Jack Jack"] = {
+		["DisplayName"] = "Jacko Jack Jack",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 30000000,
+		["Generation"] = 150000,
+		["RoadWeight"] = 5e-08
+	},
+	["Frogato Pirato"] = {
+		["DisplayName"] = "Frogato Pirato",
+		["Rarity"] = "Epic",
+		["Price"] = 336000,
+		["Generation"] = 240,
+	},
+	["Recolor Meowl"] = {
+		["DisplayName"] = "Recolor Meowl",
+		["Rarity"] = "Epic",
+		["Price"] = 636000,
+		["Generation"] = 450,
+		["SpawnVFX"] = "Meowl",
+		["SpawnDelay"] = 3.5,
+	},
+	["Spiky Elephant"] = {
+		["DisplayName"] = "Spiky Elephant",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 52500000,
+		["Generation"] = 320000,
+		["SpawnVFX"] = "Strawberry",
+		["SpawnDelay"] = 3.5,
+		["IgnoreIndexCounter"] = true,
+	},
+	["Graipuss Magicale"] = {
+		["DisplayName"] = "Graipuss Magicale",
+		["Rarity"] = "Secret",
+		["Price"] = 310000000,
+		["Generation"] = 1320000,
+		["SpawnDelay"] = 3.5,
+		["IgnoreIndexCounter"] = true,
+	},
+	["Los Dragoncitos"] = {
+		["DisplayName"] = "Los Dragoncitos",
+		["Rarity"] = "Secret",
+		["Price"] = 1750000000,
+		["Generation"] = 12000000,
+		["SpawnDelay"] = 3.5,
+		["IgnoreIndexCounter"] = true,
+	},
+	["Pakrahmatmatina"] = {
+		["DisplayName"] = "Pakrahmatmatina",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 40500000,
+		["Generation"] = 225000,
+	},
+	["Bambu Bambu Sahur"] = {
+		["DisplayName"] = "Bambu Bambu Sahur",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 47500000,
+		["Generation"] = 275000,
+	},
+	["Krupuk Pagi Pagi"] = {
+		["DisplayName"] = "Krupuk Pagi Pagi",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 60000000,
+		["Generation"] = 236000
+	},
+	["Boatito Auratito"] = {
+		["DisplayName"] = "Boatito Auratito",
+		["Rarity"] = "Secret",
+		["Price"] = 115000000,
+		["Generation"] = 525000,
+		["IgnoreIndexCounter"] = true,
+		["SpawnVFX"] = "Indonesia",
+	},
+	["Horegini Boom"] = {
+		["DisplayName"] = "Horegini Boom",
+		["Rarity"] = "Secret",
+		["Price"] = 650000000,
+		["Generation"] = 2750000,
+	},
+	["Rang Ring Bus"] = {
+		["DisplayName"] = "Rang Ring Bus",
+		["Rarity"] = "Secret",
+		["Price"] = 1100000000,
+		["Generation"] = 6000000,
+	},
+	["Mieteteira Bicicleteira"] = {
+		["DisplayName"] = "Mieteteira Bicicleteira",
+		["Rarity"] = "Secret",
+		["Price"] = 2700000000,
+		["Generation"] = 26000000,
+	},
+	["Chipso and Queso"] = {
+		["DisplayName"] = "Chipso and Queso",
+		["Rarity"] = "Secret",
+		["Price"] = 2500000000,
+		["Generation"] = 25000000,
+		["SpawnDelay"] = 3,
+	},
+	["Quesadillo Vampiro"] = {
+		["DisplayName"] = "Quesadillo Vampiro",
+		["Rarity"] = "Secret",
+		["Price"] = 750000000,
+		["Generation"] = 3500000,
+		["SpawnDelay"] = 3,
+	},
+	["Burrito Bandito"] = {
+		["DisplayName"] = "Burrito Bandito",
+		["Rarity"] = "Secret",
+		["Price"] = 850000000,
+		["Generation"] = 4000000,
+		["SpawnVFX"] = "Taco";
+		["SpawnDelay"] = 3,
+	},
+	["Chicleteira Bikeleteira"] = {
+		["DisplayName"] = "Chicleteira Bikeleteira",
+		["Rarity"] = "Secret",
+		["Price"] = 1000000000,
+		["Generation"] = 5500000,
+		["SpawnVFX"] = "Taco";
+		["SpawnDelay"] = 3,
+	},
+	["La Vacca Jacko Saturnita"] = {
+		["DisplayName"] = "La Vacca Jacko Saturnita",
+		["Rarity"] = "Secret",
+		["Price"] = 275000000,
+		["Generation"] = 1150000,
+		["IgnoreIndexCounter"] = true,
+		["SpawnDelay"] = 3;
+	},
+	["Developini Braziliaspidini"] = {
+		["DisplayName"] = "Developini Braziliaspidini",
+		["Rarity"] = "Admin",
+		["Price"] = 1000000000000,
+		["Generation"] = 2500000000,
+		["IgnoreIndexCounter"] = true,
+		["HideFromIndex"] = true,
+	},
+	["Kings Coleslaw"] = {
+		["DisplayName"] = "Kings Coleslaw",
+		["Rarity"] = "Admin",
+		["Price"] = 1000000000000,
+		["Generation"] = 2500000000,
+		["IgnoreIndexCounter"] = true,
+		["HideFromIndex"] = true,
+	},
+	["Jackorilla"] = {
+		["DisplayName"] = "Jackorilla",
+		["Rarity"] = "Secret",
+		["Price"] = 80000000,
+		["Generation"] = 315000,
+	},
+	["Pumpkini Spyderini"] = {
+		["DisplayName"] = "Pumpkini Spyderini",
+		["Rarity"] = "Secret",
+		["Price"] = 165000000,
+		["Generation"] = 650000,
+
+	},
+	["Trickolino"] = {
+		["DisplayName"] = "Trickolino",
+		["Rarity"] = "Secret",
+		["Price"] = 235000000,
+		["Generation"] = 3600000,
+	},
+	["Telemorte"] = {
+		["DisplayName"] = "Telemorte",
+		["Rarity"] = "Secret",
+		["Price"] = 550000000,
+		["Generation"] = 2000000,
+	},
+	["Pot Pumpkin"] = {
+		["DisplayName"] = "Pot Pumpkin",
+		["Rarity"] = "Secret",
+		["Price"] = 700000000,
+		["Generation"] = 3000000,
+	},
+	["Noo my Candy"] = {
+		["DisplayName"] = "Noo my Candy",
+		["Rarity"] = "Secret",
+		["Price"] = 3600000000,
+		["Generation"] = 5000000,
+	},
+	["Los Spooky Combinasionas"] = {
+		["DisplayName"] = "Los Spooky Combinasionas",
+		["Rarity"] = "Secret",
+		["Price"] = 3000000000,
+		["Generation"] = 20000000,
+	},
+	["La Casa Boo"] = {
+		["DisplayName"] = "La Casa Boo",
+		["Rarity"] = "Secret",
+		["Price"] = 40000000000,
+		["Generation"] = 100000000,
+	},
+	["Mummy Ambalabu"] = {
+		["DisplayName"] = "Mummy Ambalabu",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 45000000,
+		["Generation"] = 250000,
+	},
+	["Cappuccino Clownino"] = {
+		["DisplayName"] = "Cappuccino Clownino",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 48500000,
+		["Generation"] = 285000,
+	},
+	["Spooky Lucky Block"] = {
+		["DisplayName"] = "Lucky Block",
+		["Rarity"] = "Spooky",
+		["Price"] = 350000000,
+		["Generation"] = 0,
+		["LuckyBlock"] = v3["Spooky Lucky Block"],
+		["HideFromIndex"] = true,
+		SpawnVFX = "Spooky",
+		["SpawnDelay"] = 6,
+	},
+	["Noobinini Spyderini"] = {
+		["DisplayName"] = "Noobinini Spyderini",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 46000000,
+		["Generation"] = 260000,
+		["IgnoreIndexCounter"] = true,
+		["SpawnVFX"] = "Spyder",
+		["SpawnDelay"] = 3,
+	},
+	["Werewolf"] = {
+		["DisplayName"] = "Werewolf",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 46000000,
+		["Generation"] = 260000,
+		["IgnoreIndexCounter"] = true,
+		["SpawnDelay"] = 3,
+	},
+	["La Taco Combinasion"] = {
+		["DisplayName"] = "La Taco Combinasion",
+		["Rarity"] = "Secret",
+		["Price"] = 5000000000,
+		["Generation"] = 35000000,
+	},
+	["Bombardiro Raccoonino"] = {
+		["DisplayName"] = "Bombardiro Raccoonino",
+		["Rarity"] = "Secret",
+		["Price"] = 2500000000,
+		["Generation"] = 17500000,
+		["IgnoreIndexCounter"] = true,
+	},
+	["1x1x1x1"] = {
+		["DisplayName"] = "1x1x1x1",
+		["Rarity"] = "Secret",
+		["Price"] = 255555555,
+		["Generation"] = 1111111,
+		["SpawnVFX"] = "1x1x1x1",
+		["SpawnDelay"] = 3,
+	},
+	["Capitano Moby"] = {
+		["DisplayName"] = "Capitano Moby",
+		["Rarity"] = "Secret",
+		["Price"] = 125000000000,
+		["Generation"] = 160000000,
+		["RoadWeight"] = 1e-13,
+	},
+	["Guest 666"] = {
+		["DisplayName"] = "Guest 666",
+		["Rarity"] = "Secret",
+		["Price"] = 1166666666,
+		["Generation"] = 66666666,
+		["SpawnVFX"] = "Guest666",
+		["SpawnDelay"] = 3,
+	},
+	["Pupkin 228"] = {
+		["DisplayName"] = "Pupkin 228",
+		["Rarity"] = "Secret",
+		["Price"] = 228888888,
+		["Generation"] = 2288888,
+		["SpawnDelay"] = 3,
+		["SpawnVFX"] = "1x1x1x1"
+	},
+	["Demonini Pupkini"] = {
+		["DisplayName"] = "Demonini Pupkini",
+		["Rarity"] = "Secret",
+		["Price"] = 500000000,
+		["Generation"] = 5000000,
+		["SpawnDelay"] = 3,
+		["SpawnVFX"] = "Guest666"
+	},
+	["Los Pupkins"] = {
+		["DisplayName"] = "Los Pupkins",
+		["Rarity"] = "Secret",
+		["Price"] = 122222888888,
+		["Generation"] = 128000000,
+		["SpawnVFX"] = "Mango",
+	},
+	["Devs Bros"] = {
+		["DisplayName"] = "Devs Bros",
+		["Rarity"] = "Secret",
+		["Price"] = 45666666666,
+		["Generation"] = 45666666,
+	},
+	["Sahur Lucky Block"] = {
+		["DisplayName"] = "Lucky Block",
+		["Rarity"] = "Sahur",
+		["Price"] = 500000000,
+		["Generation"] = 0,
+		["LuckyBlock"] = v3["Sahur Lucky Block"],
+		["HideFromIndex"] = true,
+		["SpawnVFX"] = "Spooky",
+		["SpawnDelay"] = 3,
+	},
+	["Shopirini Cashinini"] = {
+		["DisplayName"] = "Shopirini Cashinini",
+		["Rarity"] = "Legendary",
+		["Price"] = 300000,
+		["Generation"] = 1250,
+		["RoadWeight"] = 0.35,
+	},
+	["Karkerkar Hotspot"] = {
+		["DisplayName"] = "Karkerkar Hotspot",
+		["Rarity"] = "Secret",
+		["Price"] = 700000000,
+		["Generation"] = 2700000,
+	},
+	["Pop Pop Sahur"] = {
+		["DisplayName"] = "Pop Pop Sahur",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 65000000,
+		["Generation"] = 295000,
+	},
+	["Bananito Bandito"] = {
+		["DisplayName"] = "Bananito Bandito",
+		["Rarity"] = "Mythic",
+		["Price"] = 43600000,
+		["Generation"] = 16500,
+	},
+	["Pirulitoita Bicicleteira"] = {
+		["DisplayName"] = "Pirulitoita Bicicleteira",
+		["Rarity"] = "Secret",
+		["Price"] = 600000000,
+		["Generation"] = 2500000,
+	},
+	["Los Puggies"] = {
+		["DisplayName"] = "Los Puggies",
+		["Rarity"] = "Secret",
+		["Price"] = 3000000000,
+		["Generation"] = 30000000,
+	},
+	["Los Spaghettis"] = {
+		["DisplayName"] = "Los Spaghettis",
+		["Rarity"] = "Secret",
+		["Price"] = 20000000000,
+		["Generation"] = 70000000,
+	},
+	["Fragrama and Chocrama"] = {
+		["DisplayName"] = "Fragrama and Chocrama",
+		["Rarity"] = "Secret",
+		["Price"] = 40000000000,
+		["Generation"] = 100000000,
+	},
+	["Teowl"] = {
+		["DisplayName"] = "Teowl",
+		["Rarity"] = "Secret",
+		["Price"] = 10000000000,
+		["Generation"] = 80000000,
+	},
+	["Los Primitos"] = {
+		["DisplayName"] = "Los Primitos",
+		["Rarity"] = "Secret",
+		["Price"] = 3000000000,
+		["Generation"] = 10000000,
+	},
+	["Orkilledon"] = {
+		["DisplayName"] = "Orkilledon",
+		["Rarity"] = "Secret",
+		["Price"] = 7000000000,
+		["Generation"] = 45000000,
+	},
+	["Cupcake Koala"] = {
+		["DisplayName"] = "Cupcake Koala",
+		["Rarity"] = "Rare",
+		["Price"] = 8000,
+		["Generation"] = 60,
+	},
+	["Recolor GOAT"] = {
+		["DisplayName"] = "Recolor GOAT",
+		["Rarity"] = "Rare",
+		["Price"] = 9000,
+		["Generation"] = 70,
+	},
+	["Doi Doi Do"] = {
+		["DisplayName"] = "Doi Doi Do",
+		["Rarity"] = "Epic",
+		["Price"] = 41000,
+		["Generation"] = 260,
+	},
+	["Clickerino Crabo"] = {
+		["DisplayName"] = "Clickerino Crabo",
+		["Rarity"] = "Legendary",
+		["Price"] = 250000,
+		["Generation"] = 1000,
+	},
+	["Stoppo Luminino"] = {
+		["DisplayName"] = "Stoppo Luminino",
+		["Rarity"] = "Mythic",
+		["Price"] = 3000000,
+		["Generation"] = 8000,
+	},
+	["Money Money Man"] = {
+		["DisplayName"] = "Money Money Man",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 17500000,
+		["Generation"] = 65000,
+	},
+	["Noo La Polizia"] = {
+		["DisplayName"] = "Noo La Polizia",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 67000000,
+		["Generation"] = 280000,
+	},
+	["Pirulitoita Bikeleteira"] = {
+		["DisplayName"] = "Pirulitoita Bikeleteira",
+		["Rarity"] = "Secret",
+		["Price"] = 1450000000,
+		["Generation"] = 6500000,
+	},
+	["Mieteteira Bikeleteira"] = {
+		["DisplayName"] = "Mieteteira Bikeleteira",
+		["Rarity"] = "Secret",
+		["Price"] = 3550000000,
+		["Generation"] = 30000000,
+	},
+	["Chachechi"] = {
+		["DisplayName"] = "Chachechi",
+		["Rarity"] = "Secret",
+		["Price"] = 85000000,
+		["Generation"] = 400000,
+	},
+	["Gianni Turbozi"] = {
+		["DisplayName"] = "Gianni Turbozi",
+		["Rarity"] = "Secret",
+		["Price"] = 100000000,
+		["Generation"] = 500000,
+		["IgnoreIndexCounter"] = true,
+	},
+	["Swag Soda"] = {
+		["DisplayName"] = "Swag Soda",
+		["Rarity"] = "Secret",
+		["Price"] = 3600000000,
+		["Generation"] = 13000000
+	},
+	["Orcaledon"] = {
+		["DisplayName"] = "Orcaledon",
+		["Rarity"] = "Secret",
+		["Price"] = 7000000000,
+		["Generation"] = 40000000
+	},
+	["Centrucci Nuclucci"] = {
+		["DisplayName"] = "Centrucci Nuclucci",
+		["Rarity"] = "Mythic",
+		["Price"] = 4800000,
+		["Generation"] = 15500
+	},
+	["Los Meowlitos"] = {
+		["DisplayName"] = "Los Meowlitos",
+		["Rarity"] = "Secret",
+		["Price"] = 240000000000,
+		["Generation"] = 170000000
+	},
+	["Hackerini Toiletini"] = {
+		["DisplayName"] = "Hackerini Toiletini",
+		["Rarity"] = "Secret",
+		["Price"] = 26000000000,
+		["Generation"] = 99000000
+	},
+	["Angryyy"] = {
+		["DisplayName"] = "Angryyy",
+		["Rarity"] = "Secret",
+		["Price"] = 66000000,
+		["Generation"] = 2500000
+	},
+	["Arcadini Guno"] = {
+		["DisplayName"] = "Arcadini Guno",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 350000000,
+		["Generation"] = 120000
+	},
+	["Pumpkin"] = {
+		["DisplayName"] = "Pumpkin",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 750000000,
+		["Generation"] = 250000
+	},
+	["Sharki"] = {
+		["DisplayName"] = "Sharki",
+		["Rarity"] = "Secret",
+		["Price"] = 1200000000,
+		["Generation"] = 10000000
+	},
+	["Los Taco Blocks"] = {
+		["DisplayName"] = "Los Taco Blocks",
+		["Rarity"] = "Taco",
+		["Price"] = 300000000,
+		["Generation"] = 0,
+		["LuckyBlock"] = v3["Los Taco Blocks"],
+		["SpawnDelay"] = 3,
+		["SpawnVFX"] = "Taco",
+		["HideFromIndex"] = true,
+	},
+	["Los Chihuaninis"] = {
+		["DisplayName"] = "Los Chihuaninis",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 32000000,
+		["Generation"] = 160000
+	},
+	["Los Gattitos"] = {
+		["DisplayName"] = "Los Gattitos",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 47500000,
+		["Generation"] = 275000
+	},
+	["Los Cucarachas"] = {
+		["DisplayName"] = "Los Cucarachas",
+		["Rarity"] = "Secret",
+		["Price"] = 300000000,
+		["Generation"] = 1250000
+	},
+	["Los Quesadillas"] = {
+		["DisplayName"] = "Los Quesadillas",
+		["Rarity"] = "Secret",
+		["Price"] = 875000000,
+		["Generation"] = 4500000,
+	},
+	["Los Burritos"] = {
+		["DisplayName"] = "Los Burritos",
+		["Rarity"] = "Secret",
+		["Price"] = 1400000000,
+		["Generation"] = 8500000,
+	},
+	["Cuadramat and Pakrahmatmamat"] = {
+		["DisplayName"] = "Cuadramat and Pakrahmatmamat",
+		["Rarity"] = "Secret",
+		["Price"] = 400000000,
+		["Generation"] = 1400000,
+	},
+	["Fishino Clownino"] = {
+		["DisplayName"] = "Fishino Clownino",
+		["Rarity"] = "Secret",
+		["Price"] = 2100000000,
+		["Generation"] = 15500000
+	},
+	["Los Planitos"] = {
+		["DisplayName"] = "Los Planitos",
+		["Rarity"] = "Secret",
+		["Price"] = 2750000000,
+		["Generation"] = 18500000
+	},
+	["W or L"] = {
+		["DisplayName"] = "W or L",
+		["Rarity"] = "Secret",
+		["Price"] = 3000000000,
+		["Generation"] = 30000000
+	},
+	["Recolor W or L"] = {
+		["DisplayName"] = "Recolor W or L",
+		["Rarity"] = "Secret",
+		["Price"] = 300000000,
+		["Generation"] = 3000000
+	},
+	["Granchiello Spiritell"] = {
+		["DisplayName"] = "Granchiello Spiritell",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 46000000,
+		["Generation"] = 260000
+	},
+	["Puffaball"] = {
+		["DisplayName"] = "Puffaball",
+		["Rarity"] = "Legendary",
+		["Price"] = 150000,
+		["Generation"] = 4500
+	},
+	["Chicleteirina Bikeleteirina"] = {
+		["DisplayName"] = "Chicleteirina Bikeleteirina",
+		["Rarity"] = "Secret",
+		["Price"] = 1700000000,
+		["Generation"] = 8000000
+	},
+	["Quackula"] = {
+		["DisplayName"] = "Quackula";
+		["Rarity"] = "Legendary";
+		["Price"] = 310000;
+		["Generation"] = 1275;
+	},
+	["Buho de Fuego"] = {
+		["DisplayName"] = "Buho de Fuego";
+		["Rarity"] = "Legendary";
+		["Price"] = 345000;
+		["Generation"] = 1850;
+	},
+	["Magi Ribbitini"] = {
+		["DisplayName"] = "Magi Ribbitini";
+		["Rarity"] = "Mythic";
+		["Price"] = 4200000;
+		["Generation"] = 11500;
+	},
+	["Jacko Spaventosa"] = {
+		["DisplayName"] = "Jacko Spaventosa";
+		["Rarity"] = "Mythic";
+		["Price"] = 4875000;
+		["Generation"] = 16250;
+	},
+	Snailenzo = {
+		["DisplayName"] = "Snailenzo";
+		["Rarity"] = "Brainrot God";
+		["Price"] = 45000000;
+		["Generation"] = 250000;
+	},
+	["Tentacolo Tecnico"] = {
+		["DisplayName"] = "Tentacolo Tecnico";
+		["Rarity"] = "Brainrot God";
+		["Price"] = 62500000;
+		["Generation"] = 292500;
+	},
+	Squalanana = {
+		["DisplayName"] = "Squalanana";
+		["Rarity"] = "Brainrot God";
+		["Price"] = 45000000;
+		["Generation"] = 250000;
+	},
+	["Mummio Rappitto"] = {
+		["DisplayName"] = "Mummio Rappitto";
+		["Rarity"] = "Epic";
+		["Price"] = 47500;
+		["Generation"] = 325;
+	},
+	["Pinealotto Fruttarino"] = {
+		["DisplayName"] = "Pinealotto Fruttarino";
+		["Rarity"] = "Rare";
+		["Price"] = 9750;
+		["Generation"] = 75;
+	};
+	Tartaragno = {
+		["DisplayName"] = "Tartaragno";
+		["Rarity"] = "Common";
+		["Price"] = 1500;
+		["Generation"] = 13;
+	};
+	["Festive Lucky Block"] = {
+		["DisplayName"] = "Festive Lucky Block",
+		["Rarity"] = "Festive",
+		["Price"] = 500000000,
+		["Generation"] = 0,
+		["LuckyBlock"] = v3["Festive Lucky Block"],
+		["HideFromIndex"] = true
+	},
+	["25"] = {
+		["DisplayName"] = "25",
+		["Rarity"] = "Secret",
+		["Price"] = 250000000,
+		["Generation"] = 1000000,
+	},
+	["Cooki and Milki"] = {
+		["DisplayName"] = "Cooki and Milki",
+		["Rarity"] = "Secret",
+		["Price"] = 100000000000,
+		["Generation"] = 155000000,
+		["RoadWeight"] = 3e-13,
+	},
+	["Coffin Tung Tung Tung Sahur"] = {
+		["DisplayName"] = "Coffin Tung Tung Tung Sahur",
+		["Rarity"] = "Secret",
+		["Price"] = 500000000,
+		["Generation"] = 0,
+		["LuckyBlock"] = v3["Coffin Tung Tung Tung Sahur"],
+		["HideFromIndex"] = true
+	},
+	["Tung Tung Tung Tung Sahur"] = {
+		["DisplayName"] = "Tung Tung Tung Sahur",
+		["Rarity"] = "Secret",
+		["Price"] = 500000000,
+		["Generation"] = 1500000,
+	},
+	["Ballerina Peppermintina"] = {
+		["DisplayName"] = "Ballerina Peppermintina",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 37500000,
+		["Generation"] = 215000,
+	},
+	["Giftini Spyderini"] = {
+		["DisplayName"] = "Giftini Spyderini",
+		["Rarity"] = "Secret",
+		["Price"] = 240000000,
+		["Generation"] = 999999
+	},
+	["Chimpanzini Spiderini"] = {
+		["DisplayName"] = "Chimpanzini Spiderini",
+		["Rarity"] = "Secret",
+		["Price"] = 100000000,
+		["Generation"] = 325000
+	},
+	["Gattatino Neonino"] = {
+		["DisplayName"] = "Gattatino Neonino",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 7500000,
+		["Generation"] = 35000
+	},
+	["Statutino Libertino"] = {
+		["DisplayName"] = "Statutino Libertino",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 20000000,
+		["Generation"] = 75000
+	},
+	["La Vacca Prese Presente"] = {
+		["DisplayName"] = "La Vacca Prese Presente",
+		["Rarity"] = "Secret",
+		["Price"] = 160000000,
+		["Generation"] = 600000,
+	};
+	["Reindeer Tralala"] = {
+		["DisplayName"] = "Reindeer Tralala",
+		["Rarity"] = "Secret",
+		["Price"] = 160000000,
+		["Generation"] = 600000,
+		["SpawnVFX"] = "Winter Hour",
+		["SpawnDelay"] = 3
+	};
+	["Santteo"] = {
+		["DisplayName"] = "Santteo",
+		["Rarity"] = "Secret",
+		["Price"] = 210000000,
+		["Generation"] = 800000,
+		["SpawnVFX"] = "Winter Hour",
+		["SpawnDelay"] = 3
+	};
+	["Please my Present"] = {
+		["DisplayName"] = "Please my Present",
+		["Rarity"] = "Secret",
+		["Price"] = 350000000,
+		["Generation"] = 1300000
+	};
+	["List List List Sahur"] = {
+		["DisplayName"] = "List List List Sahur",
+		["Rarity"] = "Secret",
+		["Price"] = 550000000,
+		["Generation"] = 2000000,
+		["SpawnVFX"] = "Winter Hour",
+		["SpawnDelay"] = 3
+	};
+	["Ho Ho Ho Sahur"] = {
+		["DisplayName"] = "Ho Ho Ho Sahur",
+		["Rarity"] = "Secret",
+		["Price"] = 725000000,
+		["Generation"] = 3250000
+	};
+	["Chicleteira Noelteira"] = {
+		["DisplayName"] = "Chicleteira Noelteira",
+		["Rarity"] = "Secret",
+		["Price"] = 2000000000,
+		["Generation"] = 15000000
+	};
+	["Chicleteirina Noelteirina"] = {
+		["DisplayName"] = "Chicleteirina Noelteirina",
+		["Rarity"] = "Secret",
+		["Price"] = 3000000000,
+		["Generation"] = 19999999
+	};
+	["La Jolly Grande"] = {
+		["DisplayName"] = "La Jolly Grande",
+		["Rarity"] = "Secret",
+		["Price"] = 3500000000,
+		["Generation"] = 30000000,
+		["SpawnVFX"] = "Winter Hour",
+		["SpawnDelay"] = 3
+	};
+	["Noobini Santanini"] = {
+		["DisplayName"] = "Noobini Santanini",
+		["Rarity"] = "Common",
+		["Price"] = 1300,
+		["Generation"] = 11
+	};
+	["Frogo Elfo"] = {
+		["DisplayName"] = "Frogo Elfo",
+		["Rarity"] = "Rare",
+		["Price"] = 9250,
+		["Generation"] = 67
+	};
+	["Penguin Tree"] = {
+		["DisplayName"] = "Penguin Tree",
+		["Rarity"] = "Epic",
+		["Price"] = 42000,
+		["Generation"] = 270
+	};
+	["Chocco Bunny"] = {
+		["DisplayName"] = "Chocco Bunny",
+		["Rarity"] = "Legendary",
+		["Price"] = 327500,
+		["Generation"] = 1400
+	};
+	["Sealo Regalo"] = {
+		["DisplayName"] = "Sealo Regalo",
+		["Rarity"] = "Legendary",
+		["Price"] = 342500,
+		["Generation"] = 1825
+	};
+	["Jingle Jingle Sahur"] = {
+		["DisplayName"] = "Jingle Jingle Sahur",
+		["Rarity"] = "Mythic",
+		["Price"] = 4300000,
+		["Generation"] = 12250
+	};
+	["Tree Tree Tree Sahur"] = {
+		["DisplayName"] = "Tree Tree Tree Sahur",
+		["Rarity"] = "Mythic",
+		["Price"] = 4950000,
+		["Generation"] = 17000
+	};
+	["Yeti Claus"] = {
+		["DisplayName"] = "Yeti Claus",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 45750000,
+		["Generation"] = 257500
+	};
+	["Ginger Globo"] = {
+		["DisplayName"] = "Ginger Globo",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 45750000,
+		["Generation"] = 257500
+	};
+	["Ginger Cisterna"] = {
+		["DisplayName"] = "Ginger Cisterna",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 63500000,
+		["Generation"] = 293500
+	};
+	["Tacorita Bikeleta"] = {
+		["DisplayName"]= "Tacorita Bikeleta",
+		["Rarity"] = "Secret",
+		["SpawnVFX"] = "Taco",
+		["Price"] = 5000000000,
+		["Generation"] = 25000000
+	};
+	["Los Biketeiras"] = {
+		["DisplayName"] = "Los Biketeiras",
+		["Rarity"] = "Secret",
+		["SpawnVFX"] = "Los Chicleteiras",
+		["Price"] = 2600000000,
+		["Generation"] = 17000000
+	};
+	["Cool Cola"] = {
+		["DisplayName"] = "Cool Cola",
+		["Rarity"] = "Secret",
+		["Price"] = 2000000000,
+		["Generation"] = 25000000
+	},
+	["Santanini Pupkini"] = {
+		["DisplayName"] = "Santanini Pupkini",
+		["Rarity"] = "Secret",
+		["Price"] = 500000000,
+		["Generation"] = 2500000,
+		["SpawnVFX"] = "Winter Hour",
+		["SpawnDelay"] = 3
+	};
+	["Cookie"] = {
+		["DisplayName"] = "Cookie",
+		["Rarity"] = "Secret",
+		["Price"] = 50000000000,
+		["Generation"] = 77500000,
+		["RoadWeight"] = 3e-13,
+	},
+	["Festive 67"] = {
+		["DisplayName"] = "Festive 67",
+		["Rarity"] = "Secret",
+		["Price"] = 16000000000,
+		["Generation"] = 67000000,
+	},
+	["Los Candies"] = {
+		["DisplayName"] = "Los Candies",
+		["Rarity"] = "Secret",
+		["Price"] = 3000000000,
+		["Generation"] = 23000000
+	},
+	["Triplito Tralaleritos"] = {
+		["DisplayName"] = "Triplito Tralaleritos",
+		["Rarity"] = "Secret",
+		["Price"] = 230000000,
+		["Generation"] = 875000,
+	},
+	["Triplita Tralaleritas"] = {
+		["DisplayName"] = "Triplita Tralaleritas",
+		["Rarity"] = "Secret",
+		["Price"] = 275000000,
+		["Generation"] = 975000,
+	},
+	["Santa Hotspot"] = {
+		["DisplayName"] = "Santa Hotspot",
+		["Rarity"] = "Secret",
+		["Price"] = 625000000,
+		["Generation"] = 2600000,
+	},
+	["La Ginger Sekolah"] = {
+		["DisplayName"] = "La Ginger Sekolah",
+		["Rarity"] = "Secret",
+		["Price"] = 23000000000,
+		["Generation"] = 75000000,
+	},
+	["Reinito Sleighito"] = {
+		["DisplayName"] = "Reinito Sleighito",
+		["Rarity"] = "Secret",
+		["Price"] = 60000000000,
+		["Generation"] = 140000000,
+	},
+	["Naughty Naughty"] = {
+		["DisplayName"] = "Naughty Naughty",
+		["Rarity"] = "Secret",
+		["Price"] = 700000000,
+		["Generation"] = 3000000,
+	},
+	["Noo my Present"] = {
+		["DisplayName"] = "Noo my Present",
+		["Rarity"] = "Secret",
+		["Price"] = 1100000000,
+		["Generation"] = 6000000,
+	},
+	["Los 25"] = {
+		["DisplayName"] = "Los 25",
+		["Rarity"] = "Secret",
+		["Price"] = 1500000000,
+		["Generation"] = 10000000,
+	},
+	["Chimnino"] = {
+		["DisplayName"] = "Chimnino",
+		["Rarity"] = "Secret",
+		["Price"] = 13600000000,
+		["Generation"] = 14000000,
+	},
+	["Chrismasmamat"] = {
+		["DisplayName"] = "Chrismasmamat",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 47750000,
+		["Generation"] = 277500,
+	},
+	["Cocoa Assassino"] = {
+		["DisplayName"] = "Cocoa Assassino",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 61000000,
+		["Generation"] = 291000,
+	},
+	["Pandanini Frostini"] = {
+		["DisplayName"] = "Pandanini Frostini",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 64000000,
+		["Generation"] = 294000,
+	},
+	["Gobblino Uniciclino"] = {
+		["DisplayName"] = "Gobblino Uniciclino",
+		["Rarity"] = "Secret",
+		["Price"] = 2850000000,
+		["Generation"] = 27500000
+	},
+	["Swaggy Bros"] = {
+		["DisplayName"] = "Swaggy Bros",
+		["Rarity"] = "Secret",
+		["Price"] = 7000000000,
+		["Generation"] = 40000000,
+		["SpawnVFX"] = "Taco",
+		["SpawnDelay"] = 3
+	},
+	["Newini Pupkini"] = {
+		["DisplayName"] = "Newini Pupkini",
+		["Rarity"] = "Secret",
+		["Price"] = 288000000,
+		["Generation"] = 2800000,
+		["SpawnVFX"] = "Christmas",
+		["SpawnDelay"] = 3
+	},
+	["Bunnyman"] = {
+		["DisplayName"] = "Bunnyman",
+		["Rarity"] = "Secret",
+		["Price"] = 500000000,
+		["Generation"] = 1500000,
+	},
+	["Dragon Gingerini"] = {
+		["DisplayName"] = "Dragon Gingerini",
+		["Rarity"] = "Secret",
+		["Price"] = 300000000000,
+		["Generation"] = 300000000,
+	},
+	["Donkeyturbo Express"] = {
+		["DisplayName"] = "Donkeyturbo Express",
+		["Rarity"] = "Secret",
+		["Price"] = 1250000000,
+		["Generation"] = 7500000,
+	},
+	["Money Money Reindeer"] = {
+		["DisplayName"] = "Money Money Reindeer",
+		["Rarity"] = "Secret",
+		["Price"] = 2500000000,
+		["Generation"] = 25000000,
+		["SpawnVFX"] = "Money Money Reindeer",
+		["SpawnDelay"] = 3,
+	},
+    ["Gold Elf"] = {
+	    ["DisplayName"] = "Gold Elf",
+	    ["Rarity"] = "Secret",
+	    ["Price"] = 0,
+	    ["Generation"] = 0,
+	    ["HideFromIndex"] = true,
+	    ["HideOverhead"] = true,
+	    ["SpawnVFX"] = "Gold Elf",
+	    ["SpawnDelay"] = 3,
+	},
+	["Los Jolly Combinasionas"] = {
+		["DisplayName"] = "Los Jolly Combinasionas",
+		["Rarity"] = "Secret",
+		["Price"] = 3000000000,
+		["Generation"] = 20000000,
+	},
+	["Jolly Jolly Sahur"] = {
+		["DisplayName"] = "Jolly Jolly Sahur",
+		["Rarity"] = "Secret",
+		["Price"] = 8000000000,
+		["Generation"] = 45000000,
+	},
+	["Ginger Gerat"] = {
+		["DisplayName"] = "Ginger Gerat",
+		["Rarity"] = "Secret",
+		["Price"] = 22500000000,
+		["Generation"] = 75000000,
+	},
+	["Los Ketupatsitos"] = {
+		["DisplayName"] = "Los Ketupatsitos",
+		["Rarity"] = "Secret",
+		["Price"] = 12500000000,
+		["Generation"] = 31500000,
+	},
+	["Rocco Disco"] = {
+		["DisplayName"] = "Rocco Disco",
+		["Rarity"] = "Secret",
+		["Price"] = 150000000,
+		["Generation"] = 650000,
+		["SpawnVFX"] = "New Years 2026",
+		["SpawnDelay"] = 3
+	},
+	["Bunito Bunito Spinito"] = {
+		["DisplayName"] = "Bunito Bunito Spinito",
+		["Rarity"] = "Secret",
+		["Price"] = 900000000,
+		["Generation"] = 3000000,
+		["SpawnVFX"] = "New Years 2026",
+		["SpawnDelay"] = 3
+	},
+	["Tuff Toucan"] = {
+		["DisplayName"] = "Tuff Toucan",
+		["Rarity"] = "Secret",
+		["Price"] = 2750000000,
+		["Generation"] = 26000000,
+		["SpawnVFX"] = "New Years 2026",
+		["SpawnDelay"] = 3
+	},
+	["Tootini Shrimpini"] = {
+		["DisplayName"] = "Tootini Shrimpini",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 46000000,
+		["Generation"] = 260000,
+		["SpawnVFX"] = "New Years 2026",
+		["SpawnDelay"] = 3
+	},
+	["Los Jolly Bros"] = {
+		["DisplayName"] = "Los Jolly Bros",
+		["Rarity"] = "Secret",
+		["Price"] = 3500000000,
+		["Generation"] = 10000000,
+		["IgnoreIndexCounter"] = true,
+		["SpawnVFX"] = "New Years 2026",
+		["SpawnDelay"] = 3
+	},
+	["Los Giftinis"] = {
+		["DisplayName"] = "Los Giftinis",
+		["Rarity"] = "Secret",
+		["Price"] = 260000000,
+		["Generation"] = 1299999,
+		["IgnoreIndexCounter"] = true,
+		["SpawnVFX"] = "New Years 2026",
+		["SpawnDelay"] = 3
+	},
+	["67 Bros"] = {
+		["DisplayName"] = "67 Bros",
+		["Rarity"] = "Secret",
+		["Price"] = 5000000000,
+		["Generation"] = 17500000,
+		["IgnoreIndexCounter"] = true,
+	},
+	["Los Chachechitos"] = {
+		["DisplayName"] = "Los Chachechitos",
+		["Rarity"] = "Secret",
+		["Price"] = 250000000,
+		["Generation"] = 1000000,
+		["IgnoreIndexCounter"] = true,
+	},
+	["Los Bicicle Bros"] = {
+		["DisplayName"] = "Los Bicicle Bros",
+		["Rarity"] = "Secret",
+		["Price"] = 750000000,
+		["Generation"] = 5000000,
+		["IgnoreIndexCounter"] = true,
+	},
+	["Cerberus"] = {
+		["DisplayName"] = "Cerberus",
+		["Rarity"] = "Secret",
+		["Price"] = 150000000000,
+		["Generation"] = 175000000,
+	},
+	["GOAT"] = {
+		["DisplayName"] = "GOAT",
+		["Rarity"] = "Secret",
+		["Price"] = 237500000,
+		["Generation"] = 950000,
+		["RoadWeight"] = 3e-6,
+	},
+	["Brunito Marsito"] = {
+		["DisplayName"] = "Brunito Marsito",
+		["Rarity"] = "Secret",
+		["Price"] = 750000000,
+		["Generation"] = 3500000,
+	},
+	["Pimento and Wasabi"] = {
+		["DisplayName"] = "Pimento and Wasabi",
+		["Rarity"] = "Secret",
+		["Price"] = 10000000000,
+		["Generation"] = 35000000,
+	},
+	["Madung and Musturu"] = {
+		["DisplayName"] = "Madung and Musturu",
+		["Rarity"] = "Secret",
+		["Price"] = 9500000000,
+		["Generation"] = 47500000,
+	},
+	["Mentos and Cola"] = {
+		["DisplayName"] = "Mentos and Cola",
+		["Rarity"] = "Secret",
+		["Price"] = 9500000000,
+		["Generation"] = 35000000,
+	},
+	["Lavadorito Spinito"] = {
+		["DisplayName"] = "Lavadorito Spinito",
+		["Rarity"] = "Secret",
+		["Price"] = 8000000000,
+		["Generation"] = 45000000,
+		["RoadWeight"] = 1.5e-11
+	},
+	["Los Bisonte Giuppiteres"] = {
+		["DisplayName"] = "Los Bisonte Giuppiteres",
+		["Rarity"] = "Secret",
+		["Price"] = 125000000,
+		["Generation"] = 1200000,
+		["IgnoreIndexCounter"] = true
+	},
+	["Orcalida"] = {
+		["DisplayName"] = "Orcalida",
+		["Rarity"] = "Secret",
+		["Price"] = 7500000000,
+		["Generation"] = 50000000
+	},
+	["Tralalida"] = {
+		["DisplayName"] = "Tralalida",
+		["Rarity"] = "Secret",
+		["Price"] = 3500000000,
+		["Generation"] = 37500000,
+		["IgnoreIndexCounter"] = true,
+	},
+	["Device Bros"] = {
+		["DisplayName"] = "Device Bros",
+		["Rarity"] = "Secret",
+		["Price"] = 200000000,
+		["Generation"] = 6000000,
+		["IgnoreIndexCounter"] = true,
+	},
+	["Smurf Cat"] = {
+		["DisplayName"] = "Smurf Cat",
+		["Rarity"] = "OG",
+		["Price"] = 670000000000,
+		["Generation"] = 670000000,
+		["TriggerEvent"] = "Smurf",
+		["SpawnVFX"] = "Smurf Cat",
+		["SpawnDelay"] = 3,
+		["IgnoreIndexCounter"] = false,
+	},
+	["Marvin Beak"] = {
+		["DisplayName"] = "Marvin Beak",
+		["Rarity"] = "OG",
+		["Price"] = 800000000000,
+		["Generation"] = 800000000,
+		["SpawnDelay"] = 3,
+		["IgnoreIndexCounter"] = true,
+		["RoadWeight"] = 1e-18,
+	},
+	["Chill Guy"] = {
+		["DisplayName"] = "Chill Guy",
+		["Rarity"] = "OG",
+		["Price"] = 900000000000,
+		["Generation"] = 900000000,
+		["TriggerEvent"] = "Chill",
+		["SpawnVFX"] = "Chill Guy",
+		["SpawnDelay"] = 3,
+		["IgnoreIndexCounter"] = true,
+		["RoadWeight"] = 1e-18,
+	},
+	["Skibidi Toilet"] = {
+		["DisplayName"] = "Skibidi Toilet", 
+		["Rarity"] = "OG", 
+		["Price"] = 450000000000, 
+		["Generation"] = 450000000, 
+		["TriggerEvent"] = "Skibidi", 
+		["SpawnVFX"] = "Skibidi Toilet", 
+		["SpawnDelay"] = 3, 
+		["IgnoreIndexCounter"] = true
+	},
+	["Strawberry Elephant"] = {
+		["DisplayName"] = "Strawberry Elephant",
+		["Rarity"] = "OG",
+		["Price"] = 750000000000,
+		["Generation"] = 750000000,
+		["TriggerEvent"] = "Strawberry",
+		["SpawnVFX"] = "Strawberry",
+		["SpawnDelay"] = 3,
+		["IgnoreIndexCounter"] = true
+	},
+	["Strawberry Fakelphant"] = {
+		["DisplayName"] = "Strawberry Fakelphant",
+		["Rarity"] = "Common",
+		["Price"] = 1,
+		["Generation"] = 1,
+		["SpawnVFX"] = "Strawberry",
+		["SpawnDelay"] = 3,
+		["IgnoreIndexCounter"] = true,
+		["HideFromIndex"] = true
+	},
+	["Meowl"] = {
+		["DisplayName"] = "Meowl",
+		["Rarity"] = "OG",
+		["Price"] = 600000000000,
+		["Generation"] = 600000000,
+		["TriggerEvent"] = "Meowl",
+		["SpawnVFX"] = "Meowl",
+		["SpawnDelay"] = 3,
+		["IgnoreIndexCounter"] = true
+	},
+	["John Pork"] = {
+		["DisplayName"] = "John Pork",
+		["Rarity"] = "OG",
+		["Price"] = 500000000000,
+		["Generation"] = 500000000,
+		["TriggerEvent"] = "John Pork",
+		["SpawnVFX"] = "John Pork",
+		["SpawnDelay"] = 3,
+		["IgnoreIndexCounter"] = true,
+	},
+	["Pumpkin Elephant"] = {
+		["DisplayName"] = "Pumpkin Elephant",
+		["Rarity"] = "OG",
+		["Price"] = 1000000000000,
+		["Generation"] = 1000000000,
+		["HideFromIndex"] = true,
+		["IgnoreIndexCounter"] = true,
+		["TriggerEvent"] = "PumpkinStrawberry",
+		["SpawnVFX"] = "Pumpkin",
+		["SpawnDelay"] = 3.5
+	},
+	["Los OG"] = {
+		["DisplayName"] = "Los OG",
+		["Rarity"] = "OG",
+		["Price"] = 450000000000,
+		["Generation"] = 450000000
+	},
+	["OG Lucky Block"] = {
+		["DisplayName"] = "Lucky Block",
+		["Rarity"] = "OG",
+		["Price"] = 1000000000,
+		["Generation"] = 0,
+		["LuckyBlock"] = v3["OG Lucky Block"],
+		["HideFromIndex"] = true
+	},
+	["Headless Horseman"] = {
+		["DisplayName"] = "Headless Horseman",
+		["Rarity"] = "OG",
+		["Price"] = 600000000000,
+		["Generation"] = 600000000
+	},
+	["Los Trios"] = {
+		["DisplayName"] = "Los Trios",
+		["Rarity"] = "Secret",
+		["Price"] = 175000000,
+		["Generation"] = 700000,
+	},
+	["Chill Puppy"] = {
+		["DisplayName"] = "Chill Puppy",
+		["Rarity"] = "Secret",
+		["Price"] = 850000000,
+		["Generation"] = 4000000,
+	},
+	["Arcadopus"] = {
+		["DisplayName"] = "Arcadopus",
+		["Rarity"] = "Secret",
+		["Price"] = 900000000,
+		["Generation"] = 5000000,
+	},
+	["Spinny Hammy"] = {
+		["DisplayName"] = "Spinny Hammy",
+		["Rarity"] = "Secret",
+		["Price"] = 2300000000,
+		["Generation"] = 17000000,
+	},
+	["Bacuru and Egguru"] = {
+		["DisplayName"] = "Bacuru and Egguru",
+		["Rarity"] = "Secret",
+		["Price"] = 3850000000,
+		["Generation"] = 24000000,
+	},
+	["Ketupat Bros"] = {
+		["DisplayName"] = "Ketupat Bros",
+		["Rarity"] = "Secret",
+		["Price"] = 65000000000,
+		["Generation"] = 145000000,
+	},
+	["Hydra Dragon Cannelloni"] = {
+		["DisplayName"] = "Hydra Dragon Cannelloni",
+		["Rarity"] = "Secret",
+		["Price"] = 350000000000,
+		["Generation"] = 350000000,
+	},
+	["Boba Panda"] = {
+		["DisplayName"] = "Boba Panda",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 47000000,
+		["Generation"] = 270000,
+	},
+	["Dolphini Jetskini"] = {
+		["DisplayName"] = "Dolphini Jetskini",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 64500000,
+		["Generation"] = 294500,
+	},
+	["Spongini Quackini"] = {
+		["DisplayName"] = "Spongini Quackini",
+		["Rarity"] = "Mythic",
+		["Price"] = 4400000,
+		["Generation"] = 13000,
+	},
+	["Fizzy Soda"] = {
+		["DisplayName"] = "Fizzy Soda",
+		["Rarity"] = "Mythic",
+		["Price"] = 4975000,
+		["Generation"] = 17250,
+	},
+	["Mi Gatito"] = {
+		["DisplayName"] = "Mi Gatito",
+		["Rarity"] = "Secret",
+		["Price"] = 725000000,
+		["Generation"] = 3250000,
+		["SpawnVFX"] = "Mi Gatito",
+		["SpawnDelay"] = 3,
+	},
+	["Los Mi Gatitos"] = {
+		["DisplayName"] = "Los Mi Gatitos",
+		["Rarity"] = "Secret",
+		["Price"] = 1250000000,
+		["Generation"] = 6500000,
+		["SpawnVFX"] = "Mi Gatito",
+		["SpawnDelay"] = 3,
+	},
+	["Popcuru and Fizzuru"] = {
+		["DisplayName"] = "Popcuru and Fizzuru",
+		["Rarity"] = "Secret",
+		["Price"] = 135000000000,
+		["Generation"] = 170000000,
+	},
+	["Los Karkeritos Combinasionas"] = {
+		["DisplayName"] = "Los Karkeritos Combinasionas",
+		["Rarity"] = "Secret",
+		["Price"] = 5000000000,
+		["Generation"] = 32100000,
+	},
+	["Love Love Love Sahur"] = {
+		["DisplayName"] = "Love Love Love Sahur",
+		["Rarity"] = "Secret",
+		["Price"] = 250000000,
+		["Generation"] = 1000000,
+		["SpawnVFX"] = "Valentines",
+		["SpawnDelay"] = 3,
+	},
+	["Cupid Cupid Sahur"] = {
+		["DisplayName"] = "Cupid Cupid Sahur",
+		["Rarity"] = "Secret",
+		["Price"] = 715000000,
+		["Generation"] = 3100000,
+		["SpawnVFX"] = "Valentines",
+		["SpawnDelay"] = 3,
+	},
+	["Cupid Hotspot"] = {
+		["DisplayName"] = "Cupid Hotspot",
+		["Rarity"] = "Secret",
+		["Price"] = 750000000,
+		["Generation"] = 3500000,
+		["SpawnVFX"] = "Valentines",
+		["SpawnDelay"] = 3,
+	},
+	["Noo my Heart"] = {
+		["DisplayName"] = "Noo my Heart",
+		["Rarity"] = "Secret",
+		["Price"] = 1800000000,
+		["Generation"] = 13000000,
+		["SpawnVFX"] = "Valentines",
+		["SpawnDelay"] = 3,
+	},
+	["Chicleteira Cupideira"] = {
+		["DisplayName"] = "Chicleteira Cupideira",
+		["Rarity"] = "Secret",
+		["Price"] = 2500000000,
+		["Generation"] = 17500000,
+		["SpawnVFX"] = "Valentines",
+		["SpawnDelay"] = 3,
+	},
+	["Lovin Rose"] = {
+		["DisplayName"] = "Lovin Rose",
+		["Rarity"] = "Secret",
+		["Price"] = 4250000000,
+		["Generation"] = 32500000,
+		["SpawnVFX"] = "Valentines",
+		["SpawnDelay"] = 3,
+	},
+	["La Romantic Grande"] = {
+		["DisplayName"] = "La Romantic Grande",
+		["Rarity"] = "Secret",
+		["Price"] = 7000000000,
+		["Generation"] = 40000000,
+		["SpawnVFX"] = "Valentines",
+		["SpawnDelay"] = 3,
+	},
+	["Rosetti Tualetti"] = {
+		["DisplayName"] = "Rosetti Tualetti",
+		["Rarity"] = "Secret",
+		["Price"] = 10000000000,
+		["Generation"] = 50000000,
+		["SpawnVFX"] = "Valentines",
+		["SpawnDelay"] = 3,
+	},
+	["Love Love Bear"] = {
+		["DisplayName"] = "Love Love Bear",
+		["Rarity"] = "Secret",
+		["Price"] = 22500000000,
+		["Generation"] = 225000000,
+		["SpawnVFX"] = "Valentines",
+		["SpawnDelay"] = 3,
+	},
+	["Rosey and Teddy"] = {
+		["DisplayName"] = "Rosey and Teddy",
+		["Rarity"] = "Secret",
+		["Price"] = 130000000000,
+		["Generation"] = 165000000,
+		["SpawnVFX"] = "Valentines",
+		["SpawnDelay"] = 3,
+	},
+	["Luv Luv Luv"] = {
+		["DisplayName"] = "Luv Luv Luv",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 48250000,
+		["Generation"] = 282500,
+		["SpawnVFX"] = "Valentines",
+		["SpawnDelay"] = 3,
+	},
+	["Karkerheart Luvkur"] = {
+		["DisplayName"] = "Karkerheart Luvkur",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 67500000,
+		["Generation"] = 297500,
+		["SpawnVFX"] = "Valentines",
+		["SpawnDelay"] = 3,
+	},
+	["Heart Lucky Block"] = {
+		["DisplayName"] = "Heart Lucky Block",
+		["Rarity"] = "Valentines",
+		["Price"] = 350000000,
+		["Generation"] = 0,
+		["LuckyBlock"] = v3["Heart Lucky Block"],
+		["HideFromIndex"] = true,
+		["SpawnVFX"] = "Valentines",
+		["SpawnDelay"] = 3
+	},
+	["Premium Heart Lucky Block"] = {
+		["DisplayName"] = "Premium Heart Lucky Block",
+		["Rarity"] = "Valentines",
+		["Price"] = 350000000,
+		["Generation"] = 0,
+		["LuckyBlock"] = v3["Premium Heart Lucky Block"],
+		["HideFromIndex"] = true,
+		["SpawnVFX"] = "Valentines",
+		["SpawnDelay"] = 3
+	},
+	["Los Sweethearts"] = {
+		["DisplayName"] = "Los Sweethearts",
+		["Rarity"] = "Secret",
+		["Price"] = 2250000000,
+		["Generation"] = 16500000,
+		["SpawnVFX"] = "Valentines",
+		["SpawnDelay"] = 3,
+	},
+	["Sammyni Fattini"] = {
+		["DisplayName"] = "Sammyni Fattini",
+		["Rarity"] = "Secret",
+		["Price"] = 20000000000,
+		["Generation"] = 70000000,
+	},
+	["La Food Combinasion"] = {
+		["DisplayName"] = "La Food Combinasion",
+		["Rarity"] = "Secret",
+		["Price"] = 30000000000,
+		["Generation"] = 90000000,
+	},
+	["Los Sekolahs"] = {
+		["DisplayName"] = "Los Sekolahs",
+		["Rarity"] = "Secret",
+		["Price"] = 45000000000,
+		["Generation"] = 110000000,
+	},
+	["Los Amigos"] = {
+		["DisplayName"] = "Los Amigos",
+		["Rarity"] = "Secret",
+		["Price"] = 55000000000,
+		["Generation"] = 130000000,
+	},
+	["Fishboard"] = {
+		["DisplayName"] = "Fishboard",
+		["Rarity"] = "Secret",
+		["Price"] = 215000000,
+		["Generation"] = 825000,
+		["RoadWeight"] = 4e-6,
+	},
+	["DJ Panda"] = {
+		["DisplayName"] = "DJ Panda",
+		["Rarity"] = "Secret",
+		["Price"] = 2500000000,
+		["Generation"] = 17500000,
+		["RoadWeight"] = 5e-9,
+	},
+	["Ventoliero Pavonero"] = {
+		["DisplayName"] = "Ventoliero Pavonero",
+		["Rarity"] = "Secret",
+		["Price"] = 15500000000,
+		["Generation"] = 65000000,
+		["RoadWeight"] = 7e-12,
+	},
+	["Celestial Pegasus"] = {
+		["DisplayName"] = "Celestial Pegasus",
+		["Rarity"] = "Secret",
+		["Price"] = 150000000000,
+		["Generation"] = 175000000,
+	},
+	["Tacorillo Crocodillo"] = {
+		["DisplayName"] = "Tacorillo Crocodillo",
+		["Rarity"] = "Secret",
+		["Price"] = 1500000000,
+		["Generation"] = 12500000,
+		["SpawnVFX"] = "Taco",
+		["SpawnDelay"] = 3,
+	},
+	["Nacho Spyder"] = {
+		["DisplayName"] = "Nacho Spyder",
+		["Rarity"] = "Secret",
+		["Price"] = 10000000000,
+		["Generation"] = 50000000,
+		["SpawnVFX"] = "Taco",
+		["SpawnDelay"] = 3,
+	},
+	["Tirilikalika Tirilikalako"] = {
+		["DisplayName"] = "Tirilikalika Tirilikalako",
+		["Rarity"] = "Secret",
+		["Price"] = 7500000000,
+		["Generation"] = 42500000
+	},
+	["Antonio"] = {
+		["DisplayName"] = "Antonio",
+		["Rarity"] = "Secret",
+		["Price"] = 12500000000,
+		["Generation"] = 55000000
+	},
+	["Recolor Antonio"] = {
+		["DisplayName"] = "Recolor Antonio",
+		["Rarity"] = "Secret",
+		["Price"] = 1250000000,
+		["Generation"] = 25000000
+	},
+	["Elefanto Frigo"] = {
+		["DisplayName"] = "Elefanto Frigo",
+		["Rarity"] = "Secret",
+		["Price"] = 12500000000,
+		["Generation"] = 85000000
+	},
+	["Signore Carapace"] = {
+		["DisplayName"] = "Signore Carapace",
+		["Rarity"] = "Secret",
+		["Price"] = 42500000000,
+		["Generation"] = 105000000
+	},
+	["Serafinna Medusella"] = {
+		["DisplayName"] = "Serafinna Medusella", 
+		["Rarity"] = "Secret", 
+		["Price"] = 1000000000, 
+		["Generation"] = 5500000, 
+	}, 
+	["Cigno Fulgoro"] = {
+		DisplayName = "Cigno Fulgoro", 
+		["Rarity"] = "Secret", 
+		["Price"] = 3000000000, 
+		["Generation"] = 20000000, 
+	}, 
+	["Los Cupids"] = {
+		["DisplayName"] = "Los Cupids", 
+		["Rarity"] = "Secret", 
+		["Price"] = 3500000000, 
+		["Generation"] = 30000000, 
+	}, 
+	["Griffin"] = {
+		["DisplayName"] = "Griffin", 
+		["Rarity"] = "Secret", 
+		["Price"] = 400000000000, 
+		["Generation"] = 400000000, 
+	}, 
+	["Paradiso Axolottino"] = {
+		["DisplayName"] = "Paradiso Axolottino", 
+		["Rarity"] = "Secret", 
+		["Price"] = 235000000, 
+		["Generation"] = 900000, 
+	},
+	["Divino Platypio"] = {
+		["DisplayName"] = "Divino Platypio", 
+		["Rarity"] = "Brainrot God", 
+		["Price"] = 32000000, 
+		["Generation"] = 160000, 
+	}, 
+	["Astrolero Cervalero"] = {
+		["DisplayName"] = "Astrolero Cervalero", 
+		["Rarity"] = "Brainrot God", 
+		["Price"] = 48000000, 
+		["Generation"] = 280000, 
+	}, 
+	["Dumborino Miracello"] = {
+		["DisplayName"] = "Dumborino Miracello", 
+		["Rarity"] = "Brainrot God", 
+		["Price"] = 75000000, 
+		["Generation"] = 315000, 
+	}, 
+	["Berenjello Angello"] = {
+		["DisplayName"] = "Berenjello Angello", 
+		["Rarity"] = "Mythic", 
+		["Price"] = 5500000, 
+		["Generation"] = 18000, 
+	},
+	["Seraphino Gruyero"] = {
+		["DisplayName"] = "Seraphino Gruyero", 
+		["Rarity"] = "Legendary", 
+		["Price"] = 347500, 
+		["Generation"] = 1900, 
+	}, 
+	["Buho del Cielo"] = {
+		["DisplayName"] = "Buho del Cielo", 
+		["Rarity"] = "Legendary", 
+		["Price"] = 325000, 
+		["Generation"] = 1350, 
+	}, 
+	["Gato Celesto"] = {
+		["DisplayName"] = "Gato Celesto", 
+		["Rarity"] = "Epic", 
+		["Price"] = 40000, 
+		["Generation"] = 250, 
+	},
+	["Holy Arepa"] = {
+		["DisplayName"] = "Holy Arepa", 
+		["Rarity"] = "Common", 
+		["Price"] = 1750, 
+		["Generation"] = 14, 
+	}, 
+	["Leprechaun Lucky Block"] = {
+		["DisplayName"] = "Leprechaun Lucky Block",
+		["Rarity"] = "St Patrick\'s",
+		["Price"] = 400000000,
+		["Generation"] = 0,
+		["LuckyBlock"] = v3["Leprechaun Lucky Block"],
+		["HideFromIndex"] = true,
+		["SpawnVFX"] = "Clover",
+		["SpawnDelay"] = 3,
+	},
+	["Premium Leprechaun Lucky Block"] = {
+		["DisplayName"] = "Premium Leprechaun Lucky Block",
+		["Rarity"] = "St Patrick\'s",
+		["Price"] = 400000000,
+		["Generation"] = 0,
+		["LuckyBlock"] = v3["Premium Leprechaun Lucky Block"],
+		["HideFromIndex"] = true,
+		["SpawnVFX"] = "Clover",
+		["SpawnDelay"] = 3,
+	},
+	["La Vacca Lepre Lepreino"] = {
+		["DisplayName"] = "La Vacca Lepre Lepreino",
+		["Rarity"] = "Secret",
+		["Price"] = 255000000,
+		["Generation"] = 1100000,
+		["SpawnVFX"] = "Clover",
+		["SpawnDelay"] = 3,
+	},
+	["Luck Luck Luck Sahur"] = {
+		["DisplayName"] = "Luck Luck Luck Sahur",
+		["Rarity"] = "Secret",
+		["Price"] = 800000000,
+		["Generation"] = 3750000,
+		["SpawnVFX"] = "Clover",
+		["SpawnDelay"] = 3,
+	},
+	["Noo my Gold"] = {
+		["DisplayName"] = "Noo my Gold",
+		["Rarity"] = "Secret",
+		["Price"] = 1850000000,
+		["Generation"] = 13500000,
+		["SpawnVFX"] = "Clover",
+		["SpawnDelay"] = 3,
+	},
+	["Snailo Clovero"] = {
+		["DisplayName"] = "Snailo Clovero",
+		["Rarity"] = "Secret",
+		["Price"] = 2750000000,
+		["Generation"] = 18500000,
+		["SpawnVFX"] = "Clover",
+		["SpawnDelay"] = 3,
+
+	},
+	["Gold Gold Gold"] = {
+		["DisplayName"] = "Gold Gold Gold",
+		["Rarity"] = "Secret",
+		["Price"] = 8000000000,
+		["Generation"] = 45000000,
+		["SpawnVFX"] = "Clover",
+		["SpawnDelay"] = 3,
+	},
+	["Fortunu and Cashuru"] = {
+		["DisplayName"] = "Fortunu and Cashuru",
+		["Rarity"] = "Secret",
+		["Price"] = 55000000000,
+		["Generation"] = 130000000,
+		["SpawnVFX"] = "Clover",
+		["SpawnDelay"] = 3,
+	},
+	["Cloverat Clapat"] = {
+		["DisplayName"] = "Cloverat Clapat",
+		["Rarity"] = "Secret",
+		["Price"] = 15000000000,
+		["Generation"] = 60000000,
+		["SpawnVFX"] = "Clover",
+		["SpawnDelay"] = 3,
+	},
+	["Dug dug dug"] = {
+		["DisplayName"] = "Dug dug dug",
+		["Rarity"] = "Secret",
+		["Price"] = 5000000000,
+		["Generation"] = 35000000
+	},
+	["Patteo"] = {
+		["DisplayName"] = "Patteo",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 57500000,
+		["Generation"] = 287500,
+		["SpawnVFX"] = "Clover",
+		["SpawnDelay"] = 3,
+	},
+	["Clovkur Kurkur"] = {
+		["DisplayName"] = "Clovkur Kurkur",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 70000000,
+		["Generation"] = 305000,
+		["SpawnVFX"] = "Clover",
+		["SpawnDelay"] = 3,
+	},
+	["La Lucky Grande"] = {
+		["DisplayName"] = "La Lucky Grande",
+		["Rarity"] = "Secret",
+		["Price"] = 7000000000,
+		["Generation"] = 40000000,
+		["SpawnVFX"] = "Clover",
+		["SpawnDelay"] = 3,
+	},
+	["Wheelchair Granny"] = {
+		["DisplayName"] = "Wheelchair Granny",
+		["Rarity"] = "Secret",
+		["TriggerEvent"] = "Rip My Granny",
+		["SpawnVFX"] = "Granny",
+		["SpawnDelay"] = 3,
+		["IgnoreIndexCounter"] = true,
+		["Price"] = 0,
+		["Generation"] = 0,
+		["HideFromIndex"] = true,
+		["HideOverhead"] = true,
+	},
+	["Eid Eid Eid Sahur"] = {
+		["DisplayName"] = "Eid Eid Eid Sahur",
+		["Rarity"] = "Secret",
+		["Price"] = 750000000,
+		["Generation"] = 3500000,
+	},
+	["Granny"] = {
+		["DisplayName"] = "Granny",
+		["Rarity"] = "Secret",
+		["Price"] = 850000000,
+		["Generation"] = 4000000,
+		["SpawnVFX"] = "Granny",
+		["SpawnDelay"] = 3,
+	},
+	["Foxini Lanternini"] = {
+		["DisplayName"] = "Foxini Lanternini",
+		["Rarity"] = "Secret",
+		["Price"] = 47500000000,
+		["Generation"] = 115000000,
+	},
+	["Buntteo"] = {
+		["DisplayName"] = "Buntteo",
+		["Rarity"] = "Secret",
+		["Price"] = 225000000,
+		["Generation"] = 850000,
+		["SpawnVFX"] = "Easter",
+		["SpawnDelay"] = 3,
+	},
+	["Bunny Bunny Bunny Sahur"] = {
+		["DisplayName"] = "Bunny Bunny Bunny Sahur",
+		["Rarity"] = "Secret",
+		["Price"] = 575000000,
+		["Generation"] = 2250000,
+		["SpawnVFX"] = "Easter",
+		["SpawnDelay"] = 3,
+	},
+	["Noo my Eggs"] = {
+		["DisplayName"] = "Noo my Eggs",
+		["Rarity"] = "Secret",
+		["Price"] = 1200000000,
+		["Generation"] = 7000000,
+		["SpawnVFX"] = "Easter",
+		["SpawnDelay"] = 3,
+	},
+	["La Easter Grande"] = {
+		["DisplayName"] = "La Easter Grande",
+		["Rarity"] = "Secret",
+		["Price"] = 12500000000,
+		["Generation"] = 55000000,
+		["SpawnVFX"] = "Easter",
+		["SpawnDelay"] = 3,
+	},
+	["Easter Easter Easter Sahur"] = {
+		["DisplayName"] = "Easter Easter Easter Sahur",
+		["Rarity"] = "Secret",
+		["Price"] = 300000000,
+		["Generation"] = 1250000,
+		["SpawnVFX"] = "Easter",
+		["SpawnDelay"] = 3,
+	},
+	["Los Bunitos"] = {
+		["DisplayName"] = "Los Bunitos",
+		["Rarity"] = "Secret",
+		["Price"] = 865000000,
+		["Generation"] = 4250000,
+		["SpawnVFX"] = "Easter",
+		["SpawnDelay"] = 3,
+	},
+	["Baskito"] = {
+		["DisplayName"] = "Baskito",
+		["Rarity"] = "Secret",
+		["Price"] = 2100000000,
+		["Generation"] = 16000000,
+		["SpawnVFX"] = "Easter",
+		["SpawnDelay"] = 3,
+	},
+	["Churrito Bunnito"] = {
+		["DisplayName"] = "Churrito Bunnito",
+		["Rarity"] = "Secret",
+		["Price"] = 2600000000,
+		["Generation"] = 21000000,
+		["SpawnVFX"] = "Easter",
+		["SpawnDelay"] = 3,
+	},
+	["Hopilikalika Hopilikalako"] = {
+		["DisplayName"] = "Hopilikalika Hopilikalako",
+		["Rarity"] = "Secret",
+		["Price"] = 12500000000,
+		["Generation"] = 55000000,
+		["SpawnVFX"] = "Easter",
+		["SpawnDelay"] = 3,
+	},
+	["Boppin Bunny"] = {
+		["DisplayName"] = "Boppin Bunny",
+		["Rarity"] = "Secret",
+		["Price"] = 25000000000,
+		["Generation"] = 80000000,
+		["SpawnVFX"] = "Easter",
+		["SpawnDelay"] = 3,
+	},
+	["Hydra Bunny"] = {
+		["DisplayName"] = "Hydra Bunny",
+		["Rarity"] = "Secret",
+		["Price"] = 175000000000,
+		["Generation"] = 185000000,
+		["SpawnVFX"] = "Easter",
+		["SpawnDelay"] = 3,
+	},
+	["Bunny and Eggy"] = {
+		["DisplayName"] = "Bunny and Eggy",
+		["Rarity"] = "Secret",
+		["Price"] = 135000000000,
+		["Generation"] = 170000000,
+		["SpawnVFX"] = "Easter",
+		["SpawnDelay"] = 3,
+	},
+	["Egg Lucky Block"] = {
+		["DisplayName"] = "Egg Lucky Block",
+		["Rarity"] = "Easter",
+		["Price"] = 500000000,
+		["Generation"] = 0,
+		["LuckyBlock"] = v3["Egg Lucky Block"],
+		["HideFromIndex"] = true,
+		["SpawnVFX"] = "Easter",
+		["SpawnDelay"] = 3
+	},
+	["Bunny Tralala"] = {
+		["DisplayName"] = "Bunny Tralala",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 47000000,
+		["Generation"] = 270000,
+		["SpawnVFX"] = "Easter",
+		["SpawnDelay"] = 3,
+	},
+	["Eggdin Egg Egg Dun"] = {
+		["DisplayName"] = "Eggdin Egg Egg Dun",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 72500000,
+		["Generation"] = 310000,
+		["SpawnVFX"] = "Easter",
+		["SpawnDelay"] = 3,
+	},
+	["Bunny Tralala Egg"] = {
+		["DisplayName"] = "Bunny Tralala Egg",
+		["Rarity"] = "Easter",
+		["Price"] = 500000000,
+		["Generation"] = 0,
+		["LuckyBlock"] = v3["Bunny Tralala Egg"],
+		["HideFromIndex"] = true,
+		["SpawnVFX"] = "Easter",
+		["SpawnDelay"] = 3
+	},
+	["Baskito Egg"] = {
+		["DisplayName"] = "Baskito Egg",
+		["Rarity"] = "Easter",
+		["Price"] = 500000000,
+		["Generation"] = 0,
+		["LuckyBlock"] = v3["Baskito Egg"],
+		["HideFromIndex"] = true,
+		["SpawnVFX"] = "Easter",
+		["SpawnDelay"] = 3
+	},
+	["Bunny Bunny Bunny Sahur Egg"] = {
+		["DisplayName"] = "Bunny Bunny Bunny Sahur Egg",
+		["Rarity"] = "Easter",
+		["Price"] = 500000000,
+		["Generation"] = 0,
+		["LuckyBlock"] = v3["Bunny Bunny Bunny Sahur Egg"],
+		["HideFromIndex"] = true,
+		["SpawnVFX"] = "Easter",
+		["SpawnDelay"] = 3
+	},
+	["Buntteo Egg"] = {
+		["DisplayName"] = "Buntteo Egg",
+		["Rarity"] = "Easter",
+		["Price"] = 500000000,
+		["Generation"] = 0,
+		["LuckyBlock"] = v3["Buntteo Egg"],
+		["HideFromIndex"] = true,
+		["SpawnVFX"] = "Easter",
+		["SpawnDelay"] = 3
+	},
+	["Churrito Bunnito Egg"] = {
+		["DisplayName"] = "Churrito Bunnito Egg",
+		["Rarity"] = "Easter",
+		["Price"] = 500000000,
+		["Generation"] = 0,
+		["LuckyBlock"] = v3["Churrito Bunnito Egg"],
+		["HideFromIndex"] = true,
+		["SpawnVFX"] = "Easter",
+		["SpawnDelay"] = 3
+	},
+	["Easter Easter Easter Sahur Egg"] = {
+		["DisplayName"] = "Easter Easter Easter Sahur Egg",
+		["Rarity"] = "Easter",
+		["Price"] = 500000000,
+		["Generation"] = 0,
+		["LuckyBlock"] = v3["Easter Easter Easter Sahur Egg"],
+		["HideFromIndex"] = true,
+		["SpawnVFX"] = "Easter",
+		["SpawnDelay"] = 3
+	},
+	["Eggdin Egg Egg Dun Egg"] = {
+		["DisplayName"] = "Eggdin Egg Egg Dun Egg",
+		["Rarity"] = "Easter",
+		["Price"] = 500000000,
+		["Generation"] = 0,
+		["LuckyBlock"] = v3["Eggdin Egg Egg Dun Egg"],
+		["HideFromIndex"] = true,
+		["SpawnVFX"] = "Easter",
+		["SpawnDelay"] = 3
+	},
+	["Hopilikalika Hopilikalako Egg"] = {
+		["DisplayName"] = "Hopilikalika Hopilikalako Egg",
+		["Rarity"] = "Easter",
+		["Price"] = 500000000,
+		["Generation"] = 0,
+		["LuckyBlock"] = v3["Hopilikalika Hopilikalako Egg"],
+		["HideFromIndex"] = true,
+		["SpawnVFX"] = "Easter",
+		["SpawnDelay"] = 3
+	},
+	["Hydra Bunny Egg"] = {
+		["DisplayName"] = "Hydra Bunny Egg",
+		["Rarity"] = "Easter",
+		["Price"] = 500000000,
+		["Generation"] = 0,
+		["LuckyBlock"] = v3["Hydra Bunny Egg"],
+		["HideFromIndex"] = true,
+		["SpawnVFX"] = "Easter",
+		["SpawnDelay"] = 3
+	},
+	["Los Bunitos Egg"] = {
+		["DisplayName"] = "Los Bunitos Egg",
+		["Rarity"] = "Easter",
+		["Price"] = 500000000,
+		["Generation"] = 0,
+		["LuckyBlock"] = v3["Los Bunitos Egg"],
+		["HideFromIndex"] = true,
+		["SpawnVFX"] = "Easter",
+		["SpawnDelay"] = 3
+	},
+	["Noo my Eggs Egg"] = {
+		["DisplayName"] = "Noo my Eggs Egg",
+		["Rarity"] = "Easter",
+		["Price"] = 500000000,
+		["Generation"] = 0,
+		["LuckyBlock"] = v3["Noo my Eggs Egg"],
+		["HideFromIndex"] = true,
+		["SpawnVFX"] = "Easter",
+		["SpawnDelay"] = 3
+	},
+	["Appelini"] = {
+		["DisplayName"] = "Appelini", 
+		["Rarity"] = "Brainrot God", 
+		["Price"] = 69000000, 
+		["Generation"] = 300000, 
+		["RoadWeight"] = 0.0004,
+	}, 
+	["Berryno"] = {
+		["DisplayName"] = "Berryno", 
+		["Rarity"] = "Secret", 
+		["Price"] = 500000000, 
+		["Generation"] = 1500000, 
+		["RoadWeight"] = 7e-07,
+	}, 
+	["Strawberrita"] = {
+		["DisplayName"] = "Strawberrita", 
+		["Rarity"] = "Secret", 
+		["Price"] = 1250000000, 
+		["Generation"] = 6500000, 
+		["RoadWeight"] = 3e-08,
+	}, 
+	["Bananito"] = {
+		["DisplayName"] = "Bananito", 
+		["Rarity"] = "Secret", 
+		["Price"] = 2000000000, 
+		["Generation"] = 15000000, 
+		["RoadWeight"] = 8e-09,
+	}, 
+	["Cash or Card"] = {
+		["DisplayName"] = "Cash or Card", 
+		["Rarity"] = "Secret", 
+		["Price"] = 40000000000, 
+		["Generation"] = 100000000, 
+		["RoadWeight"] = 3e-13,
+	}, 
+	["Buho de Volto"] = {
+		["DisplayName"] = "Buho de Volto",
+		["Rarity"] = "Secret",
+		["Price"] = 650000000,
+		["Generation"] = 2750000,
+	},
+	["Camera Ramena"] = {
+		["DisplayName"] = "Camera Ramena",
+		["Rarity"] = "Secret",
+		["Price"] = 2300000000,
+		["Generation"] = 17000000,
+	},
+	["Gym Bros"] = {
+		["DisplayName"] = "Gym Bros",
+		["Rarity"] = "Secret",
+		["Price"] = 7500000000,
+		["Generation"] = 42500000,
+	},
+	["Los Chillis"] = {
+		["DisplayName"] = "Los Chillis",
+		["Rarity"] = "Secret",
+		["Price"] = 22500000000,
+		["Generation"] = 75000000,
+	},
+	["Kalika Bros"] = {
+		["DisplayName"] = "Kalika Bros",
+		["Rarity"] = "Secret",
+		["Price"] = 47500000000,
+		["Generation"] = 115000000,
+	},
+	["Digi Narwhal"] = {
+		["DisplayName"] = "Digi Narwhal",
+		["Rarity"] = "Secret",
+		["Price"] = 200000000000,
+		["Generation"] = 200000000,
+	},
+	["Electro Quacko"] = {
+		["DisplayName"] = "Electro Quacko",
+		["Rarity"] = "Legendary",
+		["Price"] = 345000,
+		["Generation"] = 1850,
+	},
+	["Bee Loco"] = {
+		["DisplayName"] = "Bee Loco",
+		["Rarity"] = "Mythic",
+		["Price"] = 4500000,
+		["Generation"] = 13500,
+	},
+	["Orbi Mochi"] = {
+		["DisplayName"] = "Orbi Mochi",
+		["Rarity"] = "Mythic",
+		["Price"] = 6000000,
+		["Generation"] = 18500,
+	},
+	["Trenotubo Axolotrico 9000"] = {
+		["DisplayName"] = "Trenotubo Axolotrico 9000",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 45500000,
+		["Generation"] = 255000,
+	},
+	["John Doe"] = {
+		["DisplayName"] = "John Doe",
+		["Rarity"] = "Secret",
+		["SpawnDelay"] = 3,
+		["SpawnVFX"] = "JohnDoe",
+		["Price"] = 1200000000,
+		["Generation"] = 7500000,
+	},
+	["Money Money Bros"] = {
+		["DisplayName"] = "Money Money Bros",
+		["Rarity"] = "Secret",
+		["Price"] = 9000000000,
+		["Generation"] = 47000000,
+	},
+	["Los Hackers"] = {
+		["DisplayName"] = "Los Hackers",
+		["Rarity"] = "Secret",
+		["Price"] = 22500000000,
+		["Generation"] = 75000000,
+	},
+	["Futbolini Skatini"] = {
+		["DisplayName"] = "Futbolini Skatini",
+		["Rarity"] = "Secret",
+		["Price"] = 875000000,
+		["Generation"] = 4500000,
+	},
+	["Duggy Bros"] = {
+		["DisplayName"] = "Duggy Bros",
+		["Rarity"] = "Secret",
+		["Price"] = 30000000000,
+		["Generation"] = 90000000,
+	},
+	["BackroomsPupkinSpyder"] = {
+		["DisplayName"] = "BackroomsPupkinSpyder",
+		["Rarity"] = "Secret",
+		["Price"] = 1,
+		["Generation"] = 1,
+		["HideFromIndex"] = true,
+
+	},
+	["BackroomsPupkinKatana"] = {
+		["DisplayName"] = "BackroomsPupkinKatana",
+		["Rarity"] = "Secret",
+		["Price"] = 1,
+		["Generation"] = 1,
+		["HideFromIndex"] = true,
+
+	},
+	["BackroomsKillerSpyder"] = {
+		["DisplayName"] = "BackroomsKillerSpyder",
+		["Rarity"] = "Secret",
+		["Price"] = 1,
+		["Generation"] = 1,
+		["HideFromIndex"] = true,
+
+	},
+	Glaciator = {
+		DisplayName = "Glaciator",
+		Rarity = "Secret",
+		Price = 580000000,
+		Generation = 2300000,
+	},
+	["Flipa Sandala"] = {
+		DisplayName = "Flipa Sandala",
+		Rarity = "Secret",
+		Price = 1100000000,
+		Generation = 6000000,
+	},
+	Abyssaloco = {
+		DisplayName = "Abyssaloco",
+		Rarity = "Secret",
+		Price = 4333333333,
+		Generation = 33333333,
+	},
+	Rubrikiko = {
+		DisplayName = "Rubrikiko",
+		Rarity = "Secret",
+		Price = 20000000000,
+		Generation = 70000000,
+	},
+	["Lumaca Malefica"] = {
+		DisplayName = "Lumaca Malefica",
+		Rarity = "Brainrot God",
+		Price = 46500000,
+		Generation = 265000,
+	},
+	["Robo Grafito"] = {
+		DisplayName = "Robo Grafito",
+		Rarity = "Brainrot God",
+		Price = 76000000,
+		Generation = 317500,
+	},
+	["La Anniversary Grande"] = {
+		DisplayName = "La Anniversary Grande",
+		Rarity = "Secret",
+		Price = 10000000000,
+		Generation = 50000000,
+		SpawnVFX = "Taco",
+		SpawnDelay = 3,
+	},
+	Flancito = {
+		DisplayName = "Flancito",
+		Rarity = "Secret",
+		Price = 800000000,
+		Generation = 3750000,
+	},
+	["Sammyni Cakini"] = {
+		DisplayName = "Sammyni Cakini",
+		Rarity = "Secret",
+		Price = 12500000000,
+		Generation = 85000000,
+	},
+	["Jelly Moby"] = {
+		DisplayName = "Jelly Moby",
+		Rarity = "Secret",
+		Price = 150000000000,
+		Generation = 175000000,
+	},
+	Cocoteddy = {
+		DisplayName = "Cocoteddy",
+		Rarity = "Mythic",
+		Price = 4750000,
+		Generation = 15000,
+	},
+	Bucketoro = {
+		DisplayName = "Bucketoro",
+		Rarity = "Mythic",
+		Price = 5750000,
+		Generation = 18250,
+	},
+	["Sundrilla Sundae"] = {
+		DisplayName = "Sundrilla Sundae",
+		Rarity = "Brainrot God",
+		Price = 31000000,
+		Generation = 180000,
+	},
+	["Lemonita Splashita"] = {
+		DisplayName = "Lemonita Splashita",
+		Rarity = "Brainrot God",
+		Price = 48000000,
+		Generation = 280000,
+	},
+	["Flippo Marino"] = {
+		DisplayName = "Flippo Marino",
+		Rarity = "Brainrot God",
+		Price = 75500000,
+		Generation = 316000,
+	},
+	["Bombardiro Vaccariro"] = {
+		DisplayName = "Bombardiro Vaccariro",
+		Rarity = "Secret",
+		Price = 250000000,
+		Generation = 1000000,
+	},
+	["Ombrello Topolino"] = {
+		DisplayName = "Ombrello Topolino",
+		Rarity = "Secret",
+		Price = 1250000000,
+		Generation = 6500000,
+	},
+	["Capitano Gullini"] = {
+		DisplayName = "Capitano Gullini",
+		Rarity = "Secret",
+		Price = 2700000000,
+		Generation = 22000000,
+	},
+	["Coco and Mango"] = {
+		DisplayName = "Coco and Mango",
+		Rarity = "Secret",
+		Price = 4500000000,
+		Generation = 33500000,
+	},
+	["Dragon Aquanini"] = {
+		DisplayName = "Dragon Aquanini",
+		Rarity = "Secret",
+		Price = 375000000000,
+		Generation = 375000000,
+	},
+	["Steakini Fattini"] = {
+		["DisplayName"] = "Steakini Fattini",
+		["Rarity"] = "Secret",
+		["Price"] = 12500000000,
+		["Generation"] = 55000000,
+	},
+	["Caylusaurus"] = {
+		["DisplayName"] = "Caylusaurus",
+		["Rarity"] = "Secret",
+		["Price"] = 12500000000,
+		["Generation"] = 55000000,
+	},
+	["Ballerina and Signora"] = {
+		["DisplayName"] = "Ballerina and Signora", 
+		["Rarity"] = "Brainrot God", 
+		["Price"] = 10000000, 
+		["Generation"] = 50000,
+		["RoadWeight"] = 0.005
+	},
+	["Ivano Banano"] = {
+		["DisplayName"] = "Ivano Banano", 
+		["Rarity"] = "Secret", 
+		["Price"] = 1000000000,  
+		["Generation"] = 5000000, 
+		["RoadWeight"] = 1.0E-5
+	},
+	Craburger = {
+		DisplayName = "Craburger",
+		Rarity = "Secret",
+		Price = 350000000,
+		Generation = 1300000,
+		SpawnVFX = "Summer",
+		SpawnDelay = 3,
+	},
+	["Rocketini Frostini"] = {
+		DisplayName = "Rocketini Frostini",
+		Rarity = "Secret",
+		Price = 700000000,
+		Generation = 3000000,
+		SpawnVFX = "Summer",
+		SpawnDelay = 3,
+		ObtainedFrom = {
+			Source = "Sammy\'s Code",
+			Obtainable = true
+		},
+	},
+	Octoball = {
+		DisplayName = "Octoball",
+		Rarity = "Secret",
+		Price = 725000000,
+		Generation = 3250000,
+		SpawnVFX = "Summer",
+		SpawnDelay = 3,
+	},
+	["Sushi Inu"] = {
+		DisplayName = "Sushi Inu",
+		Rarity = "Secret",
+		Price = 1300000000,
+		Generation = 8000000,
+		SpawnVFX = "Summer",
+		SpawnDelay = 3,
+	},
+	["Girafini Raftini"] = {
+		DisplayName = "Girafini Raftini",
+		Rarity = "Secret",
+		Price = 2600000000,
+		Generation = 18000000,
+		SpawnVFX = "Summer",
+		SpawnDelay = 3,
+	},
+	["Frullato Framingo"] = {
+		DisplayName = "Frullato Framingo",
+		Rarity = "Secret",
+		Price = 3000000000,
+		Generation = 20000000,
+		SpawnVFX = "Summer",
+		SpawnDelay = 3,
+		ObtainedFrom = {
+			Source = "Sammy\'s Code",
+			Obtainable = true
+		},
+	},
+	["Los Fruits"] = {
+		DisplayName = "Los Fruits",
+		Rarity = "Secret",
+		Price = 3000000000,
+		Generation = 23000000,
+		SpawnVFX = "Summer",
+		SpawnDelay = 3,
+		ObtainedFrom = {
+			Source = "Summer Fuse",
+			Obtainable = true
+		},
+	},
+	["Sand Sand Sand"] = {
+		DisplayName = "Sand Sand Sand",
+		Rarity = "Secret",
+		Price = 3000000000,
+		Generation = 30000000,
+		SpawnVFX = "Summer",
+		SpawnDelay = 3,
+	},
+	["Bearito Cabinito"] = {
+		DisplayName = "Bearito Cabinito",
+		Rarity = "Secret",
+		Price = 21000000000,
+		Generation = 72500000,
+		SpawnVFX = "Summer",
+		SpawnDelay = 3,
+	},
+	Venuspino = {
+		DisplayName = "Venuspino",
+		Rarity = "Secret",
+		Price = 150000000000,
+		Generation = 175000000,
+		SpawnVFX = "Summer",
+		SpawnDelay = 3,
+		ObtainedFrom = {
+			Source = "Summer Fuse",
+			Obtainable = true
+		},
+	},
+	Kraken = {
+		DisplayName = "Kraken",
+		Rarity = "Secret",
+		Price = 200000000000,
+		Generation = 200000000,
+		SpawnVFX = "Summer",
+		SpawnDelay = 3,
+	},
+	["Tortuginni Sandcastlini"] = {
+		DisplayName = "Tortuginni Sandcastlini",
+		Rarity = "Brainrot God",
+		Price = 76000000,
+		Generation = 317500,
+		SpawnVFX = "Summer",
+		SpawnDelay = 3,
+	},
+	["Chicleteira Surfeiteira"] = {
+		DisplayName = "Chicleteira Surfeiteira",
+		Rarity = "Secret",
+		Price = 2100000000,
+		Generation = 16000000,
+		SpawnVFX = "Summer",
+		SpawnDelay = 3,
+		ObtainedFrom = {
+			Source = "Summer Hour",
+			Obtainable = true
+		}
+	},
+	["La Summer Grande"] = {
+		DisplayName = "La Summer Grande",
+		Rarity = "Secret",
+		Price = 15000000000,
+		Generation = 60000000,
+		SpawnVFX = "Summer",
+		SpawnDelay = 3,
+		ObtainedFrom = {
+			Source = "Limited Quantity Craft",
+			Obtainable = true
+		}
+	},
+	["Aquarino"] = {
+		DisplayName = "Aquarino",
+		Rarity = "Secret",
+		Price = 86500000000,
+		Generation = 4200000,
+		SpawnVFX = "Summer",
+		SpawnDelay = 3,
+		ObtainedFrom = {
+			Source = "Summer Hour",
+			Obtainable = true
+		}
+	},
+	["Hippo Golazo"] = {
+		["DisplayName"] = "Hippo Golazo",
+		["Rarity"] = "Secret",
+		["Price"] = 300000000,
+		["Generation"] = 1200000
+	},
+	["Ref Ref Ref Sahur"] = {
+		["DisplayName"] = "Ref Ref Ref Sahur",
+		["Rarity"] = "Secret",
+		["Price"] = 650000000,
+		["Generation"] = 2700000
+	},
+	["Esok Goala"] = {
+		["DisplayName"] = "Esok Goala",
+		["Rarity"] = "Secret",
+		["Price"] = 4200000000,
+		["Generation"] = 32500000
+	}
+
+}
+return v6
