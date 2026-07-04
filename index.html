@@ -1374,7 +1374,8 @@
             <div class="header">
                 <div class="header-left">
                     <h1>Custom Tracker</h1>
-                    <p>Exist brainrots · click any brainrot to see mutations, traits &amp; owners</p>
+                    <p v-if="activeTab==='brainrots'">Exist brainrots · click any brainrot to see mutations, traits &amp; owners</p>
+                    <p v-else>Exist items · click any item to see who owns it</p>
                 </div>
                 <div class="header-buttons">
                     <button v-if="selectedAnimal" class="btn" @click="downloadImage"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></svg> Download Stats</button>
@@ -1382,16 +1383,21 @@
                 </div>
             </div>
 
+            <div class="sort-toggle-group" style="margin-bottom:1rem;">
+                <button class="sort-toggle-btn" :class="{active: activeTab==='brainrots'}" @click="setActiveTab('brainrots')">Brainrots</button>
+                <button class="sort-toggle-btn" :class="{active: activeTab==='items'}" @click="setActiveTab('items')">Items</button>
+            </div>
+
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="stat-label">Total Brainrots</div>
+                    <div class="stat-label">{{ activeTab==='items' ? 'Total Items' : 'Total Brainrots' }}</div>
                     <div class="stat-value">{{ formatNumber(stats.total) }}</div>
                     <div class="stat-sub">all time</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-label">Unique Species</div>
+                    <div class="stat-label">{{ activeTab==='items' ? 'Unique Items' : 'Unique Species' }}</div>
                     <div class="stat-value">{{ stats.species }}</div>
-                    <div class="stat-sub">different brainrots</div>
+                    <div class="stat-sub">{{ activeTab==='items' ? 'different items' : 'different brainrots' }}</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-label">Total Exists</div>
@@ -1401,7 +1407,7 @@
                 <div class="stat-card">
                     <div class="stat-label">Active Players</div>
                     <div class="stat-value">{{ stats.activePlayers }}</div>
-                    <div class="stat-sub">with brainrots</div>
+                    <div class="stat-sub">{{ activeTab==='items' ? 'with items' : 'with brainrots' }}</div>
                 </div>
             </div>
 
@@ -1409,35 +1415,37 @@
                 <!-- LEFT list -->
                 <div class="panel">
                     <div class="panel-header">
-                        <h2>Brainrot Exists</h2>
+                        <h2>{{ activeTab==='items' ? 'Item Exists' : 'Brainrot Exists' }}</h2>
                         <span>rarest → most common</span>
                     </div>
                     <div class="search-wrap">
                         <div class="input-icon-wrap">
                             <svg class="icon-svg" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
-                            <input type="text" class="search-input" placeholder="Search brainrot by name…" v-model="searchQuery">
+                            <input type="text" class="search-input" :placeholder="activeTab==='items' ? 'Search item by name…' : 'Search brainrot by name…'" v-model="searchQuery">
                         </div>
-                        <div class="input-icon-wrap">
-                            <svg class="icon-svg" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
-                            <input type="text" class="search-input" placeholder="Search by player name…" v-model="playerSearchQuery" @keyup.enter="searchPlayerAnimals">
-                        </div>
-                        <button class="player-search-btn" @click="searchPlayerAnimals" :disabled="!playerSearchQuery.trim()">
-                            <svg class="icon-svg" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg> Show Player's Pets
-                        </button>
+                        <template v-if="activeTab==='brainrots'">
+                            <div class="input-icon-wrap">
+                                <svg class="icon-svg" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+                                <input type="text" class="search-input" placeholder="Search by player name…" v-model="playerSearchQuery" @keyup.enter="searchPlayerAnimals">
+                            </div>
+                            <button class="player-search-btn" @click="searchPlayerAnimals" :disabled="!playerSearchQuery.trim()">
+                                <svg class="icon-svg" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg> Show Player's Pets
+                            </button>
+                        </template>
                     </div>
                     <div class="filters-row">
                         <div class="sort-toggle-group">
                             <button class="sort-toggle-btn" :class="{active: sortOrder==='asc'}" @click="sortOrder='asc'" title="От самых редких (низкий Exist) к самым частым"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg> Low → High</button>
                             <button class="sort-toggle-btn" :class="{active: sortOrder==='desc'}" @click="sortOrder='desc'" title="От самых частых (высокий Exist) к самым редким"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 5v14M5 12l7 7 7-7"/></svg> High → Low</button>
                         </div>
-                        <select class="rarity-select" v-model="selectedRarity">
+                        <select v-if="activeTab==='brainrots'" class="rarity-select" v-model="selectedRarity">
                             <option value="all">All rarities</option>
                             <option v-for="r in availableRarities" :key="r" :value="r">{{ r }}</option>
                         </select>
-                        <span v-if="brainrotsFileStatus==='error'" style="color:#ff6b6b; font-size:0.75rem;" title="Не удалось загрузить/распарсить Brainrots.txt — проверьте, что файл лежит рядом с index.html">⚠ Brainrots.txt не найден</span>
+                        <span v-if="activeTab==='brainrots' && brainrotsFileStatus==='error'" style="color:#ff6b6b; font-size:0.75rem;" title="Не удалось загрузить/распарсить Brainrots.txt — проверьте, что файл лежит рядом с index.html">⚠ Brainrots.txt не найден</span>
                     </div>
                     <div class="animals-list">
-                        <div v-if="loading" class="empty-state"><svg class="icon-svg" viewBox="0 0 24 24" style="width:18px;height:18px"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg> Loading brainrots…</div>
+                        <div v-if="currentLoading" class="empty-state"><svg class="icon-svg" viewBox="0 0 24 24" style="width:18px;height:18px"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg> {{ activeTab==='items' ? 'Loading items…' : 'Loading brainrots…' }}</div>
                         <div v-else-if="isPlayerSearchMode && playerAnimals.length === 0" class="empty-state">
                             <svg class="icon-svg" viewBox="0 0 24 24" style="width:18px;height:18px"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg> No pets found for "{{ playerSearchQuery }}"
                         </div>
@@ -1461,15 +1469,15 @@
                             </div>
                         </div>
                         <!-- Regular list -->
-                        <div v-else-if="filteredAnimals.length===0 && (searchQuery || selectedRarity!=='all')" class="empty-state"><svg class="icon-svg" viewBox="0 0 24 24" style="width:18px;height:18px"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg> No brainrots matching your filters</div>
-                        <div v-else-if="filteredAnimals.length===0" class="empty-state">No brainrots in database</div>
+                        <div v-else-if="filteredAnimals.length===0 && (searchQuery || (activeTab==='brainrots' && selectedRarity!=='all'))" class="empty-state"><svg class="icon-svg" viewBox="0 0 24 24" style="width:18px;height:18px"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg> {{ activeTab==='items' ? 'No items matching your filters' : 'No brainrots matching your filters' }}</div>
+                        <div v-else-if="filteredAnimals.length===0" class="empty-state">{{ activeTab==='items' ? 'No items in database' : 'No brainrots in database' }}</div>
                         <div v-else v-for="(animal,i) in filteredAnimals" :key="animal.name"
                         class="animal-row" :class="{selected:selectedAnimal&&selectedAnimal.name===animal.name}"
                         @click="selectAnimal(animal)">
                         <div class="animal-rank">#{{ i+1 }}</div>
                         <img :src="animalImgCandidates(animal.name)[0]" class="animal-icon" :alt="animal.name" @error="onListIconError($event, animal.name)" loading="lazy">
                         <div class="animal-name">{{ animal.name }}</div>
-                        <span class="rarity-tag" :style="{background: rarityColor(animal.rarity) + '22', color: rarityColor(animal.rarity), border: '1px solid ' + rarityColor(animal.rarity)}">{{ animal.rarity }}</span>
+                        <span v-if="activeTab==='brainrots'" class="rarity-tag" :style="{background: rarityColor(animal.rarity) + '22', color: rarityColor(animal.rarity), border: '1px solid ' + rarityColor(animal.rarity)}">{{ animal.rarity }}</span>
                         <div class="animal-stats">
                             <div class="animal-exist">{{ formatNumber(animal.exist) }}</div>
                             <div class="animal-percent">{{ animal.percent }}%</div>
@@ -1479,13 +1487,13 @@
                         </div>
                     </div>
                 </div>
-                <div v-if="!loading && displayAnimals.length>0 && !isPlayerSearchMode" class="search-info">
-                    Showing {{ displayAnimals.length }} of {{ rankedAnimals.length }} brainrots
+                <div v-if="!currentLoading && displayAnimals.length>0 && !isPlayerSearchMode" class="search-info">
+                    Showing {{ displayAnimals.length }} of {{ rankedAnimals.length }} {{ activeTab==='items' ? 'items' : 'brainrots' }}
                 </div>
             </div>
         </div>
 
-        <div class="footer">RealTime Exists · Last update: {{ lastUpdate }}</div>
+        <div class="footer">RealTime Exists · Last update: {{ currentLastUpdate }}</div>
     </div>
 
     <!-- STATS MODAL -->
@@ -1495,12 +1503,12 @@
 
             <div class="stats-modal-header">
                 <h2>{{ selectedAnimal.name }}
-                    <span class="rarity-tag" :style="{background: rarityColor(getRarity(selectedAnimal.name)) + '22', color: rarityColor(getRarity(selectedAnimal.name)), border: '1px solid ' + rarityColor(getRarity(selectedAnimal.name)), marginLeft: '0.5rem', verticalAlign: 'middle'}">{{ getRarity(selectedAnimal.name) }}</span>
+                    <span v-if="activeTab==='brainrots'" class="rarity-tag" :style="{background: rarityColor(getRarity(selectedAnimal.name)) + '22', color: rarityColor(getRarity(selectedAnimal.name)), border: '1px solid ' + rarityColor(getRarity(selectedAnimal.name)), marginLeft: '0.5rem', verticalAlign: 'middle'}">{{ getRarity(selectedAnimal.name) }}</span>
                 </h2>
                 <img v-if="animalImageOk" :src="currentAnimalImgSrc" class="stats-modal-image" :alt="selectedAnimal.name" @error="tryNextAnimalImg" loading="lazy">
             </div>
 
-            <div class="stats-card-grid">
+            <div class="stats-card-grid" v-if="activeTab==='brainrots'">
                 <div class="stats-card">
                     <div class="stats-card-label">Total Exists</div>
                     <div class="stats-card-value">{{ formatNumber(selectedAnimal.exist) }}</div>
@@ -1517,47 +1525,74 @@
                     <div class="stats-card-sub">have trait data</div>
                 </div>
             </div>
-
-            <div class="stats-card-block">
-                <div class="stats-card-block-title"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 2l1.5 6.5L20 10l-6.5 1.5L12 18l-1.5-6.5L4 10l6.5-1.5L12 2z"/></svg> Per-mutation breakdown</div>
-                <div v-if="getMutationsForAnimal(selectedAnimal.name).length===0" style="color:var(--text-muted);font-size:0.8rem;padding:0.5rem 0">No mutation data</div>
-                <div v-else>
-                    <div v-for="mut in getMutationsForAnimal(selectedAnimal.name)" :key="mut.name" class="mutation-row">
-                        <span class="mut-dot" :class="mutClass(mut.name)"></span>
-                        <span class="mut-name" :class="mutClass(mut.name)">{{ mut.name }}</span>
-                        <div class="mut-bar-wrap"><div class="mut-bar" :class="mutClass(mut.name)" :style="{width:mutBarWidth(selectedAnimal.name,mut.count)+'%'}"></div></div>
-                        <span class="mut-count">{{ mut.count }}</span>
-                        <span class="mut-pct">{{ mutPct(selectedAnimal.name,mut.count) }}%</span>
-                    </div>
+            <div class="stats-card-grid" v-else style="grid-template-columns:repeat(2,1fr);">
+                <div class="stats-card">
+                    <div class="stats-card-label">Total Exists</div>
+                    <div class="stats-card-value">{{ formatNumber(selectedAnimal.exist) }}</div>
+                    <div class="stats-card-sub">currently in game</div>
+                </div>
+                <div class="stats-card">
+                    <div class="stats-card-label">Unique Owners</div>
+                    <div class="stats-card-value">{{ formatNumber(getOwnersForAnimal(selectedAnimal.name).length) }}</div>
+                    <div class="stats-card-sub">players who have it</div>
                 </div>
             </div>
 
-            <div class="stats-card-block">
-                <div class="stats-card-block-title"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M20 12l-8 8-9-9V4h7l10 10z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg> Trait breakdown — all mutations</div>
-                <div v-if="getTraitsForAnimal(selectedAnimal.name).length===0" style="color:var(--text-muted);font-size:0.8rem;padding:0.5rem 0">No trait data</div>
-                <div v-else>
-                    <div v-for="tr in getTraitsForAnimal(selectedAnimal.name)" :key="tr.name" class="mutation-row">
-                        <span class="mut-dot"></span>
-                        <span class="mut-name">{{ tr.name }}</span>
-                        <div class="mut-bar-wrap">
-                            <div class="mut-bar" :style="{width: Math.round((tr.count / getTraitsForAnimal(selectedAnimal.name)[0].count)*100)+'%', background:'#4dabf7'}"></div>
+            <template v-if="activeTab==='brainrots'">
+                <div class="stats-card-block">
+                    <div class="stats-card-block-title"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 2l1.5 6.5L20 10l-6.5 1.5L12 18l-1.5-6.5L4 10l6.5-1.5L12 2z"/></svg> Per-mutation breakdown</div>
+                    <div v-if="getMutationsForAnimal(selectedAnimal.name).length===0" style="color:var(--text-muted);font-size:0.8rem;padding:0.5rem 0">No mutation data</div>
+                    <div v-else>
+                        <div v-for="mut in getMutationsForAnimal(selectedAnimal.name)" :key="mut.name" class="mutation-row">
+                            <span class="mut-dot" :class="mutClass(mut.name)"></span>
+                            <span class="mut-name" :class="mutClass(mut.name)">{{ mut.name }}</span>
+                            <div class="mut-bar-wrap"><div class="mut-bar" :class="mutClass(mut.name)" :style="{width:mutBarWidth(selectedAnimal.name,mut.count)+'%'}"></div></div>
+                            <span class="mut-count">{{ mut.count }}</span>
+                            <span class="mut-pct">{{ mutPct(selectedAnimal.name,mut.count) }}%</span>
                         </div>
-                        <span class="mut-count">{{ formatNumber(tr.count) }}</span>
                     </div>
                 </div>
-            </div>
 
-            <div class="stats-card-block">
-                <div class="stats-card-block-title"><svg class="icon-svg" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M2 20c0-3.3 3.1-5 7-5s7 1.7 7 5"/><circle cx="17" cy="9" r="2.5"/><path d="M15.5 13.2c2.7.4 4.5 1.7 4.5 3.8"/></svg> Owners with Mutations</div>
-                <div v-if="getOwnersWithMutations(selectedAnimal.name).length===0" style="color:var(--text-muted);font-size:0.8rem;padding:0.5rem 0">No owner data</div>
+                <div class="stats-card-block">
+                    <div class="stats-card-block-title"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M20 12l-8 8-9-9V4h7l10 10z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg> Trait breakdown — all mutations</div>
+                    <div v-if="getTraitsForAnimal(selectedAnimal.name).length===0" style="color:var(--text-muted);font-size:0.8rem;padding:0.5rem 0">No trait data</div>
+                    <div v-else>
+                        <div v-for="tr in getTraitsForAnimal(selectedAnimal.name)" :key="tr.name" class="mutation-row">
+                            <span class="mut-dot"></span>
+                            <span class="mut-name">{{ tr.name }}</span>
+                            <div class="mut-bar-wrap">
+                                <div class="mut-bar" :style="{width: Math.round((tr.count / getTraitsForAnimal(selectedAnimal.name)[0].count)*100)+'%', background:'#4dabf7'}"></div>
+                            </div>
+                            <span class="mut-count">{{ formatNumber(tr.count) }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stats-card-block">
+                    <div class="stats-card-block-title"><svg class="icon-svg" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M2 20c0-3.3 3.1-5 7-5s7 1.7 7 5"/><circle cx="17" cy="9" r="2.5"/><path d="M15.5 13.2c2.7.4 4.5 1.7 4.5 3.8"/></svg> Owners with Mutations</div>
+                    <div v-if="getOwnersWithMutations(selectedAnimal.name).length===0" style="color:var(--text-muted);font-size:0.8rem;padding:0.5rem 0">No owner data</div>
+                    <div v-else>
+                        <div v-for="owner in getOwnersWithMutations(selectedAnimal.name)" :key="owner.name" class="owner-mut-item">
+                            <span class="owner-name">{{ owner.name }}</span>
+                            <div class="owner-mutation">
+                                <span v-if="owner.mutation" class="mut-dot-small" :class="mutClass(owner.mutation)"></span>
+                                <span v-if="owner.mutation" :class="mutClass(owner.mutation)" style="font-weight:500;">{{ owner.mutation }}</span>
+                                <span v-else class="no-mutation">No mutation</span>
+                                <span style="color:var(--text-muted);font-size:0.7rem;margin-left:0.3rem;">×{{ owner.count }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </template>
+
+            <div class="stats-card-block" v-else>
+                <div class="stats-card-block-title"><svg class="icon-svg" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M2 20c0-3.3 3.1-5 7-5s7 1.7 7 5"/><circle cx="17" cy="9" r="2.5"/><path d="M15.5 13.2c2.7.4 4.5 1.7 4.5 3.8"/></svg> Owners</div>
+                <div v-if="getOwnersForAnimal(selectedAnimal.name).length===0" style="color:var(--text-muted);font-size:0.8rem;padding:0.5rem 0">No owner data</div>
                 <div v-else>
-                    <div v-for="owner in getOwnersWithMutations(selectedAnimal.name)" :key="owner.name" class="owner-mut-item">
+                    <div v-for="owner in getOwnersForAnimal(selectedAnimal.name)" :key="owner.name" class="owner-mut-item">
                         <span class="owner-name">{{ owner.name }}</span>
                         <div class="owner-mutation">
-                            <span v-if="owner.mutation" class="mut-dot-small" :class="mutClass(owner.mutation)"></span>
-                            <span v-if="owner.mutation" :class="mutClass(owner.mutation)" style="font-weight:500;">{{ owner.mutation }}</span>
-                            <span v-else class="no-mutation">No mutation</span>
-                            <span style="color:var(--text-muted);font-size:0.7rem;margin-left:0.3rem;">×{{ owner.count }}</span>
+                            <span style="color:var(--text-muted);font-size:0.75rem;">×{{ owner.count }}</span>
                         </div>
                     </div>
                 </div>
@@ -1623,34 +1658,50 @@
                 <div class="export-title">
                     <h2>{{ exportData.name }}</h2>
                     <img v-if="exportData.iconSrc" :src="exportData.iconSrc" ref="exportIconSlot" style="width:72px;height:72px;object-fit:contain;border-radius:14px;margin:0.6rem auto 0.4rem;display:block;background:var(--bg-card);image-rendering:pixelated;" alt="">
-                    <span class="rarity-tag" :style="{background: rarityColor(exportData.rarity) + '22', color: rarityColor(exportData.rarity), border: '1px solid ' + rarityColor(exportData.rarity), display:'inline-block', marginTop:'0.35rem'}">{{ exportData.rarity }}</span>
-                    <p>Brainrot Statistics Report</p>
+                    <span v-if="exportData.rarity" class="rarity-tag" :style="{background: rarityColor(exportData.rarity) + '22', color: rarityColor(exportData.rarity), border: '1px solid ' + rarityColor(exportData.rarity), display:'inline-block', marginTop:'0.35rem'}">{{ exportData.rarity }}</span>
+                    <p>{{ exportData.isItem ? 'Item Statistics Report' : 'Brainrot Statistics Report' }}</p>
                 </div>
-                <div class="export-mini-stats">
+                <div class="export-mini-stats" v-if="!exportData.isItem">
                     <div class="export-mini-stat"><div class="export-mini-label">Total Exists</div><div class="export-mini-value">{{ formatNumber(exportData.totalExist) }}</div></div>
                     <div class="export-mini-stat"><div class="export-mini-label">With Mutation</div><div class="export-mini-value">{{ exportData.mutations.reduce((s,m)=>s+m.count,0) }}</div></div>
                     <div class="export-mini-stat"><div class="export-mini-label">With Traits</div><div class="export-mini-value">{{ exportData.traits.reduce((s,t)=>s+t.count,0) }}</div></div>
                 </div>
-                <div class="export-section">
-                    <div class="export-section-title"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 2l1.5 6.5L20 10l-6.5 1.5L12 18l-1.5-6.5L4 10l6.5-1.5L12 2z"/></svg> Mutations</div>
-                    <div v-for="mut in exportData.mutations" :key="mut.name" class="export-mut-row">
-                        <span class="mut-dot" :class="mutClass(mut.name)"></span>
-                        <span style="flex:0 0 auto;min-width:75px;color:var(--text-primary);font-size:0.82rem;font-weight:500" :class="mutClass(mut.name)?'mut-name '+mutClass(mut.name):''"><svg class="icon-svg" viewBox="0 0 24 24" style="width:11px;height:11px"><path d="M12 2l1.5 6.5L20 10l-6.5 1.5L12 18l-1.5-6.5L4 10l6.5-1.5L12 2z"/></svg> {{ mut.name }}</span>
-                        <div class="export-mut-bar-wrap"><div class="export-mut-bar" :class="mutClass(mut.name)" :style="{width: exportData.mutations.length ? Math.round((mut.count/exportData.mutations[0].count)*100)+'%' : '0%'}"></div></div>
-                        <span style="color:var(--text-primary);font-size:0.8rem;font-weight:700;min-width:32px;text-align:right">{{ formatNumber(mut.count) }}</span>
-                        <span style="color:var(--text-muted);font-size:0.72rem;min-width:44px;text-align:right">({{ mutPct2(exportData.mutations,mut.count) }}%)</span>
-                    </div>
-                    <div v-if="exportData.mutations.length===0" class="export-item"><span class="export-item-name">No mutations</span><span class="export-item-value">—</span></div>
+                <div class="export-mini-stats" v-else style="grid-template-columns:repeat(2,1fr);">
+                    <div class="export-mini-stat"><div class="export-mini-label">Total Exists</div><div class="export-mini-value">{{ formatNumber(exportData.totalExist) }}</div></div>
+                    <div class="export-mini-stat"><div class="export-mini-label">Unique Owners</div><div class="export-mini-value">{{ exportData.owners.length }}</div></div>
                 </div>
-                <div class="export-section">
-                    <div class="export-section-title"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"/></svg> Traits</div>
-                    <div v-for="tr in exportData.traits" :key="tr.name" class="export-mut-row">
-                        <span style="flex:0 0 auto;min-width:80px;color:var(--text-primary);font-size:0.82rem;font-weight:500">{{ tr.name }}</span>
-                        <div class="export-mut-bar-wrap"><div class="export-mut-bar" :style="{width: exportData.traits.length ? Math.round((tr.count/exportData.traits[0].count)*100)+'%' : '0%', background:'#4dabf7'}"></div></div>
-                        <span style="color:var(--text-primary);font-size:0.8rem;font-weight:700;min-width:32px;text-align:right">{{ formatNumber(tr.count) }}</span>
-                        <span style="color:var(--text-muted);font-size:0.72rem;min-width:44px;text-align:right">({{ mutPct2(exportData.traits,tr.count) }}%)</span>
+                <template v-if="!exportData.isItem">
+                    <div class="export-section">
+                        <div class="export-section-title"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 2l1.5 6.5L20 10l-6.5 1.5L12 18l-1.5-6.5L4 10l6.5-1.5L12 2z"/></svg> Mutations</div>
+                        <div v-for="mut in exportData.mutations" :key="mut.name" class="export-mut-row">
+                            <span class="mut-dot" :class="mutClass(mut.name)"></span>
+                            <span style="flex:0 0 auto;min-width:75px;color:var(--text-primary);font-size:0.82rem;font-weight:500" :class="mutClass(mut.name)?'mut-name '+mutClass(mut.name):''"><svg class="icon-svg" viewBox="0 0 24 24" style="width:11px;height:11px"><path d="M12 2l1.5 6.5L20 10l-6.5 1.5L12 18l-1.5-6.5L4 10l6.5-1.5L12 2z"/></svg> {{ mut.name }}</span>
+                            <div class="export-mut-bar-wrap"><div class="export-mut-bar" :class="mutClass(mut.name)" :style="{width: exportData.mutations.length ? Math.round((mut.count/exportData.mutations[0].count)*100)+'%' : '0%'}"></div></div>
+                            <span style="color:var(--text-primary);font-size:0.8rem;font-weight:700;min-width:32px;text-align:right">{{ formatNumber(mut.count) }}</span>
+                            <span style="color:var(--text-muted);font-size:0.72rem;min-width:44px;text-align:right">({{ mutPct2(exportData.mutations,mut.count) }}%)</span>
+                        </div>
+                        <div v-if="exportData.mutations.length===0" class="export-item"><span class="export-item-name">No mutations</span><span class="export-item-value">—</span></div>
                     </div>
-                    <div v-if="exportData.traits.length===0" class="export-item"><span class="export-item-name">No traits</span><span class="export-item-value">—</span></div>
+                    <div class="export-section">
+                        <div class="export-section-title"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"/></svg> Traits</div>
+                        <div v-for="tr in exportData.traits" :key="tr.name" class="export-mut-row">
+                            <span style="flex:0 0 auto;min-width:80px;color:var(--text-primary);font-size:0.82rem;font-weight:500">{{ tr.name }}</span>
+                            <div class="export-mut-bar-wrap"><div class="export-mut-bar" :style="{width: exportData.traits.length ? Math.round((tr.count/exportData.traits[0].count)*100)+'%' : '0%', background:'#4dabf7'}"></div></div>
+                            <span style="color:var(--text-primary);font-size:0.8rem;font-weight:700;min-width:32px;text-align:right">{{ formatNumber(tr.count) }}</span>
+                            <span style="color:var(--text-muted);font-size:0.72rem;min-width:44px;text-align:right">({{ mutPct2(exportData.traits,tr.count) }}%)</span>
+                        </div>
+                        <div v-if="exportData.traits.length===0" class="export-item"><span class="export-item-name">No traits</span><span class="export-item-value">—</span></div>
+                    </div>
+                </template>
+                <div class="export-section" v-else>
+                    <div class="export-section-title"><svg class="icon-svg" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M2 20c0-3.3 3.1-5 7-5s7 1.7 7 5"/><circle cx="17" cy="9" r="2.5"/><path d="M15.5 13.2c2.7.4 4.5 1.7 4.5 3.8"/></svg> Owners</div>
+                    <div v-for="ow in exportData.owners" :key="ow.name" class="export-mut-row">
+                        <span style="flex:0 0 auto;min-width:110px;color:var(--text-primary);font-size:0.82rem;font-weight:500">{{ ow.name }}</span>
+                        <div class="export-mut-bar-wrap"><div class="export-mut-bar" :style="{width: exportData.owners.length ? Math.round((ow.count/exportData.owners[0].count)*100)+'%' : '0%', background:'#4dabf7'}"></div></div>
+                        <span style="color:var(--text-primary);font-size:0.8rem;font-weight:700;min-width:32px;text-align:right">{{ formatNumber(ow.count) }}</span>
+                        <span style="color:var(--text-muted);font-size:0.72rem;min-width:44px;text-align:right">({{ mutPct2(exportData.owners,ow.count) }}%)</span>
+                    </div>
+                    <div v-if="exportData.owners.length===0" class="export-item"><span class="export-item-name">No owner data</span><span class="export-item-value">—</span></div>
                 </div>
                 <div class="export-footer">Generated: {{ new Date().toLocaleString() }}<br>Custom Tracker</div>
             </div>
@@ -1709,7 +1760,7 @@
             const errorMessage = ref('');
             const showExportModal = ref(false);
             const showSettings = ref(false);
-            const exportData = ref({ name: '', rarity: '', totalExist: 0, percent: 0, mutations: [], traits: [], iconBase64: '' });
+            const exportData = ref({ name: '', rarity: '', isItem: false, totalExist: 0, percent: 0, mutations: [], traits: [], owners: [], iconBase64: '' });
             const exportMessage = ref('');
             const exportCard = ref(null);
             const exportIconSlot = ref(null);
@@ -1723,6 +1774,19 @@
             const ownerMutationsMap = ref({});
             const lastUpdate = ref('—');
             const loading = ref(true);
+            // ---- Items (DataService/items) — упрощённый аналог Brainrots: без мутаций/трейтов/редкости,
+            // только сколько всего существует и у кого что есть.
+            // ВАЖНО: в Firebase по пути DataService/items/{userId} лежит ПЛОСКИЙ объект вида
+            // { [ИмяПредмета]: true, [ИмяПредмета2]: true }. Никаких счётчиков там нет и
+            // ownerName внутри записи тоже нет — считаем количество и имена сами на клиенте.
+            const activeTab = ref('brainrots'); // 'brainrots' | 'items'
+            const items = ref([]);
+            const itemOwnersData = ref({});
+            const itemPlayerIdsMap = ref({});
+            const itemsLastUpdate = ref('—');
+            const itemsLoading = ref(true);
+            const itemsRawData = ref(null); // последний сырой снэпшот DataService/items
+            const globalPlayerNames = ref({}); // uid -> ник игрока, из DataService/players
             const searchQuery = ref('');
             const sortOrder = ref('asc'); // 'asc' = от низкого Exist к высокому, 'desc' = наоборот
             const selectedRarity = ref('all');
@@ -1734,12 +1798,15 @@
             const playerAnimals = ref([]);
             let accessListener = null,
                 dataListener = null,
+                itemsDataListener = null,
+                playersDataListener = null,
                 cachedIconEl = null;
 
             const checkAccess = async () => {
                 hasAccess.value = true;
                 if (!db) { errorMessage.value = 'Firebase connection failed'; return; }
                 loadAnimalData();
+                loadItemData();
             };
 
             const loadAnimalData = () => {
@@ -1843,6 +1910,81 @@
                     lastUpdate.value = new Date().toLocaleTimeString();
                     loading.value = false;
                 });
+            };
+
+            // Пересчитывает items/itemOwnersData/itemPlayerIdsMap из последнего сырого снэпшота
+            // DataService/items + карты имён игроков DataService/players. Вызывается при
+            // обновлении любого из двух источников.
+            const recomputeItems = () => {
+                const data = itemsRawData.value;
+                const counts = {},
+                    owners = {},
+                    playerNamesUsed = {};
+
+                if (data && typeof data === 'object') {
+                    Object.keys(data).forEach(uid => {
+                        const userItems = data[uid];
+                        if (!userItems || typeof userItems !== 'object') return;
+                        const ownerName = globalPlayerNames.value[uid] || `Player_${uid.slice(0, 6)}`;
+                        // Структура: { [ИмяПредмета]: true, ... } — плоский объект, счётчиков нет,
+                        // считаем сами: одна запись = один предмет у этого игрока.
+                        Object.keys(userItems).forEach(itemName => {
+                            if (userItems[itemName] !== true) return;
+                            counts[itemName] = (counts[itemName] || 0) + 1;
+                            playerNamesUsed[ownerName] = uid;
+                            if (!owners[itemName]) owners[itemName] = {};
+                            owners[itemName][ownerName] = (owners[itemName][ownerName] || 0) + 1;
+                        });
+                    });
+                }
+
+                items.value = Object.keys(counts).map(name => ({ name, exist: counts[name] }));
+                itemOwnersData.value = owners;
+                itemPlayerIdsMap.value = playerNamesUsed;
+                itemsLastUpdate.value = new Date().toLocaleTimeString();
+                itemsLoading.value = false;
+            };
+
+            // Загрузка предметов из DataService/items — у предметов нет мутаций/трейтов/редкости,
+            // только exist (у кого сколько есть). В Firebase хранится плоский объект имя->true,
+            // поэтому количество считаем сами; имена владельцев берём из DataService/players.
+            const loadItemData = () => {
+                if (!db) return;
+                const itemsRef = db.ref('DataService/items');
+                if (itemsDataListener) itemsDataListener();
+                itemsDataListener = itemsRef.on('value', (snap) => {
+                    itemsRawData.value = snap.val();
+                    recomputeItems();
+                });
+
+                const playersRef = db.ref('DataService/players');
+                if (playersDataListener) playersDataListener();
+                playersDataListener = playersRef.on('value', (snap) => {
+                    const data = snap.val();
+                    const map = {};
+                    if (data && typeof data === 'object') {
+                        Object.keys(data).forEach(uid => {
+                            const p = data[uid];
+                            if (p && (p.name || p.displayName)) map[uid] = p.name || p.displayName;
+                        });
+                    }
+                    globalPlayerNames.value = map;
+                    recomputeItems();
+                });
+            };
+
+            const setActiveTab = (tab) => {
+                if (activeTab.value === tab) return;
+                activeTab.value = tab;
+                // При переключении вкладки сбрасываем поиск/фильтры/открытые модалки,
+                // чтобы не показывать данные не того типа.
+                selectedAnimal.value = null;
+                showExportModal.value = false;
+                isPlayerSearchMode.value = false;
+                playerAnimals.value = [];
+                playerSearchQuery.value = '';
+                searchQuery.value = '';
+                selectedRarity.value = 'all';
             };
 
             const getOwnersWithMutations = (animalName) => {
@@ -1954,6 +2096,7 @@
             const downloadImage = () => {
                 if (!selectedAnimal.value) return;
                 const name = selectedAnimal.value.name;
+                const isItem = activeTab.value === 'items';
                 // Берём уже загруженную картинку прямо из открытого попапа статистики —
                 // так гарантируем, что скачивание покажет ту же картинку, что видна на экране.
                 let iconEl = document.querySelector('img.stats-modal-image');
@@ -1966,11 +2109,13 @@
                 cachedIconEl = iconEl;
                 exportData.value = {
                     name,
-                    rarity: getRarity(name),
+                    isItem,
+                    rarity: isItem ? '' : getRarity(name),
                     totalExist: selectedAnimal.value.exist,
                     percent: selectedAnimal.value.percent,
-                    mutations: getMutationsForAnimal(name),
-                    traits: getTraitsForAnimal(name),
+                    mutations: isItem ? [] : getMutationsForAnimal(name),
+                    traits: isItem ? [] : getTraitsForAnimal(name),
+                    owners: isItem ? getOwnersForAnimal(name) : [],
                     iconSrc: iconEl ? iconEl.src : animalImgCandidates(name)[0]
                 };
                 showExportModal.value = true;
@@ -2006,14 +2151,17 @@
             };
 
             const renderStatsCanvas = (data, t, iconImg) => {
+                const isItem = !!data.isItem;
                 const W = 560, pad = 32;
                 let y = pad;
 
-                const mutH = Math.max(data.mutations.length, 1) * 28 + 50;
-                const trH = Math.max(data.traits.length, 1) * 28 + 50;
+                const mutH = isItem ? 0 : Math.max(data.mutations.length, 1) * 28 + 50;
+                const trH = isItem ? 0 : Math.max(data.traits.length, 1) * 28 + 50;
+                const ownH = isItem ? Math.max((data.owners || []).length, 1) * 28 + 50 : 0;
+                const sectionsH = isItem ? ownH : (mutH + 12 + trH);
                 const iconH = iconImg ? 82 : 0;
                 const badgeH = data.rarity ? 32 : 0; // высота бейджа редкости (пилюля) + отступ
-                const H = pad + 30 + 6 + badgeH + iconH + 18 + 12 + 84 + 16 + mutH + 12 + trH + 12 + 36 + pad;
+                const H = pad + 30 + 6 + badgeH + iconH + 18 + 12 + 84 + 16 + sectionsH + 12 + 36 + pad;
 
                 const cv = document.createElement('canvas');
                 cv.width = W * 2; cv.height = H * 2;
@@ -2035,7 +2183,7 @@
                 ctx.fillText(data.name, W/2, y + 22);
                 y += 32;
 
-                // Редкость (цветной бейдж-пилюля)
+                // Редкость (цветной бейдж-пилюля) — только для брейнротов
                 if (data.rarity) {
                     const rc = rarityColor(data.rarity);
                     ctx.font = '600 12px Inter, sans-serif';
@@ -2067,16 +2215,19 @@
                 // Subtitle
                 ctx.fillStyle = t.textMuted;
                 ctx.font = '11px Inter, sans-serif';
-                ctx.fillText('Brainrot Statistics Report', W/2, y + 10);
+                ctx.fillText(isItem ? 'Item Statistics Report' : 'Brainrot Statistics Report', W/2, y + 10);
                 y += 22;
 
                 // Mini stats
-                const stats = [
+                const stats = isItem ? [
+                    { label: 'TOTAL EXISTS', value: data.totalExist },
+                    { label: 'UNIQUE OWNERS', value: (data.owners || []).length }
+                ] : [
                     { label: 'TOTAL EXISTS', value: data.totalExist },
                     { label: 'WITH MUTATION', value: data.mutations.reduce((s,m)=>s+m.count,0) },
                     { label: 'WITH TRAITS', value: data.traits.reduce((s,t)=>s+t.count,0) }
                 ];
-                const sw = (W - pad*2 - 16) / 3;
+                const sw = (W - pad*2 - (stats.length - 1) * 8) / stats.length;
                 stats.forEach((s, i) => {
                     const sx = pad + i * (sw + 8);
                     ctx.fillStyle = t.card;
@@ -2093,11 +2244,16 @@
                 });
                 y += 76;
 
-                // Секция Mutations
-                y = drawSection(ctx, 'MUTATIONS', data.mutations, data.mutations, y, W, pad, t, true);
-                y += 12;
-                // Секция Traits
-                drawSection(ctx, 'TRAITS', data.traits, data.traits, y, W, pad, t, false);
+                if (isItem) {
+                    // У предметов нет мутаций/трейтов — вместо них список владельцев
+                    drawSection(ctx, 'OWNERS', data.owners || [], data.owners || [], y, W, pad, t, false);
+                } else {
+                    // Секция Mutations
+                    y = drawSection(ctx, 'MUTATIONS', data.mutations, data.mutations, y, W, pad, t, true);
+                    y += 12;
+                    // Секция Traits
+                    drawSection(ctx, 'TRAITS', data.traits, data.traits, y, W, pad, t, false);
+                }
 
                 // Footer
                 ctx.fillStyle = t.textMuted;
@@ -2395,23 +2551,26 @@
 
             const rankedAnimals = computed(() => {
                 const dir = sortOrder.value === 'desc' ? -1 : 1;
-                const sorted = [...animals.value].sort((a, b) => (a.exist - b.exist) * dir);
+                const source = activeTab.value === 'items' ? items.value : animals.value;
+                const sorted = [...source].sort((a, b) => (a.exist - b.exist) * dir);
                 const total = sorted.reduce((s, a) => s + a.exist, 0);
                 const max = sorted.length ? Math.max(...sorted.map(a => a.exist)) : 1;
                 return sorted.map(a => ({ ...a, percent: total ? ((a.exist / total) * 100).toFixed(2) :
-                        '0.00', barWidth: max ? (a.exist / max) * 100 : 0, rarity: getRarity(a.name) }));
+                        '0.00', barWidth: max ? (a.exist / max) * 100 : 0,
+                        rarity: activeTab.value === 'items' ? null : getRarity(a.name) }));
             });
 
             const filteredAnimals = computed(() => {
                 let list = rankedAnimals.value;
-                if (selectedRarity.value !== 'all') {
+                if (activeTab.value === 'brainrots' && selectedRarity.value !== 'all') {
                     list = list.filter(a => a.rarity === selectedRarity.value);
                 }
                 const q = searchQuery.value.trim().toLowerCase();
                 if (q) list = list.filter(a => a.name.toLowerCase().includes(q));
                 // Без активных фильтров показываем первые 50 (для производительности),
                 // при поиске/фильтре по редкости — весь подходящий список.
-                return (q || selectedRarity.value !== 'all') ? list : list.slice(0, 50);
+                const hasFilter = q || (activeTab.value === 'brainrots' && selectedRarity.value !== 'all');
+                return hasFilter ? list : list.slice(0, 50);
             });
 
             const displayAnimals = computed(() => {
@@ -2425,21 +2584,23 @@
                 return Object.keys(m).map(k => ({ name: k, count: m[k] })).sort((a, b) => b.count - a.count); };
             const getTraitsForAnimal = (name) => { const t = animalTraitsData.value[name] || {};
                 return Object.keys(t).map(k => ({ name: k, count: t[k] })).sort((a, b) => b.count - a.count); };
-            const getOwnersForAnimal = (name) => { const o = playerOwnersData.value[name] || {};
+            const getOwnersForAnimal = (name) => { const o = (activeTab.value === 'items' ? itemOwnersData.value : playerOwnersData.value)[name] || {};
                 return Object.keys(o).map(n => ({ name: n, count: o[n] })).sort((a, b) => b.count - a.count); };
             const selectAnimal = (a) => { animalImageOk.value = true; animalImgIndex.value = 0; selectedAnimal.value = a; };
             const animalImgSrc = (name) => 'Brainrots/' + encodeURIComponent(name) + '.png';
             // Несколько вариантов пути к картинке — на случай если файл называется иначе
-            // (пробелы vs подчёркивания, разный регистр кодирования и т.д.)
+            // (пробелы vs подчёркивания, разный регистр кодирования и т.д.).
+            // Папка иконок зависит от активной вкладки: брейнроты лежат в Brainrots/, предметы — в Items/.
             const animalImgCandidates = (name) => {
+                const folder = activeTab.value === 'items' ? 'Items' : 'Brainrots';
                 const trimmed = (name || '').trim();
                 const underscored = trimmed.replace(/\s+/g, '_');
                 const dashed = trimmed.replace(/\s+/g, '-');
                 const raw = [trimmed, underscored, dashed];
                 const urls = [];
-                raw.forEach(v => { const u = 'Brainrots/' + encodeURIComponent(v) + '.png'; if (!urls.includes(u)) urls.push(u); });
+                raw.forEach(v => { const u = folder + '/' + encodeURIComponent(v) + '.png'; if (!urls.includes(u)) urls.push(u); });
                 // и совсем «сырой» путь без кодирования — на случай нестандартной серверной конфигурации
-                const plain = 'Brainrots/' + trimmed + '.png';
+                const plain = folder + '/' + trimmed + '.png';
                 if (!urls.includes(plain)) urls.push(plain);
                 return urls;
             };
@@ -2491,10 +2652,20 @@
             });
             const totalExistSum = computed(() => animals.value.reduce((s, a) => s + a.exist, 0));
             const activePlayersCount = computed(() => Object.keys(playerIdsMap.value).length);
-            const stats = computed(() => ({ total: totalExistSum.value, species: animals.value.length,
-                totalExist: totalExistSum.value, activePlayers: activePlayersCount.value }));
+            const totalExistSumItems = computed(() => items.value.reduce((s, a) => s + a.exist, 0));
+            const activePlayersCountItems = computed(() => Object.keys(itemPlayerIdsMap.value).length);
+            const stats = computed(() => {
+                if (activeTab.value === 'items') {
+                    return { total: totalExistSumItems.value, species: items.value.length,
+                        totalExist: totalExistSumItems.value, activePlayers: activePlayersCountItems.value };
+                }
+                return { total: totalExistSum.value, species: animals.value.length,
+                    totalExist: totalExistSum.value, activePlayers: activePlayersCount.value };
+            });
             const formatNumber = (n) => { if (n >= 1e6) return (n / 1e6).toFixed(1) + 'M'; if (n >= 1e3) return (n /
                     1e3).toFixed(1) + 'K'; return n.toString(); };
+            const currentLoading = computed(() => activeTab.value === 'items' ? itemsLoading.value : loading.value);
+            const currentLastUpdate = computed(() => activeTab.value === 'items' ? itemsLastUpdate.value : lastUpdate.value);
 
             const MUTATION_CLASSES = {
                 gold: 'gold',
@@ -2549,9 +2720,12 @@
 
             onMounted(() => { checkAccess();
                 loadBrainrotsRarities();
-                setTimeout(() => { if (loading.value) loading.value = false; }, 5000); });
+                setTimeout(() => { if (loading.value) loading.value = false;
+                    if (itemsLoading.value) itemsLoading.value = false; }, 5000); });
             onUnmounted(() => {
                 if (dataListener && db) db.ref('DataService/animals').off();
+                if (itemsDataListener && db) db.ref('DataService/items').off();
+                if (playersDataListener && db) db.ref('DataService/players').off();
             });
 
             return {
@@ -2571,6 +2745,11 @@
                 stats,
                 lastUpdate,
                 loading,
+                activeTab,
+                setActiveTab,
+                items,
+                currentLoading,
+                currentLastUpdate,
                 searchQuery,
                 sortOrder,
                 selectedRarity,
