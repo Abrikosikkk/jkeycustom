@@ -1666,9 +1666,8 @@
                     <div class="export-mini-stat"><div class="export-mini-label">With Mutation</div><div class="export-mini-value">{{ exportData.mutations.reduce((s,m)=>s+m.count,0) }}</div></div>
                     <div class="export-mini-stat"><div class="export-mini-label">With Traits</div><div class="export-mini-value">{{ exportData.traits.reduce((s,t)=>s+t.count,0) }}</div></div>
                 </div>
-                <div class="export-mini-stats" v-else style="grid-template-columns:repeat(2,1fr);">
+                <div class="export-mini-stats" v-else style="grid-template-columns:1fr;">
                     <div class="export-mini-stat"><div class="export-mini-label">Total Exists</div><div class="export-mini-value">{{ formatNumber(exportData.totalExist) }}</div></div>
-                    <div class="export-mini-stat"><div class="export-mini-label">Unique Owners</div><div class="export-mini-value">{{ exportData.owners.length }}</div></div>
                 </div>
                 <template v-if="!exportData.isItem">
                     <div class="export-section">
@@ -1693,16 +1692,6 @@
                         <div v-if="exportData.traits.length===0" class="export-item"><span class="export-item-name">No traits</span><span class="export-item-value">—</span></div>
                     </div>
                 </template>
-                <div class="export-section" v-else>
-                    <div class="export-section-title"><svg class="icon-svg" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M2 20c0-3.3 3.1-5 7-5s7 1.7 7 5"/><circle cx="17" cy="9" r="2.5"/><path d="M15.5 13.2c2.7.4 4.5 1.7 4.5 3.8"/></svg> Owners</div>
-                    <div v-for="ow in exportData.owners" :key="ow.name" class="export-mut-row">
-                        <span style="flex:0 0 auto;min-width:110px;color:var(--text-primary);font-size:0.82rem;font-weight:500">{{ ow.name }}</span>
-                        <div class="export-mut-bar-wrap"><div class="export-mut-bar" :style="{width: exportData.owners.length ? Math.round((ow.count/exportData.owners[0].count)*100)+'%' : '0%', background:'#4dabf7'}"></div></div>
-                        <span style="color:var(--text-primary);font-size:0.8rem;font-weight:700;min-width:32px;text-align:right">{{ formatNumber(ow.count) }}</span>
-                        <span style="color:var(--text-muted);font-size:0.72rem;min-width:44px;text-align:right">({{ mutPct2(exportData.owners,ow.count) }}%)</span>
-                    </div>
-                    <div v-if="exportData.owners.length===0" class="export-item"><span class="export-item-name">No owner data</span><span class="export-item-value">—</span></div>
-                </div>
                 <div class="export-footer">Generated: {{ new Date().toLocaleString() }}<br>Custom Tracker</div>
             </div>
             <div style="display:flex;justify-content:center;gap:1rem;margin-top:1.2rem">
@@ -2157,8 +2146,7 @@
 
                 const mutH = isItem ? 0 : Math.max(data.mutations.length, 1) * 28 + 50;
                 const trH = isItem ? 0 : Math.max(data.traits.length, 1) * 28 + 50;
-                const ownH = isItem ? Math.max((data.owners || []).length, 1) * 28 + 50 : 0;
-                const sectionsH = isItem ? ownH : (mutH + 12 + trH);
+                const sectionsH = isItem ? 0 : (mutH + 12 + trH);
                 const iconH = iconImg ? 82 : 0;
                 const badgeH = data.rarity ? 32 : 0; // высота бейджа редкости (пилюля) + отступ
                 const H = pad + 30 + 6 + badgeH + iconH + 18 + 12 + 84 + 16 + sectionsH + 12 + 36 + pad;
@@ -2220,8 +2208,7 @@
 
                 // Mini stats
                 const stats = isItem ? [
-                    { label: 'TOTAL EXISTS', value: data.totalExist },
-                    { label: 'UNIQUE OWNERS', value: (data.owners || []).length }
+                    { label: 'TOTAL EXISTS', value: data.totalExist }
                 ] : [
                     { label: 'TOTAL EXISTS', value: data.totalExist },
                     { label: 'WITH MUTATION', value: data.mutations.reduce((s,m)=>s+m.count,0) },
@@ -2244,10 +2231,7 @@
                 });
                 y += 76;
 
-                if (isItem) {
-                    // У предметов нет мутаций/трейтов — вместо них список владельцев
-                    drawSection(ctx, 'OWNERS', data.owners || [], data.owners || [], y, W, pad, t, false);
-                } else {
+                if (!isItem) {
                     // Секция Mutations
                     y = drawSection(ctx, 'MUTATIONS', data.mutations, data.mutations, y, W, pad, t, true);
                     y += 12;
