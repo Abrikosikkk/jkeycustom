@@ -4492,7 +4492,90 @@ local v6 = {
 		["Rarity"] = "Secret",
 		["Price"] = 4200000000,
 		["Generation"] = 32500000
-	}
+	},
+	["Capitano Americano"] = {
+		DisplayName = "Capitano Americano",
+		Rarity = "Secret",
+		Price = 21000000000,
+		Generation = 72500000,
+		SpawnDelay = 3.5,
+		ObtainedFrom = {
+			Source = "Limited Quantity Craft",
+			Obtainable = true
+		},
+	},
+	["4th Bros"] = {
+		["DisplayName"] = "4th Bros",
+		["Rarity"]= "Secret",
+		["Price"] = 800000000,
+		["Generation"] = 3750000,
+		["SpawnDelay"] = 3.5,
+		["ObtainedFrom"] = {
+			["Source"] = "Admin Abuse",
+			["Obtainable"] = true
+		},
+	},
+	["Var Var Var"] = {
+		["DisplayName"] = "Var Var Var",
+		["Rarity"] = "Secret",
+		["Price"] = 1000000000,
+		["Generation"] = 5500000,
+		["SpawnVFX"] = "LiveSoccer",
+		["SpawnDelay"] = 3,
+	},
+	["Bufalino Boomberino"] = {
+		["DisplayName"] = "Bufalino Boomberino",
+		["Rarity"] = "Secret",
+		["Price"] = 4000000000,
+		["Generation"] = 32000000,
+		["SpawnDelay"] = 3.5,
+		["ObtainedFrom"] = {
+			["Source"] = "Limited Quantity Craft",
+			["Obtainable"] = true
+		},
+	},
+	["Los Admins"] = {
+		["DisplayName"] = "Los Admins",
+		["Rarity"] = "Secret",
+		["Price"] = 35000000000,
+		["Generation"] = 95000000,
+		["ObtainedFrom"] = {["Source"] = "Los Traders", ["Obtainable"] = true},
+	},
+	["Los Tictacs"] = {
+		["DisplayName"] = "Los Tictacs",
+		["Rarity"] = "Secret",
+		["Price"] = 15000000000,
+		["Generation"] = 60000000,
+		["ObtainedFrom"] = {["Source"] = "Los Traders", ["Obtainable"] = true},
+	},
+	["Moby Bros"] = {
+		["DisplayName"] = "Moby Bros",
+		["Rarity"] = "Secret",
+		["Price"] = 225000000000,
+		["Generation"] = 225000000,
+		["ObtainedFrom"] = {["Source"] = "Los Traders", ["Obtainable"] = true},
+	},
+	["Los Tangcitos"] = {
+		["DisplayName"] = "Los Tangcitos",
+		["Rarity"] = "Secret",
+		["Price"] = 7500000000,
+		["Generation"] = 42500000,
+		["ObtainedFrom"] = {["Source"] = "Los Traders", ["Obtainable"] = true},
+	},
+	["Los Sigmas"] = {
+		["DisplayName"] = "Los Sigmas",
+		["Rarity"] = "Secret",
+		["Price"] = 580000000,
+		["Generation"] = 2300000,
+		["ObtainedFrom"] = {["Source"] = "Los Traders", ["Obtainable"] = true},
+	},
+	["Los Cornis"] = {
+		["DisplayName"] = "Los Cornis",
+		["Rarity"] = "Secret",
+		["Price"] = 715000000,
+		["Generation"] = 3100000,
+		["ObtainedFrom"] = {["Source"] = "Los Traders", ["Obtainable"] = true},
+	},
 
 }
 return v6
