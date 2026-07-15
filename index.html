@@ -1338,6 +1338,62 @@
         }
         .btn-tiny-delete:hover { background: #991b1b; }
 
+        /* LUCKY WHEEL */
+        .lucky-wheel-wrap {
+            position: relative;
+            width: 220px;
+            height: 220px;
+            margin: 0 auto;
+        }
+        .lucky-wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 6px solid var(--border-strong);
+            box-shadow: 0 0 24px rgba(0,0,0,0.35) inset, 0 4px 18px rgba(0,0,0,0.25);
+            transition: transform 4.2s cubic-bezier(0.12, 0.67, 0.1, 1);
+        }
+        .lucky-pointer {
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 13px solid transparent;
+            border-right: 13px solid transparent;
+            border-top: 20px solid #fbbf24;
+            z-index: 5;
+            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.4));
+        }
+        .lucky-wheel-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 3px solid var(--border-strong);
+            z-index: 4;
+        }
+        .lucky-pick-row {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 0.7rem;
+            border-bottom: 1px solid var(--border);
+            gap: 0.6rem;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        .lucky-pick-row:last-child { border-bottom: none; }
+        .lucky-pick-row:hover { background: var(--bg-hover); }
+        .lucky-pick-row.selected {
+            background: var(--bg-selected);
+            border-left: 3px solid var(--selected-border);
+        }
+
         @media(max-width:1000px) {
             .main-layout {
                 grid-template-columns: 1fr;
@@ -1386,6 +1442,7 @@
             <div class="sort-toggle-group" style="margin-bottom:1rem;">
                 <button class="sort-toggle-btn" :class="{active: activeTab==='brainrots'}" @click="setActiveTab('brainrots')">Brainrots</button>
                 <button class="sort-toggle-btn" :class="{active: activeTab==='items'}" @click="setActiveTab('items')">Items</button>
+                <button class="sort-toggle-btn" @click="openLucky"><svg class="icon-svg" viewBox="0 0 24 24" style="width:14px;height:14px;vertical-align:-2px;margin-right:4px"><circle cx="12" cy="12" r="9"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> Lucky</button>
             </div>
 
             <div class="stats-grid">
@@ -1442,7 +1499,7 @@
                             <option value="all">All rarities</option>
                             <option v-for="r in availableRarities" :key="r" :value="r">{{ r }}</option>
                         </select>
-                        <span v-if="activeTab==='brainrots' && brainrotsFileStatus==='error'" style="color:#ff6b6b; font-size:0.75rem;" title="Не удалось загрузить/распарсить Brainrots.txt — проверьте, что файл лежит рядом с index.html">⚠ Brainrots.txt не найден</span>
+                        <span v-if="activeTab==='brainrots' && brainrotsFileStatus==='error'" style="color:#ff6b6b; font-size:0.75rem;" title="Не удалось загрузить/распарсить Brainrots.txt — проверьте, что файл лежит рядом с index.html"><svg class="icon-svg" viewBox="0 0 24 24" style="width:12px;height:12px;vertical-align:-2px;margin-right:3px"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Brainrots.txt не найден</span>
                     </div>
                     <div class="animals-list">
                         <div v-if="currentLoading" class="empty-state"><svg class="icon-svg" viewBox="0 0 24 24" style="width:18px;height:18px"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg> {{ activeTab==='items' ? 'Loading items…' : 'Loading brainrots…' }}</div>
@@ -1702,6 +1759,107 @@
         </div>
     </div>
 
+    <!-- LUCKY WHEEL MODAL -->
+    <div v-if="showLucky" class="modal-overlay" style="z-index:1002" @click.self="closeLucky">
+        <div class="modal-box" style="max-width:640px;max-height:92vh;overflow-y:auto;position:relative;">
+            <button class="modal-close-x" @click="closeLucky" title="Close"><svg class="icon-svg" viewBox="0 0 24 24" style="width:13px;height:13px"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+
+            <h3 style="text-align:center;margin-bottom:0.25rem;"><svg class="icon-svg" viewBox="0 0 24 24" style="width:18px;height:18px;vertical-align:-3px;margin-right:4px"><circle cx="12" cy="12" r="9"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> Lucky Wheel</h3>
+            <p style="text-align:center;color:var(--text-muted);font-size:0.75rem;margin-bottom:1.1rem;">Поставь своего brainrot и попробуй выиграть того, кого хочешь получить</p>
+
+            <div style="text-align:center;margin-bottom:0.6rem;min-height:74px;">
+                <template v-if="luckyWant">
+                    <img v-if="luckyWantImgOk" :src="luckyWantImgSrc" @error="luckyWantImgError" style="width:58px;height:58px;object-fit:contain;border-radius:10px;background:var(--bg-card);image-rendering:pixelated;display:block;margin:0 auto;" :alt="luckyWant">
+                    <div v-else style="font-weight:700;color:var(--text-primary);font-size:1rem;margin-top:0.4rem;">{{ luckyWant }}</div>
+                    <div v-if="luckyWantImgOk" style="color:var(--text-primary);font-size:0.85rem;font-weight:600;margin-top:0.3rem;">{{ luckyWant }}</div>
+                </template>
+                <div v-else style="color:var(--text-muted);font-size:0.8rem;padding-top:1.6rem;">Выбери, кого хочешь получить, справа снизу ↓</div>
+            </div>
+
+            <div class="lucky-wheel-wrap">
+                <div class="lucky-pointer"></div>
+                <div class="lucky-wheel" :style="luckyWheelStyle"></div>
+                <div class="lucky-wheel-center"></div>
+            </div>
+
+            <div style="text-align:center;margin:0.8rem 0 1.1rem;">
+                <span v-if="luckyChance" style="color:var(--text-secondary);font-size:0.8rem;">Шанс на этот прокрут: <b style="color:var(--accent)">{{ luckyChance }}%</b></span>
+                <span v-else style="color:var(--text-muted);font-size:0.78rem;">Шанс определится случайно при прокрутке (макс. ~40%)</span>
+            </div>
+
+            <div v-if="luckyResult==='win'" style="text-align:center;color:#4ade80;font-weight:700;font-size:1.15rem;margin-bottom:0.9rem;"><svg class="icon-svg" viewBox="0 0 24 24" style="width:16px;height:16px;vertical-align:-3px;margin-right:4px"><path d="M20 6L9 17l-5-5"/></svg> You Win! {{ luckyLastWant }} добавлен в инвентарь</div>
+            <div v-if="luckyResult==='lose'" style="text-align:center;color:#f87171;font-weight:700;font-size:1.15rem;margin-bottom:0.9rem;"><svg class="icon-svg" viewBox="0 0 24 24" style="width:16px;height:16px;vertical-align:-3px;margin-right:4px"><path d="M18 6L6 18M6 6l12 12"/></svg> You Lost... {{ luckyLastStake }} потерян</div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.3rem;">
+                <div>
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+                        <span class="section-label" style="margin-bottom:0">Твой Brainrot</span>
+                        <button class="btn" style="padding:0.25rem 0.6rem;font-size:0.7rem;" @click="showLuckyAddPicker=true"><svg class="icon-svg" viewBox="0 0 24 24" style="width:10px;height:10px;vertical-align:-1px;margin-right:3px"><path d="M12 5v14M5 12h14"/></svg> Добавить</button>
+                    </div>
+                    <div style="border:1px solid var(--border);border-radius:10px;max-height:190px;overflow-y:auto;">
+                        <div v-if="luckyMyList.length===0" style="padding:1rem 0.7rem;text-align:center;color:var(--text-muted);font-size:0.75rem;">Пусто. Нажми "Добавить", чтобы выбрать brainrot для ставки</div>
+                        <div v-for="name in luckyMyList" :key="name" class="lucky-pick-row" :class="{selected: luckyStake===name}" @click="selectLuckyStake(name)">
+                            <img :src="luckyImgCandidates(name)[0]" style="width:28px;height:28px;object-fit:contain;border-radius:6px;background:var(--bg-card);flex-shrink:0;image-rendering:pixelated;" :alt="name" @error="$event.target.style.display='none'">
+                            <div class="animal-name" style="font-size:0.8rem;">{{ name }}</div>
+                            <button class="btn" style="padding:0.15rem 0.45rem;font-size:0.65rem;" @click.stop="luckyRemoveBrainrot(name)" title="Удалить из списка"><svg class="icon-svg" viewBox="0 0 24 24" style="width:10px;height:10px;vertical-align:-1px"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+                        <span class="section-label" style="margin-bottom:0">Хочу получить</span>
+                        <button class="btn" style="padding:0.25rem 0.6rem;font-size:0.7rem;" @click="showLuckyWantPicker=true">Выбрать</button>
+                    </div>
+                    <div style="border:1px solid var(--border);border-radius:10px;padding:0.7rem;text-align:center;min-height:60px;display:flex;align-items:center;justify-content:center;height:calc(100% - 1.85rem);">
+                        <span v-if="luckyWant" style="color:var(--text-primary);font-weight:600;font-size:0.85rem;">{{ luckyWant }}</span>
+                        <span v-else style="color:var(--text-muted);font-size:0.78rem;">Не выбрано</span>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display:flex;justify-content:center;">
+                <button class="btn btn-accent" style="padding:0.7rem 2.2rem;font-size:0.9rem;" :disabled="!luckyStake || !luckyWant || luckySpinning" @click="luckySpin">
+                    {{ luckySpinning ? 'Крутим…' : 'Прокрутить' }}
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- LUCKY ADD (STAKE) PICKER -->
+    <div v-if="showLuckyAddPicker" class="modal-overlay" style="z-index:1003" @click.self="showLuckyAddPicker=false">
+        <div class="modal-box" style="max-width:420px;max-height:80vh;overflow-y:auto;">
+            <h3>Добавить Brainrot для ставки</h3>
+            <input type="text" class="search-input" style="width:100%;margin-bottom:0.8rem;" placeholder="Поиск brainrot…" v-model="luckyAddSearch">
+            <div style="max-height:340px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;">
+                <div v-if="luckyAddPickerFiltered.length===0" style="padding:1rem;text-align:center;color:var(--text-muted);font-size:0.8rem;">Ничего не найдено</div>
+                <div v-for="name in luckyAddPickerFiltered" :key="name" class="lucky-pick-row" @click="luckyAddBrainrot(name)">
+                    <img :src="luckyImgCandidates(name)[0]" style="width:30px;height:30px;object-fit:contain;border-radius:6px;background:var(--bg-card);flex-shrink:0;image-rendering:pixelated;" :alt="name" @error="$event.target.style.display='none'">
+                    <div class="animal-name" style="font-size:0.82rem;">{{ name }}</div>
+                </div>
+            </div>
+            <div style="display:flex;justify-content:flex-end;margin-top:1rem;">
+                <button class="btn" @click="showLuckyAddPicker=false">Закрыть</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- LUCKY WANT PICKER -->
+    <div v-if="showLuckyWantPicker" class="modal-overlay" style="z-index:1003" @click.self="showLuckyWantPicker=false">
+        <div class="modal-box" style="max-width:420px;max-height:80vh;overflow-y:auto;">
+            <h3>Кого хочешь получить</h3>
+            <input type="text" class="search-input" style="width:100%;margin-bottom:0.8rem;" placeholder="Поиск brainrot…" v-model="luckyWantSearch">
+            <div style="max-height:340px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;">
+                <div v-if="luckyWantPickerFiltered.length===0" style="padding:1rem;text-align:center;color:var(--text-muted);font-size:0.8rem;">Ничего не найдено</div>
+                <div v-for="name in luckyWantPickerFiltered" :key="name" class="lucky-pick-row" @click="selectLuckyWant(name)">
+                    <img :src="luckyImgCandidates(name)[0]" style="width:30px;height:30px;object-fit:contain;border-radius:6px;background:var(--bg-card);flex-shrink:0;image-rendering:pixelated;" :alt="name" @error="$event.target.style.display='none'">
+                    <div class="animal-name" style="font-size:0.82rem;">{{ name }}</div>
+                </div>
+            </div>
+            <div style="display:flex;justify-content:flex-end;margin-top:1rem;">
+                <button class="btn" @click="showLuckyWantPicker=false">Закрыть</button>
+            </div>
+        </div>
+    </div>
 
 </div>
 </script>
@@ -1711,7 +1869,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js">
 </script>
 <script>
-    const { createApp, ref, computed, onMounted, onUnmounted, nextTick } = Vue;
+    const { createApp, ref, computed, onMounted, onUnmounted, nextTick, watch } = Vue;
 
     const firebaseConfig = {
         apiKey: "AIzaSyCZJnsIh57sXyRiTTFDCf5bA3A7eP5dXEY",
@@ -2515,6 +2673,165 @@
                 }
             };
             const getRarity = (name) => brainrotsRarityMap.value[name] || 'Unknown';
+
+            // ========== LUCKY WHEEL ==========
+            const LUCKY_STORAGE_KEY = 'lucky-my-brainrots';
+            const showLucky = ref(false);
+            let luckyMyListInit = [];
+            try { luckyMyListInit = JSON.parse(localStorage.getItem(LUCKY_STORAGE_KEY) || '[]'); } catch (e) { luckyMyListInit = []; }
+            const luckyMyList = ref(Array.isArray(luckyMyListInit) ? luckyMyListInit : []);
+            const luckyStake = ref(null);
+            const luckyWant = ref(null);
+            const luckyChance = ref(0);
+            const luckySpinning = ref(false);
+            const luckyResult = ref(null); // null | 'win' | 'lose'
+            const luckyLastWant = ref('');
+            const luckyLastStake = ref('');
+            const luckyRotation = ref(0);
+            const showLuckyAddPicker = ref(false);
+            const luckyAddSearch = ref('');
+            const showLuckyWantPicker = ref(false);
+            const luckyWantSearch = ref('');
+            const luckyWantImgIndex = ref(0);
+            const luckyWantImgOk = ref(true);
+
+            const saveLuckyMyList = () => {
+                try { localStorage.setItem(LUCKY_STORAGE_KEY, JSON.stringify(luckyMyList.value)); } catch (e) {}
+            };
+
+            const openLucky = () => { showLucky.value = true; luckyResult.value = null; };
+            const closeLucky = () => { showLucky.value = false; };
+
+            const luckyAllBrainrotNames = computed(() => {
+                const set = new Set();
+                Object.keys(brainrotsRarityMap.value).forEach(n => set.add(n));
+                animals.value.forEach(a => set.add(a.name));
+                return [...set].sort((a, b) => a.localeCompare(b));
+            });
+
+            const luckyAddPickerFiltered = computed(() => {
+                const q = luckyAddSearch.value.trim().toLowerCase();
+                let list = luckyAllBrainrotNames.value.filter(n => !luckyMyList.value.includes(n));
+                if (q) list = list.filter(n => n.toLowerCase().includes(q));
+                return list.slice(0, 100);
+            });
+
+            const luckyWantPickerFiltered = computed(() => {
+                const q = luckyWantSearch.value.trim().toLowerCase();
+                let list = luckyAllBrainrotNames.value;
+                if (q) list = list.filter(n => n.toLowerCase().includes(q));
+                return list.slice(0, 100);
+            });
+
+            const luckyAddBrainrot = (name) => {
+                if (!luckyMyList.value.includes(name)) {
+                    luckyMyList.value.push(name);
+                    saveLuckyMyList();
+                }
+                showLuckyAddPicker.value = false;
+                luckyAddSearch.value = '';
+            };
+
+            const luckyRemoveBrainrot = (name) => {
+                luckyMyList.value = luckyMyList.value.filter(n => n !== name);
+                if (luckyStake.value === name) luckyStake.value = null;
+                saveLuckyMyList();
+            };
+
+            const selectLuckyStake = (name) => {
+                if (luckySpinning.value) return;
+                luckyStake.value = name;
+                luckyResult.value = null;
+            };
+            const selectLuckyWant = (name) => {
+                luckyWant.value = name;
+                showLuckyWantPicker.value = false;
+                luckyWantSearch.value = '';
+                luckyResult.value = null;
+            };
+
+            const luckyImgCandidates = (name) => {
+                const trimmed = (name || '').trim();
+                const underscored = trimmed.replace(/\s+/g, '_');
+                const dashed = trimmed.replace(/\s+/g, '-');
+                const raw = [trimmed, underscored, dashed];
+                const urls = [];
+                raw.forEach(v => { const u = 'Brainrots/' + encodeURIComponent(v) + '.png'; if (!urls.includes(u)) urls.push(u); });
+                const plain = 'Brainrots/' + trimmed + '.png';
+                if (!urls.includes(plain)) urls.push(plain);
+                return urls;
+            };
+
+            watch(luckyWant, () => { luckyWantImgIndex.value = 0; luckyWantImgOk.value = true; });
+
+            const luckyWantImgSrc = computed(() => {
+                if (!luckyWant.value) return '';
+                const list = luckyImgCandidates(luckyWant.value);
+                return list[luckyWantImgIndex.value] || list[0] || '';
+            });
+            const luckyWantImgError = () => {
+                if (!luckyWant.value) { luckyWantImgOk.value = false; return; }
+                const list = luckyImgCandidates(luckyWant.value);
+                if (luckyWantImgIndex.value < list.length - 1) luckyWantImgIndex.value++;
+                else luckyWantImgOk.value = false;
+            };
+
+            const luckyWheelStyle = computed(() => {
+                const c = luckyChance.value || 0;
+                const deg = c * 3.6;
+                return {
+                    background: `conic-gradient(#22c55e 0deg ${deg}deg, #ef4444 ${deg}deg 360deg)`,
+                    transform: `rotate(${luckyRotation.value}deg)`
+                };
+            });
+
+            // Шанс всегда случайный, но не больше 40% (мин. 5%, чтобы был виден сектор)
+            const LUCKY_MIN_CHANCE = 5;
+            const LUCKY_MAX_CHANCE = 40;
+
+            const luckySpin = () => {
+                if (!luckyStake.value || !luckyWant.value || luckySpinning.value) return;
+                luckyResult.value = null;
+                luckyLastWant.value = luckyWant.value;
+                luckyLastStake.value = luckyStake.value;
+
+                const chance = Math.floor(Math.random() * (LUCKY_MAX_CHANCE - LUCKY_MIN_CHANCE + 1)) + LUCKY_MIN_CHANCE;
+                luckyChance.value = chance;
+                luckySpinning.value = true;
+
+                const deg = chance * 3.6;
+                const willWin = Math.random() * 100 < chance;
+                let targetAngle;
+                if (willWin) {
+                    targetAngle = deg <= 4 ? deg / 2 : (Math.random() * (deg - 4)) + 2;
+                } else {
+                    const loseStart = deg + 2;
+                    const loseEnd = 358;
+                    targetAngle = loseEnd <= loseStart ? (deg + (360 - deg) / 2) : (Math.random() * (loseEnd - loseStart)) + loseStart;
+                }
+
+                // Reset rotation to nearest full circle so the pointer aligns correctly every spin
+                luckyRotation.value = Math.floor(luckyRotation.value / 360) * 360;
+
+                const spins = 6 + Math.floor(Math.random() * 3); // 6-8 full turns for effect
+                const R = ((360 - (targetAngle % 360)) + 360) % 360;
+                luckyRotation.value += spins * 360 + R;
+
+                setTimeout(() => {
+                    luckySpinning.value = false;
+                    if (willWin) {
+                        luckyResult.value = 'win';
+                        if (!luckyMyList.value.includes(luckyLastWant.value)) {
+                            luckyMyList.value.push(luckyLastWant.value);
+                            saveLuckyMyList();
+                        }
+                    } else {
+                        luckyResult.value = 'lose';
+                        luckyRemoveBrainrot(luckyLastStake.value);
+                    }
+                }, 4300);
+            };
+
             // Список редкостей для выпадающего фильтра: сначала известные тиры (в игровом порядке,
             // только те, что реально встречаются в текущих данных), затем любые новые/нестандартные
             // значения из DataService по алфавиту, 'Unknown' — всегда последним.
@@ -2771,7 +3088,35 @@
                 confirmDownload,
                 closeExportModal,
                 searchPlayerAnimals,
-                clearPlayerSearch
+                clearPlayerSearch,
+                // Lucky Wheel
+                showLucky,
+                openLucky,
+                closeLucky,
+                luckyMyList,
+                luckyStake,
+                luckyWant,
+                luckyChance,
+                luckySpinning,
+                luckyResult,
+                luckyLastWant,
+                luckyLastStake,
+                luckyWheelStyle,
+                showLuckyAddPicker,
+                luckyAddSearch,
+                luckyAddPickerFiltered,
+                luckyAddBrainrot,
+                luckyRemoveBrainrot,
+                showLuckyWantPicker,
+                luckyWantSearch,
+                luckyWantPickerFiltered,
+                selectLuckyStake,
+                selectLuckyWant,
+                luckyImgCandidates,
+                luckyWantImgSrc,
+                luckyWantImgOk,
+                luckyWantImgError,
+                luckySpin
             };
         }
     });
