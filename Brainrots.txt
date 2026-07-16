@@ -4576,6 +4576,26 @@ local v6 = {
 		["Generation"] = 3100000,
 		["ObtainedFrom"] = {["Source"] = "Los Traders", ["Obtainable"] = true},
 	},
+	["Happy Bros"] = {
+		["DisplayName"] = "Happy Bros",
+		["Rarity"] = "Secret",
+		["Price"] = 22800000000,
+		["Generation"] = 90000000,
+		["SpawnVFX"] = "Killer",
+		["SpawnDelay"] = 3,
+	},
+	["MrDepini"] = {
+		["DisplayName"] = "MrDepini",
+		["Rarity"] = "Secret",
+		["Price"] = 1000000000000000,
+		["Generation"] = 35000000,
+	},
+	["Whiterini"] = {
+		["DisplayName"] = "Whiterini",
+		["Rarity"] = "Secret",
+		["Price"] = 1000000000000000,
+		["Generation"] = 35000000,
+	},
 
 }
 return v6
