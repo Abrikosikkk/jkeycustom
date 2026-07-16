@@ -1338,6 +1338,57 @@
         }
         .btn-tiny-delete:hover { background: #991b1b; }
 
+        /* LOGIN GATE */
+        .login-overlay {
+            position: fixed;
+            inset: 0;
+            background: var(--bg-body);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 5000;
+            padding: 1.5rem;
+        }
+        .login-box {
+            background: var(--bg-container);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2.4rem 2rem;
+            width: 100%;
+            max-width: 340px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+        }
+        .login-logo { font-size: 2.4rem; margin-bottom: 0.6rem; }
+        .login-box h2 { color: var(--text-primary); font-size: 1.2rem; margin-bottom: 0.3rem; }
+        .login-sub { color: var(--text-muted); font-size: 0.8rem; margin-bottom: 1.5rem; }
+        .login-input {
+            width: 100%;
+            padding: 0.75rem 0.9rem;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            outline: none;
+            text-align: center;
+            letter-spacing: 3px;
+            font-family: inherit;
+        }
+        .login-input:focus { border-color: var(--accent); }
+        .login-btn { width: 100%; padding: 0.75rem; font-size: 0.9rem; }
+        .login-error {
+            color: #f87171;
+            font-size: 0.78rem;
+            margin-top: 0.9rem;
+            line-height: 1.4;
+        }
+        .login-checking {
+            color: var(--text-muted);
+            font-size: 0.82rem;
+        }
+
         /* LUCKY WHEEL */
         .lucky-wheel-wrap {
             position: relative;
@@ -1424,6 +1475,36 @@
 </head>
 <body>
     <div id="app">
+
+        <!-- LOGIN GATE -->
+        <div v-if="authChecking" class="login-overlay">
+            <div class="login-box">
+                <div class="login-logo">🔒</div>
+                <p class="login-checking">Проверка доступа…</p>
+            </div>
+        </div>
+        <div v-else-if="!isAuthenticated" class="login-overlay">
+            <div class="login-box">
+                <div class="login-logo">🔒</div>
+                <h2>Custom Tracker</h2>
+                <p class="login-sub">Введите пароль доступа</p>
+                <input
+                    type="password"
+                    class="login-input"
+                    v-model="loginPassword"
+                    @keyup.enter="submitLogin"
+                    placeholder="Пароль"
+                    :disabled="loginLoading"
+                    autofocus
+                >
+                <button class="btn btn-accent login-btn" @click="submitLogin" :disabled="loginLoading || !loginPassword.trim()">
+                    {{ loginLoading ? 'Проверка…' : 'Войти' }}
+                </button>
+                <p v-if="loginError" class="login-error">{{ loginError }}</p>
+            </div>
+        </div>
+
+        <template v-if="isAuthenticated">
 
         <!-- MAIN APP -->
         <div class="container">
@@ -1861,8 +1942,9 @@
         </div>
     </div>
 
-</div>
-</script>
+        </template>
+
+    </div>
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js">
 </script>
@@ -1905,6 +1987,94 @@
             const hasAccess = ref(true);
             const requestSent = ref(false);
             const errorMessage = ref('');
+
+            // ========== PASSWORD ACCESS GATE (Firebase Realtime DB) ==========
+            // Структура в базе: AccessPasswords/{пароль} = { activationsLeft, maxActivations, createdAt }
+            // Пароли и количество активаций создаёшь/редактируешь прямо в Firebase Console.
+            // Тестовый пароль "1234" с 1 активацией создаётся автоматически при первом запуске,
+            // если такой записи ещё нет в базе.
+            const AUTH_STORAGE_KEY = 'trackerAuthV1';
+            const isAuthenticated = ref(false);
+            const authChecking = ref(true);
+            const loginPassword = ref('');
+            const loginError = ref('');
+            const loginLoading = ref(false);
+
+            const getDeviceId = () => {
+                let id = localStorage.getItem('trackerDeviceId');
+                if (!id) {
+                    id = 'dev_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 10);
+                    try { localStorage.setItem('trackerDeviceId', id); } catch (e) {}
+                }
+                return id;
+            };
+
+            const seedTestPassword = () => {
+                if (!db) return;
+                const pwdRef = db.ref('AccessPasswords/1234');
+                pwdRef.once('value').then(snap => {
+                    if (!snap.exists()) {
+                        pwdRef.set({ activationsLeft: 1, maxActivations: 1, createdAt: Date.now() })
+                            .catch(e => console.error('Seed test password error:', e));
+                    }
+                }).catch(e => console.error('Seed password check error:', e));
+            };
+
+            const checkStoredAuth = () => {
+                let stored = null;
+                try { stored = JSON.parse(localStorage.getItem(AUTH_STORAGE_KEY) || 'null'); } catch (e) { stored = null; }
+                if (!stored || !stored.password) { authChecking.value = false; return; }
+                if (!db) { isAuthenticated.value = true; authChecking.value = false; return; }
+                // Перепроверяем, что пароль всё ещё существует в базе (админ мог его отозвать/удалить)
+                db.ref('AccessPasswords/' + stored.password).once('value').then(snap => {
+                    if (snap.exists()) {
+                        isAuthenticated.value = true;
+                    } else {
+                        try { localStorage.removeItem(AUTH_STORAGE_KEY); } catch (e) {}
+                        isAuthenticated.value = false;
+                    }
+                    authChecking.value = false;
+                }).catch(e => {
+                    console.error('Auth re-check error:', e);
+                    // при проблемах с сетью не выкидываем пользователя, доверяем сохранённой сессии
+                    isAuthenticated.value = true;
+                    authChecking.value = false;
+                });
+            };
+
+            const submitLogin = () => {
+                const pwd = loginPassword.value.trim();
+                if (!pwd) return;
+                if (!db) { loginError.value = 'Firebase недоступен, попробуйте позже'; return; }
+                loginError.value = '';
+                loginLoading.value = true;
+                const pwdRef = db.ref('AccessPasswords/' + pwd);
+                pwdRef.transaction(current => {
+                    if (!current || typeof current.activationsLeft !== 'number' || current.activationsLeft <= 0) {
+                        return; // undefined -> abort transaction, ничего не меняем
+                    }
+                    current.activationsLeft -= 1;
+                    current.lastUsedAt = Date.now();
+                    return current;
+                }, (error, committed) => {
+                    loginLoading.value = false;
+                    if (error) {
+                        console.error('Login transaction error:', error);
+                        loginError.value = 'Ошибка проверки пароля, попробуйте ещё раз';
+                        return;
+                    }
+                    if (!committed) {
+                        loginError.value = 'Неверный пароль или закончились активации';
+                        return;
+                    }
+                    try {
+                        localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify({ password: pwd, deviceId: getDeviceId(), ts: Date.now() }));
+                    } catch (e) {}
+                    isAuthenticated.value = true;
+                    loginPassword.value = '';
+                    loginError.value = '';
+                });
+            };
             const showExportModal = ref(false);
             const showSettings = ref(false);
             const exportData = ref({ name: '', rarity: '', isItem: false, totalExist: 0, percent: 0, mutations: [], traits: [], owners: [], iconBase64: '' });
@@ -3019,7 +3189,9 @@
             };
 
 
-            onMounted(() => { checkAccess();
+            onMounted(() => { seedTestPassword();
+                checkStoredAuth();
+                checkAccess();
                 loadBrainrotsRarities();
                 setTimeout(() => { if (loading.value) loading.value = false;
                     if (itemsLoading.value) itemsLoading.value = false; }, 5000); });
@@ -3030,6 +3202,12 @@
             });
 
             return {
+                isAuthenticated,
+                authChecking,
+                loginPassword,
+                loginError,
+                loginLoading,
+                submitLogin,
                 hasAccess,
                 requestSent,
                 errorMessage,
