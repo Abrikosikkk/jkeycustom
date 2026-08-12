@@ -1,4 +1,4 @@
---na ukraine vipal grad eto pupkin ninovat
+---na ukraine vipal grad eto pupkin ninovat
 
 local v1 = game:GetService("ReplicatedStorage");
 local l_RunService_0 = game:GetService("RunService");
@@ -4595,6 +4595,259 @@ local v6 = {
 		["Rarity"] = "Secret",
 		["Price"] = 1000000000000000,
 		["Generation"] = 35000000,
+	},
+	["Cangurato Gelato"] = {
+		["DisplayName"] = "Cangurato Gelato",
+		["Rarity"] = "Secret",
+		["Price"] = 23500000000,
+		["Generation"] = 77500000,
+		["RoadWeight"] = 7e-14,
+		["ObtainedFrom"] = {
+			["Source"] = "The Red Carpet",
+			["Obtainable"] = true
+		},
+	},
+	["Grabatron"] = {
+		["DisplayName"] = "Grabatron",
+		["Rarity"] = "Secret",
+		["Price"] = 15000000000,
+		["Generation"] = 62500000,
+		["ObtainedFrom"] = {
+			["Source"] = "Codes",
+			["Obtainable"] = false
+		},
+	},
+	["Noodle Noodle Poodle"] = {
+		["DisplayName"] = "Noodle Noodle Poodle",
+		["Rarity"] = "Secret",
+		["Price"] = 3000000000,
+		["Generation"] = 27500000,
+		["RoadWeight"] = 8.75e-11,
+		["ObtainedFrom"] = {
+			["Source"] = "The Red Carpet",
+			["Obtainable"] = false
+		},
+	},
+	["Rubiko and Kubiko"] = {
+		["DisplayName"] = "Rubiko and Kubiko",
+		["Rarity"] = "Secret",
+		["Price"] = 21000000000,
+		["Generation"] = 72500000,
+		["ObtainedFrom"] = {
+			["Source"] = "Los Traders", 
+			["Obtainable"] = true
+		},
+	},
+	["Tenini Ballini"] = {
+		["DisplayName"] = "Tenini Ballini",
+		["Rarity"] = "Brainrot God",
+		["Price"] = 77000000,
+		["Generation"] = 320000,
+		["ObtainedFrom"] = {
+			["Source"] = "Codes",
+			["Obtainable"] = false
+		},
+	},
+	["Toro Espa\195\177olo"] = {
+		["DisplayName"] = "Toro Espa\195\177olo",
+		["Rarity"] = "Secret",
+		["Price"] = 575000000,
+		["Generation"] = 2250000,
+		["SpawnDelay"] = 3,
+		["ObtainedFrom"] = {
+			["Source"] = "Spain Event",
+			["Obtainable"] = true
+		},
+	},
+	["Chicleteira Champeona"] = {
+		["DisplayName"] = "Chicleteira Champeona",
+		["Rarity"] = "Secret",
+		["Price"] = 2850000000,
+		["Generation"] = 19000000,
+		["SpawnDelay"] = 3,
+		["ObtainedFrom"] = {
+			["Source"] = "Spain Event",
+			["Obtainable"] = true
+		},
+	},
+	["Examen Bros"] = {
+		["DisplayName"] = "Examen Bros",
+		["Rarity"] = "Secret",
+		["Price"] = 20000000000,
+		["Generation"] = 70000000,
+		["ObtainedFrom"] = {
+			["Source"] = "Los Traders",
+			["Obtainable"] = true
+		},
+	},
+	["Pizza and Ranch"] = {
+		["DisplayName"] = "Pizza and Ranch",
+		["Rarity"] = "Secret",
+		["Price"] = 55000000000,
+		["Generation"] = 130000000,
+		["RoadWeight"] = 2.5e-14,
+	},
+	["Los Secret Combinasionas"] = {
+		["DisplayName"] = "Los Secret Combinasionas",
+		["Rarity"] = "Secret",
+		["Price"] = 75000000000,
+		["Generation"] = 150000000,
+		["ObtainedFrom"] = {
+			["Source"] = "Los Traders",
+			["Obtainable"] = true
+		},
+	},
+	["Yess my Resume"] = {
+		DisplayName = "Yess my Resume",
+		Rarity = "Secret",
+		Price = 560000000,
+		Generation = 2100000,
+		SpawnDelay = 3,
+		ObtainedFrom = {
+			Source = "Job Ritual",
+			Obtainable = true
+		},
+	},
+	["Noo my Resume"] = {
+		DisplayName = "Noo my Resume",
+		Rarity = "Secret",
+		Price = 4250000000,
+		Generation = 32500000,
+		SpawnDelay = 3,
+		ObtainedFrom = {
+			Source = "Job Ritual",
+			Obtainable = true
+		},
+	},
+	["Gelatina Volatina"] = {
+		DisplayName = "Gelatina Volatina",
+		Rarity = "Secret",
+		Price = 590000000,
+		Generation = 2400000,
+		ObtainedFrom = {
+			Source = "RNG Machine",
+			Obtainable = true
+		},
+	},
+	["Conetto Morsetto"] = {
+		DisplayName = "Conetto Morsetto",
+		Rarity = "Secret",
+		Price = 1500000000,
+		Generation = 10000000,
+		ObtainedFrom = {
+			Source = "Bee Merchant",
+			Obtainable = true
+		},
+	},
+	["Pogo Pogo Penguin"] = {
+		DisplayName = "Pogo Pogo Penguin",
+		Rarity = "Secret",
+		Price = 1750000000,
+		Generation = 12500000,
+		ObtainedFrom = {
+			Source = "RNG Machine",
+			Obtainable = true
+		},
+	},
+	["Peschito Machito"] = {
+		DisplayName = "Peschito Machito",
+		Rarity = "Secret",
+		Price = 2850000000,
+		Generation = 19000000,
+		ObtainedFrom = {
+			Source = "RNG Machine",
+			Obtainable = true
+		},
+	},
+	["Honey Honey Bear"] = {
+		DisplayName = "Honey Honey Bear",
+		Rarity = "Secret",
+		Price = 4000000000,
+		Generation = 32000000,
+		ObtainedFrom = {
+			Source = "Bee Merchant",
+			Obtainable = true
+		},
+	},
+	["Scorpino Coasterino"] = {
+		DisplayName = "Scorpino Coasterino",
+		Rarity = "Secret",
+		Price = 9250000000,
+		Generation = 47500000,
+		ObtainedFrom = {
+			Source = "RNG Machine",
+			Obtainable = true
+		},
+	},
+	["Queen Bee"] = {
+		DisplayName = "Queen Bee",
+		Rarity = "Secret",
+		Price = 15500000000,
+		Generation = 65000000,
+		ObtainedFrom = {
+			Source = "Bee Merchant",
+			Obtainable = true
+		},
+	},
+	["S\'more Serat"] = {
+		DisplayName = "S\'more Serat",
+		Rarity = "Secret",
+		Price = 25500000000,
+		Generation = 85000000,
+		ObtainedFrom = {
+			Source = "Bee Merchant",
+			Obtainable = true
+		},
+	},
+	Yetimatic = {
+		DisplayName = "Yetimatic",
+		Rarity = "Secret",
+		Price = 27500000000,
+		Generation = 87500000,
+		ObtainedFrom = {
+			Source = "RNG Machine",
+			Obtainable = true
+		},
+	},
+	["La Breakfast Combinasion"] = {
+		DisplayName = "La Breakfast Combinasion",
+		Rarity = "Secret",
+		Price = 130000000000,
+		Generation = 165000000,
+		ObtainedFrom = {
+			Source = "RNG Machine",
+			Obtainable = true
+		},
+	},
+	Bumbatron = {
+		DisplayName = "Bumbatron",
+		Rarity = "Secret",
+		Price = 140000000000,
+		Generation = 172500000,
+		ObtainedFrom = {
+			Source = "Bee Merchant",
+			Obtainable = true
+		},
+	},
+	["Tic Tic Ribbit"] = {
+		DisplayName = "Tic Tic Ribbit",
+		Rarity = "Mythic",
+		Price = 6250000,
+		Generation = 18750,
+		ObtainedFrom = {
+			Source = "RNG Machine",
+			Obtainable = true
+		},
+	},
+	Quackalena = {
+		DisplayName = "Quackalena",
+		Rarity = "Brainrot God",
+		Price = 46500000,
+		Generation = 265000,
+		ObtainedFrom = {
+			Source = "RNG Machine",
+			Obtainable = true
+		},
 	},
 
 }
