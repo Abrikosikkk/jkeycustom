@@ -1,4 +1,4 @@
----na ukraine vipal grad eto pupkin ninovat
+--na ukraine vipal grad eto pupkin ninovat
 
 local v1 = game:GetService("ReplicatedStorage");
 local l_RunService_0 = game:GetService("RunService");
@@ -4849,6 +4849,145 @@ local v6 = {
 			Obtainable = true
 		},
 	},
+	["Candini Fluffini"] = {
+		DisplayName = "Candini Fluffini",
+		Rarity = "Secret",
+		Price = 14000000000,
+		Generation = 57500000,
+		ObtainedFrom = {
+			Source = "RNG Machine",
+			Obtainable = false
+		},
+	},
+	["La Fuse Machine"] = {
+		DisplayName = "La Fuse Machine",
+		Rarity = "Secret",
+		Price = 35000000000,
+		Generation = 95000000,
+		ObtainedFrom = {
+			Source = "RNG Machine",
+			Obtainable = false
+		},
+	},
+	["Burrito Bat"] = {
+		DisplayName = "Burrito Bat",
+		Rarity = "Secret",
+		Price = 1200000000,
+		Generation = 7000000,
+		ObtainedFrom = {
+			Source = "Taco Merchant",
+			Obtainable = true
+		}
+	},
+	Nachorilla = {
+		DisplayName = "Nachorilla",
+		Rarity = "Secret",
+		Price = 9250000000,
+		Generation = 47500000,
+		ObtainedFrom = {
+			Source = "Taco Merchant",
+			Obtainable = true
+		}
+	},
+	["Sammyni Truckini"] = {
+		DisplayName = "Sammyni Truckini",
+		Rarity = "Secret",
+		Price = 45000000000,
+		Generation = 110000000,
+		ObtainedFrom = {
+			Source = "Taco Merchant",
+			Obtainable = true
+		}
+	},
+	["Pupkini Truckini"] = {
+		DisplayName = "Pupkini Truckini",
+		Rarity = "Secret",
+		Price = 55000000000,
+		Generation = 167000000,
+		ObtainedFrom = {
+			Source = "Codes",
+			Obtainable = true
+		}
+	},
+	["Tacoturbo Tacorito"] = {
+		DisplayName = "Tacoturbo Tacorito",
+		Rarity = "Secret",
+		Price = 2750000000,
+		Generation = 26000000,
+		ObtainedFrom = {
+			Source = "Taco Merchant",
+			Obtainable = true
+		}
+	},
+	["Honey Honey Narwhal"] = {
+		DisplayName = "Honey Honey Narwhal",
+		Rarity = "Secret",
+		Price = 237500000,
+		Generation = 950000,
+		ObtainedFrom = {Source = "Bee Block", Obtainable = true},
+	},
+	["Rosatops Triceratino"] = {
+		DisplayName = "Rosatops Triceratino",
+		Rarity = "Secret",
+		Price = 715000000,
+		Generation = 3100000,
+		ObtainedFrom = {Source = "Bee Block", Obtainable = true},
+	},
+	["Syrup Samurai"] = {
+		DisplayName = "Syrup Samurai",
+		Rarity = "Secret",
+		Price = 1175000000,
+		Generation = 6700000,
+		ObtainedFrom = {Source = "Bee Block", Obtainable = true},
+	},
+	["Motorino Bumbino"] = {
+		DisplayName = "Motorino Bumbino",
+		Rarity = "Secret",
+		Price = 2250000000,
+		Generation = 16500000,
+		ObtainedFrom = {Source = "Bee Block", Obtainable = true},
+	},
+	["Pop Pop Petalini"] = {
+		DisplayName = "Pop Pop Petalini",
+		Rarity = "Secret",
+		Price = 15000000000,
+		Generation = 62500000,
+		ObtainedFrom = {Source = "Bee Block", Obtainable = true},
+	},
+	Orchidox = {
+		DisplayName = "Orchidox",
+		Rarity = "Secret",
+		Price = 100000000000,
+		Generation = 155000000,
+		ObtainedFrom = {Source = "Bee Block", Obtainable = true},
+	},
+	["Beavo Potto"] = {
+		DisplayName = "Beavo Potto",
+		Rarity = "Brainrot God",
+		Price = 75000000,
+		Generation = 315000,
+		ObtainedFrom = {Source = "Bee Block", Obtainable = true},
+	},
+	["Bee Lucky Block"] = {
+		DisplayName = "Bee Lucky Block",
+		Rarity = "Honey",
+		Price = 400000000,
+		Generation = 0,
+		HideFromIndex = true,
+		SpawnVFX = "Bee",
+		SpawnDelay = 3,
+		LuckyBlock = v3["Bee Lucky Block"],
+	},
+	["Premium Bee Lucky Block"] = {
+		DisplayName = "Premium Bee Lucky Block",
+		Rarity = "Honey",
+		Price = 400000000,
+		Generation = 0,
+		HideFromIndex = true,
+		SpawnVFX = "Bee",
+		SpawnDelay = 3,
+		LuckyBlock = v3["Premium Bee Lucky Block"],
+	}
 
 }
 return v6
