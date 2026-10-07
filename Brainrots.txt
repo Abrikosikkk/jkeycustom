@@ -831,7 +831,6 @@ local v6 = {
 		["Rarity"] = "Secret",
 		["Price"] = 450000000,
 		["Generation"] = 2650000,
-		["RoadWeight"] = 0.00003
 	},
 	["Pot Hotspot"] = {
 		["DisplayName"] = "Pot Hotspot",
@@ -1132,7 +1131,6 @@ local v6 = {
 		["Rarity"] = "Secret", 
 		["Price"] = 300000000, 
 		["Generation"] = 75000000, 
-		["RoadWeight"] = 1.0E-5
 	}, 
 	["Los Chicleteiras"] = {
 		["DisplayName"] = "Los Chicleteiras",
@@ -1227,6 +1225,12 @@ local v6 = {
 		["Price"] = 456000000000,
 		["Generation"] = 228000000,
 	},
+	["Arcabunny"] = {
+		["DisplayName"] = "Arcabunny",
+		["Rarity"] = "Secret",
+		["Price"] = 454000000000,
+		["Generation"] = 222000000,
+	},
 	["Los Nooo My Hotspotsitos"] = {
 		["DisplayName"] = "Los Nooo My Hotspotsitos",
 		["Rarity"] = "Secret",
@@ -1316,6 +1320,18 @@ local v6 = {
 		["Rarity"] = "Secret",
 		["Price"] = 2600000000,
 		["Generation"] = 21000000,
+	},
+	["Money Man"] = {
+		["DisplayName"] = "Money Man",
+		["Rarity"] = "Secret",
+		["Price"] = 4600000000,
+		["Generation"] = 31000000,
+	},
+	["Ti"] = {
+		["DisplayName"] = "Ti",
+		["Rarity"] = "Secret",
+		["Price"] = 10000000000,
+		["Generation"] = 50000000,
 	},
 	["Recolor Puggy"] = {
 		["DisplayName"] = "Recolor Puggy",
@@ -1508,6 +1524,12 @@ local v6 = {
 		["SpawnDelay"] = 3.5,
 		["IgnoreIndexCounter"] = true,
 	},
+	["Chickini Legini"] = {
+		["DisplayName"] = "Chickini Legini",
+		["Rarity"] = "Secret",
+		["Price"] = 4000000000,
+		["Generation"] = 32000000,
+	},
 	["Crab"] = {
 		["DisplayName"] = "Crab",
 		["Rarity"] = "Secret",
@@ -1614,13 +1636,6 @@ local v6 = {
 		["Rarity"] = "Mythic",
 		["Price"] = 2750000,
 		["Generation"] = 7750,
-		["IgnoreIndexCounter"] = true,
-	},
-	["Los Noobinis"] = {
-		["DisplayName"] = "Los Noobinis",
-		["Rarity"] = "Mythic",
-		["Price"] = 4350000,
-		["Generation"] = 12500,
 		["IgnoreIndexCounter"] = true,
 	},
 	["Caramello Filtrello"] = {
@@ -2319,10 +2334,15 @@ local v6 = {
 		["Generation"] = 2500000,
 	},
 	["Los Puggies"] = {
-		["DisplayName"] = "Los Puggies",
-		["Rarity"] = "Secret",
-		["Price"] = 3000000000,
-		["Generation"] = 30000000,
+		DisplayName = "Los Puggies",
+		Rarity = "Secret",
+		Price = 4000000000,
+		Generation = 40000000,
+		SpawnDelay = 3.5,
+		ObtainedFrom = {
+			Source = "Brainrot Trader",
+			Obtainable = false
+		}
 	},
 	["Los Spaghettis"] = {
 		["DisplayName"] = "Los Spaghettis",
@@ -3238,7 +3258,7 @@ local v6 = {
 		["Rarity"] = "OG",
 		["Price"] = 1000000000000,
 		["Generation"] = 1000000000,
-		["HideFromIndex"] = true,
+		["HideFromIndex"] = false,
 		["IgnoreIndexCounter"] = true,
 		["TriggerEvent"] = "PumpkinStrawberry",
 		["SpawnVFX"] = "Pumpkin",
@@ -4371,18 +4391,6 @@ local v6 = {
 		SpawnVFX = "Summer",
 		SpawnDelay = 3,
 	},
-	["Frullato Framingo"] = {
-		DisplayName = "Frullato Framingo",
-		Rarity = "Secret",
-		Price = 3000000000,
-		Generation = 20000000,
-		SpawnVFX = "Summer",
-		SpawnDelay = 3,
-		ObtainedFrom = {
-			Source = "Sammy\'s Code",
-			Obtainable = true
-		},
-	},
 	["Los Fruits"] = {
 		DisplayName = "Los Fruits",
 		Rarity = "Secret",
@@ -4987,7 +4995,133 @@ local v6 = {
 		SpawnVFX = "Bee",
 		SpawnDelay = 3,
 		LuckyBlock = v3["Premium Bee Lucky Block"],
-	}
+	},
+	Gub = {
+		DisplayName = "Gub",
+		Rarity = "Secret",
+		Price = 900000000,
+		Generation = 5000000,
+		RoadWeight = 4e-8,
+		ObtainedFrom = {
+			Source = "The Red Carpet",
+			Obtainable = true
+		},
+	},
+	["Sir Mangus"] = {
+		DisplayName = "Sir Mangus",
+		Rarity = "Secret",
+		Price = 1250000000,
+		Generation = 7500000,
+		RoadWeight = 2e-8,
+		ObtainedFrom = {
+			Source = "The Red Carpet",
+			Obtainable = true
+		},
+	},
+	["Gattino Hydrantino"] = {
+		DisplayName = "Gattino Hydrantino",
+		Rarity = "Secret",
+		Price = 1950000000,
+		Generation = 14500000,
+		ObtainedFrom = {
+			Source = "RNG Machine",
+			Obtainable = true
+		},
+	},
+	["Puffino Builderino"] = {
+		DisplayName = "Puffino Builderino",
+		Rarity = "Secret",
+		Price = 3750000000,
+		Generation = 31000000,
+		ObtainedFrom = {
+			Source = "RNG Machine",
+			Obtainable = true
+		},
+	},
+	["Pelican Pachetto"] = {
+		DisplayName = "Pelican Pachetto",
+		Rarity = "Secret",
+		Price = 525000000,
+		Generation = 1750000,
+		ObtainedFrom = {Source = "OG Craft", Obtainable = true},
+	},
+	["Deputy Leopard"] = {
+		DisplayName = "Deputy Leopard",
+		Rarity = "Secret",
+		Price = 2600000000,
+		Generation = 18000000,
+		ObtainedFrom = {Source = "OG Craft", Obtainable = true},
+	},
+	["Chicli Chicla"] = {
+		DisplayName = "Chicli Chicla",
+		Rarity = "Secret",
+		Price = 9250000000,
+		Generation = 47500000,
+		ObtainedFrom = {Source = "OG Craft", Obtainable = true},
+	},
+	["Panda Popanda"] = {
+		DisplayName = "Panda Popanda",
+		Rarity = "Secret",
+		Price = 16000000000,
+		Generation = 67000000,
+		ObtainedFrom = {Source = "OG Craft", Obtainable = true},
+	},
+	["La Craft Machine"] = {
+		DisplayName = "La Craft Machine",
+		Rarity = "Secret",
+		Price = 22500000000,
+		Generation = 75000000,
+		ObtainedFrom = {Source = "OG Craft", Obtainable = true},
+	},
+	["Gold and Diamond"] = {
+		DisplayName = "Gold and Diamond",
+		Rarity = "Secret",
+		Price = 25500000000,
+		Generation = 85000000,
+		ObtainedFrom = {Source = "OG Craft", Obtainable = true},
+	},
+	["Los Dragons"] = {
+		DisplayName = "Los Dragons",
+		Rarity = "Secret",
+		Price = 425000000000,
+		Generation = 425000000,
+		ObtainedFrom = {Source = "OG Craft", Obtainable = true},
+	},
+	["Koala Parabala"] = {
+		DisplayName = "Koala Parabala",
+		Rarity = "Brainrot God",
+		Price = 35000000,
+		Generation = 200000,
+		ObtainedFrom = {Source = "OG Craft", Obtainable = true},
+	},
+	["Hippo Jacuzzo"] = {
+		DisplayName = "Hippo Jacuzzo",
+		Rarity = "Brainrot God",
+		Price = 78000000,
+		Generation = 322500,
+		ObtainedFrom = {Source = "OG Craft", Obtainable = true},
+	},
+	["Butter Butter"] = {
+		DisplayName = "Butter Butter",
+		Rarity = "Secret",
+		Price = 40000000000,
+		Generation = 100000000,
+		ObtainedFrom = {Source = "Money Merchant", Obtainable = true},
+	},
+	["Hydra Serpent"] = {
+		DisplayName = "Hydra Serpent",
+		Rarity = "Secret",
+		Price = 220000000000,
+		Generation = 220000000,
+		ObtainedFrom = {Source = "OG Craft", Obtainable = false},
+	},
+	["Vamp Vamp Sahur"] = {
+		DisplayName = "Vamp Vamp Sahur",
+		Rarity = "Secret",
+		Price = 4000000000,
+		Generation = 10000000,
+		ObtainedFrom = {Source = "", Obtainable = true},
+	},
 
 }
 return v6
